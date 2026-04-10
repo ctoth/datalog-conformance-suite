@@ -235,3 +235,104 @@ tests:
     defeasibly:
       q:
       - []
+- name: spindle_racket_superiority_conflict
+  description: A superior defeasible rule wins a direct conflict.
+  source: spindle-racket/tests/spindle-tests.rkt::Superiority should resolve defeasible conflicts
+  tags:
+  - basic
+  - superiority
+  - conflicts
+  theory:
+    facts:
+      bird:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: flies
+      body:
+      - bird
+    - id: r2
+      head: ~flies
+      body:
+      - bird
+    defeaters: []
+    superiority:
+    - - r1
+      - r2
+    conflicts:
+    - - flies
+      - ~flies
+  expect:
+    definitely:
+      bird:
+      - []
+    defeasibly:
+      flies:
+      - []
+    not_defeasibly:
+      ~flies:
+      - []
+- name: spindle_racket_unsatisfied_antecedent
+  description: A rule with a missing antecedent does not fire.
+  source: spindle-racket/tests/spindle-tests.rkt::Rule with unsatisfied antecedent should not fire
+  tags:
+  - basic
+  - chaining
+  theory:
+    facts:
+      p:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: r
+      body:
+      - p
+      - q
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      p:
+      - []
+    not_defeasibly:
+      r:
+      - []
+- name: spindle_racket_forward_chaining
+  description: A defeasible rule chain derives all downstream literals.
+  source: spindle-racket/tests/spindle-tests.rkt::Forward chaining through rule chain
+  tags:
+  - basic
+  - chaining
+  theory:
+    facts:
+      a:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: b
+      body:
+      - a
+    - id: r2
+      head: c
+      body:
+      - b
+    - id: r3
+      head: d
+      body:
+      - c
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      a:
+      - []
+    defeasibly:
+      b:
+      - []
+      c:
+      - []
+      d:
+      - []
