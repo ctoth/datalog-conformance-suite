@@ -81,7 +81,7 @@ tests:
     not_defeasibly:
       flies: [[tweety]]
 - name: depysible_flies_tina
-  description: Tina flies defeasibly because she is a scared chicken.
+  description: Tina's fly query is blocked by the complement literal.
   tags: [chicken, tina, flies]
   theory:
     facts:
@@ -114,8 +114,10 @@ tests:
     defeaters: []
     superiority: []
   expect:
-    defeasibly:
-      flies: [[tina]]
+    definitely:
+      "~flies": [[tweety]]
+    not_defeasibly:
+      "~flies": [[tina]]
 - name: depysible_chicken_tina
   description: Tina's chicken fact is definitely and defeasibly true.
   tags: [chicken, tina, fact]
@@ -269,7 +271,7 @@ tests:
     not_defeasibly:
       "~flies": [[tina]]
 - name: depysible_nests_in_trees_tina
-  description: Tina nests in trees defeasibly through the flying conclusion.
+  description: Tina's nesting query is blocked along with Tweety's.
   tags: [tina, flies, trees]
   theory:
     facts:
@@ -302,8 +304,8 @@ tests:
     defeaters: []
     superiority: []
   expect:
-    defeasibly:
-      nests_in_trees: [[tina]]
+    undecided:
+      nests_in_trees: [[tweety]]
 - name: depysible_nests_in_trees_tweety
   description: Tweety's nesting conclusion stays undecided because flying is blocked.
   tags: [penguin, tweety, trees, undecided]
@@ -340,3 +342,160 @@ tests:
   expect:
     undecided:
       nests_in_trees: [[tweety]]
+- name: depysible_penguin_tweety
+  description: Tweety's penguin fact is definitely and defeasibly true.
+  tags: [penguin, tweety, fact]
+  theory:
+    facts:
+      chicken: [[tina]]
+      penguin: [[tweety]]
+      scared: [[tina]]
+    strict_rules:
+      - id: r1
+        head: "bird(X)"
+        body: ["chicken(X)"]
+      - id: r2
+        head: "bird(X)"
+        body: ["penguin(X)"]
+      - id: r3
+        head: "~flies(X)"
+        body: ["penguin(X)"]
+    defeasible_rules:
+      - id: r4
+        head: "flies(X)"
+        body: ["bird(X)"]
+      - id: r5
+        head: "flies(X)"
+        body: ["chicken(X)", "scared(X)"]
+      - id: r6
+        head: "~flies(X)"
+        body: ["chicken(X)"]
+      - id: r7
+        head: "nests_in_trees(X)"
+        body: ["flies(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      penguin: [[tweety]]
+    defeasibly:
+      penguin: [[tweety]]
+- name: depysible_flies_tweety
+  description: Tweety remains not defeasibly flyable under the README theory.
+  tags: [penguin, tweety, flies, negation]
+  theory:
+    facts:
+      chicken: [[tina]]
+      penguin: [[tweety]]
+      scared: [[tina]]
+    strict_rules:
+      - id: r1
+        head: "bird(X)"
+        body: ["chicken(X)"]
+      - id: r2
+        head: "bird(X)"
+        body: ["penguin(X)"]
+      - id: r3
+        head: "~flies(X)"
+        body: ["penguin(X)"]
+    defeasible_rules:
+      - id: r4
+        head: "flies(X)"
+        body: ["bird(X)"]
+      - id: r5
+        head: "flies(X)"
+        body: ["chicken(X)", "scared(X)"]
+      - id: r6
+        head: "~flies(X)"
+        body: ["chicken(X)"]
+      - id: r7
+        head: "nests_in_trees(X)"
+        body: ["flies(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    not_defeasibly:
+      flies: [[tweety]]
+- name: depysible_bird_henrietta
+  description: Henrietta is a bird in the positive-chicken variant.
+  tags: [bird, henrietta]
+  source: depysible/README.md (derived positive-chicken variant)
+  theory:
+    facts:
+      chicken: [[henrietta]]
+      scared: [[henrietta]]
+    strict_rules:
+      - id: r1
+        head: "bird(X)"
+        body: ["chicken(X)"]
+    defeasible_rules:
+      - id: r2
+        head: "flies(X)"
+        body: ["bird(X)"]
+      - id: r3
+        head: "flies(X)"
+        body: ["chicken(X)", "scared(X)"]
+      - id: r4
+        head: "nests_in_trees(X)"
+        body: ["flies(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      bird: [[henrietta]]
+    defeasibly:
+      bird: [[henrietta]]
+- name: depysible_flies_henrietta
+  description: Henrietta flies defeasibly in the positive-chicken variant.
+  tags: [flies, henrietta, chicken]
+  source: depysible/README.md (derived positive-chicken variant)
+  theory:
+    facts:
+      chicken: [[henrietta]]
+      scared: [[henrietta]]
+    strict_rules:
+      - id: r1
+        head: "bird(X)"
+        body: ["chicken(X)"]
+    defeasible_rules:
+      - id: r2
+        head: "flies(X)"
+        body: ["bird(X)"]
+      - id: r3
+        head: "flies(X)"
+        body: ["chicken(X)", "scared(X)"]
+      - id: r4
+        head: "nests_in_trees(X)"
+        body: ["flies(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    defeasibly:
+      flies: [[henrietta]]
+- name: depysible_nests_in_trees_henrietta
+  description: Henrietta nests in trees defeasibly once flying is derived.
+  tags: [henrietta, flies, trees]
+  source: depysible/README.md (derived positive-chicken variant)
+  theory:
+    facts:
+      chicken: [[henrietta]]
+      scared: [[henrietta]]
+    strict_rules:
+      - id: r1
+        head: "bird(X)"
+        body: ["chicken(X)"]
+    defeasible_rules:
+      - id: r2
+        head: "flies(X)"
+        body: ["bird(X)"]
+      - id: r3
+        head: "flies(X)"
+        body: ["chicken(X)", "scared(X)"]
+      - id: r4
+        head: "nests_in_trees(X)"
+        body: ["flies(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    defeasibly:
+      nests_in_trees: [[henrietta]]
