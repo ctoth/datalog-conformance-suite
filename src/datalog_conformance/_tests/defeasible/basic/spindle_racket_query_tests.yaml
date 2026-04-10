@@ -1,0 +1,218 @@
+source: spindle-racket/tests/query/query-test.rkt
+tags:
+- defeasible
+- spindle-racket
+tests:
+- name: spindle_racket_query_fact_theory
+  description: A single fact is definitely provable.
+  source: spindle-racket/tests/query/query-test.rkt::make-fact-theory
+  tags:
+  - basic
+  - facts
+  - query
+  theory:
+    facts:
+      bird:
+      - []
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      bird:
+      - []
+- name: spindle_racket_query_defeasible_theory
+  description: A fact supports a defeasible bird-flight conclusion.
+  source: spindle-racket/tests/query/query-test.rkt::make-defeasible-theory
+  tags:
+  - basic
+  - defeasible
+  - query
+  theory:
+    facts:
+      bird:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: flies
+      body:
+      - bird
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      bird:
+      - []
+    defeasibly:
+      flies:
+      - []
+- name: spindle_racket_query_strict_theory
+  description: A strict rule derives its conclusion definitely.
+  source: spindle-racket/tests/query/query-test.rkt::make-strict-theory
+  tags:
+  - basic
+  - strict
+  - query
+  theory:
+    facts:
+      human:
+      - []
+    strict_rules:
+    - id: r1
+      head: mortal
+      body:
+      - human
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      human:
+      - []
+      mortal:
+      - []
+- name: spindle_racket_query_conflict_theory
+  description: Superiority resolves a defeasible conflict against bird flight.
+  source: spindle-racket/tests/query/query-test.rkt::make-conflict-theory
+  tags:
+  - basic
+  - conflicts
+  - query
+  theory:
+    facts:
+      bird:
+      - []
+      penguin:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: flies
+      body:
+      - bird
+    - id: r2
+      head: ~flies
+      body:
+      - penguin
+    defeaters: []
+    superiority:
+    - - r2
+      - r1
+    conflicts:
+    - - flies
+      - ~flies
+  expect:
+    definitely:
+      bird:
+      - []
+      penguin:
+      - []
+    defeasibly:
+      ~flies:
+      - []
+    not_defeasibly:
+      flies:
+      - []
+- name: spindle_racket_query_defeater_theory
+  description: A defeater blocks the target conclusion without proving the negation.
+  source: spindle-racket/tests/query/query-test.rkt::make-defeater-theory
+  tags:
+  - basic
+  - defeater
+  - query
+  theory:
+    facts:
+      bird:
+      - []
+      broken_wing:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: flies
+      body:
+      - bird
+    defeaters:
+    - id: d1
+      head: ~flies
+      body:
+      - broken_wing
+    superiority: []
+  expect:
+    definitely:
+      bird:
+      - []
+      broken_wing:
+      - []
+    not_defeasibly:
+      flies:
+      - []
+      ~flies:
+      - []
+- name: spindle_racket_query_missing_premise_theory
+  description: A missing premise blocks the derived conclusion.
+  source: spindle-racket/tests/query/query-test.rkt::make-missing-premise-theory
+  tags:
+  - basic
+  - chaining
+  - query
+  theory:
+    facts:
+      code_complete:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: ready_review
+      body:
+      - tests_pass
+      - code_complete
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      code_complete:
+      - []
+    not_defeasibly:
+      ready_review:
+      - []
+- name: spindle_racket_query_chain_theory
+  description: A defeasible chain carries conclusions downstream.
+  source: spindle-racket/tests/query/query-test.rkt::make-chain-theory
+  tags:
+  - basic
+  - chaining
+  - query
+  theory:
+    facts:
+      a:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: b
+      body:
+      - a
+    - id: r2
+      head: c
+      body:
+      - b
+    - id: r3
+      head: d
+      body:
+      - c
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      a:
+      - []
+    defeasibly:
+      b:
+      - []
+      c:
+      - []
+      d:
+      - []
