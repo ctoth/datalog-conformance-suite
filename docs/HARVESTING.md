@@ -6,7 +6,7 @@ This file records where the bundled YAML suites came from, what translation choi
 ## Current Corpus Summary
 
 - Core Datalog cases currently in `basic/`, `recursion/`, `negation/`, and `errors/`: 282
-- Defeasible cases currently in `defeasible/`: 318
+- Defeasible cases currently in `defeasible/`: 333
 - Property tests in `tests/test_properties.py`: 15
 
 The current defeasible corpus is dominated by strict-only derived lifts from the core corpus, plus
@@ -139,8 +139,10 @@ The current defeasible corpus is dominated by strict-only derived lifts from the
 - Current harvested slice:
   - `src/datalog_conformance/_tests/defeasible/basic/spindle_racket_test_theories.yaml`
   - `src/datalog_conformance/_tests/defeasible/basic/spindle_racket_inline_tests.yaml`
+  - `src/datalog_conformance/_tests/defeasible/basic/spindle_racket_query_tests.yaml`
+  - `src/datalog_conformance/_tests/defeasible/basic/spindle_racket_query_integration.yaml`
   - `scripts/harvest_spindle.py` currently regenerates the `src/test-theories` slice
-  - the bundled SPINdle-family slice currently covers 27 cases total
+  - the bundled SPINdle-family slice currently covers 42 cases total
 - Translation policy for the current slice:
   - facts use zero-arity predicate rows such as `p: [[]]`
   - `->` maps to `strict_rules`
