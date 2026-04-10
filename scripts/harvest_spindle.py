@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import os
 from pathlib import Path
 from typing import Any
@@ -13,133 +14,263 @@ TEST_ROOT = SPINDLE_ROOT / "tests"
 DEST_ROOT = Path("src") / "datalog_conformance" / "_tests" / "defeasible" / "basic"
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
+    parser = argparse.ArgumentParser()
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument(
+        "--theory-only",
+        action="store_true",
+        help="Write only spindle_racket_test_theories.yaml.",
+    )
+    mode.add_argument(
+        "--inline-only",
+        action="store_true",
+        help="Write only spindle_racket_inline_tests.yaml.",
+    )
+    args = parser.parse_args(argv)
+
     if not THEORY_ROOT.exists():
         raise SystemExit(f"Missing spindle-racket theory directory: {THEORY_ROOT}")
     if not TEST_ROOT.exists():
         raise SystemExit(f"Missing spindle-racket test directory: {TEST_ROOT}")
 
-    _write_yaml(
-        DEST_ROOT / "spindle_racket_test_theories.yaml",
-        {
-            "source": "spindle-racket/src/test-theories",
-            "tags": ["defeasible", "spindle-racket"],
-            "tests": [
-                _case_from_source(
-                    THEORY_ROOT / "penguin.dfl",
-                    name="spindle_racket_penguin_exception",
-                    description="Penguin non-flight defeats generic bird flight.",
-                    tags=["basic", "superiority", "exceptions"],
-                    expect={
-                        "definitely": {"tweety": [[]], "penguin": [[]]},
-                        "defeasibly": {"bird": [[]], "~flies": [[]]},
-                        "not_defeasibly": {"flies": [[]]},
-                    },
-                ),
-                _case_from_source(
-                    THEORY_ROOT / "basicConflict.dfl",
-                    name="spindle_racket_basic_conflict",
-                    description="Superiority resolves two conflicting defeasible rules.",
-                    tags=["basic", "superiority", "conflicts"],
-                    expect={
-                        "definitely": {"bird": [[]]},
-                        "defeasibly": {"flies": [[]]},
-                        "not_defeasibly": {"~flies": [[]]},
-                    },
-                ),
-                _case_from_source(
-                    THEORY_ROOT / "defeater.dfl",
-                    name="spindle_racket_defeater_blocks",
-                    description="A defeater blocks q without proving ~q.",
-                    tags=["basic", "defeater"],
-                    expect={
-                        "definitely": {"p": [[]]},
-                        "not_defeasibly": {"q": [[]], "~q": [[]]},
-                    },
-                ),
-                _case_from_source(
-                    THEORY_ROOT / "chain.dfl",
-                    name="spindle_racket_chain_forward",
-                    description="Defeasible forward chaining derives all downstream literals.",
-                    tags=["basic", "chaining"],
-                    expect={
-                        "definitely": {"start": [[]]},
-                        "defeasibly": {
-                            "step1": [[]],
-                            "step2": [[]],
-                            "step3": [[]],
-                            "end": [[]],
+    if not args.inline_only:
+        _write_yaml(
+            DEST_ROOT / "spindle_racket_test_theories.yaml",
+            {
+                "source": "spindle-racket",
+                "tags": ["defeasible", "spindle-racket"],
+                "tests": [
+                    _case_from_source(
+                        THEORY_ROOT / "penguin.dfl",
+                        name="spindle_racket_penguin_exception",
+                        description="Penguin non-flight defeats generic bird flight.",
+                        tags=["basic", "superiority", "exceptions"],
+                        expect={
+                            "definitely": {"tweety": [[]], "penguin": [[]]},
+                            "defeasibly": {"bird": [[]], "~flies": [[]]},
+                            "not_defeasibly": {"flies": [[]]},
                         },
-                    },
-                ),
-                _case_from_source(
-                    THEORY_ROOT / "factConflict.dfl",
-                    name="spindle_racket_fact_conflict",
-                    description=(
-                        "Conflicting facts remain definitely provable in the inconsistent theory."
                     ),
-                    tags=["basic", "inconsistency"],
-                    expect={"definitely": {"p": [[]], "~p": [[]]}},
-                ),
-                _case_from_source(
-                    THEORY_ROOT / "sdlTestTheory.dfl",
-                    name="spindle_racket_strict_beats_defeasible",
-                    description="A strict rule for c blocks a competing defeasible rule for ~c.",
-                    tags=["basic", "strict-only", "superiority"],
-                    expect={
-                        "definitely": {"a": [[]], "b": [[]], "c": [[]]},
-                        "not_defeasibly": {"~c": [[]]},
-                    },
-                ),
-                _case_from_source(
-                    TEST_ROOT / "birds-fly.dfl",
-                    name="spindle_racket_birds_fly",
-                    description="A bird fact supports the default that birds fly.",
-                    tags=["basic", "facts"],
-                    expect={
-                        "definitely": {"bird": [[]]},
-                        "defeasibly": {"flies": [[]]},
-                    },
-                ),
-                _case_from_source(
-                    TEST_ROOT / "penguin-exception.dfl",
-                    name="spindle_racket_penguin_exception_test",
-                    description="A penguin exception blocks flight while still deriving swimming.",
-                    tags=["basic", "exceptions", "superiority"],
-                    expect={
-                        "definitely": {"bird": [[]], "penguin": [[]]},
-                        "defeasibly": {"swims": [[]], "~flies": [[]]},
-                        "not_defeasibly": {"flies": [[]]},
-                    },
-                ),
-                _case_from_source(
-                    TEST_ROOT / "medical-treatment.dfl",
-                    name="spindle_racket_medical_treatment",
-                    description=(
-                        "A contraindication defeats the first treatment and enables "
-                        "the fallback."
-                    ),
-                    tags=["basic", "superiority", "safety"],
-                    expect={
-                        "definitely": {"hasConditionX": [[]], "allergicToA": [[]]},
-                        "defeasibly": {
-                            "~recommendTreatmentA": [[]],
-                            "recommendTreatmentB": [[]],
+                    _case_from_source(
+                        THEORY_ROOT / "basicConflict.dfl",
+                        name="spindle_racket_basic_conflict",
+                        description="Superiority resolves two conflicting defeasible rules.",
+                        tags=["basic", "superiority", "conflicts"],
+                        expect={
+                            "definitely": {"bird": [[]]},
+                            "defeasibly": {"flies": [[]]},
+                            "not_defeasibly": {"~flies": [[]]},
                         },
-                        "not_defeasibly": {"recommendTreatmentA": [[]]},
-                    },
-                ),
-            ],
-        },
-    )
+                    ),
+                    _case_from_source(
+                        THEORY_ROOT / "defeater.dfl",
+                        name="spindle_racket_defeater_blocks",
+                        description="A defeater blocks q without proving ~q.",
+                        tags=["basic", "defeater"],
+                        expect={
+                            "definitely": {"p": [[]]},
+                            "not_defeasibly": {"q": [[]], "~q": [[]]},
+                        },
+                    ),
+                    _case_from_source(
+                        THEORY_ROOT / "chain.dfl",
+                        name="spindle_racket_chain_forward",
+                        description="Defeasible forward chaining derives all downstream literals.",
+                        tags=["basic", "chaining"],
+                        expect={
+                            "definitely": {"start": [[]]},
+                            "defeasibly": {
+                                "step1": [[]],
+                                "step2": [[]],
+                                "step3": [[]],
+                                "end": [[]],
+                            },
+                        },
+                    ),
+                    _case_from_source(
+                        THEORY_ROOT / "factConflict.dfl",
+                        name="spindle_racket_fact_conflict",
+                        description=(
+                            "Conflicting facts remain definitely provable in "
+                            "the inconsistent theory."
+                        ),
+                        tags=["basic", "inconsistency"],
+                        expect={"definitely": {"p": [[]], "~p": [[]]}},
+                    ),
+                    _case_from_source(
+                        THEORY_ROOT / "sdlTestTheory.dfl",
+                        name="spindle_racket_strict_beats_defeasible",
+                        description=(
+                            "A strict rule for c blocks a competing defeasible "
+                            "rule for ~c."
+                        ),
+                        tags=["basic", "strict-only", "superiority"],
+                        expect={
+                            "definitely": {"a": [[]], "b": [[]], "c": [[]]},
+                            "not_defeasibly": {"~c": [[]]},
+                        },
+                    ),
+                    _case_from_source(
+                        TEST_ROOT / "imports" / "base.dfl",
+                        name="spindle_racket_import_base",
+                        description="A base import fixture derives flies from the bird fact.",
+                        tags=["basic", "facts", "imports"],
+                        theory={
+                            "facts": {"bird": [[]]},
+                            "strict_rules": [],
+                            "defeasible_rules": [
+                                {"id": "r1", "head": "flies", "body": ["bird"]},
+                            ],
+                            "defeaters": [],
+                            "superiority": [],
+                        },
+                        expect={
+                            "definitely": {"bird": [[]]},
+                            "defeasibly": {"flies": [[]]},
+                        },
+                    ),
+                    _case_from_source(
+                        TEST_ROOT / "birds-fly.dfl",
+                        name="spindle_racket_birds_fly",
+                        description="A bird fact supports the default that birds fly.",
+                        tags=["basic", "facts"],
+                        expect={
+                            "definitely": {"bird": [[]]},
+                            "defeasibly": {"flies": [[]]},
+                        },
+                    ),
+                    _case_from_source(
+                        TEST_ROOT / "imports" / "commented.dfl",
+                        name="spindle_racket_import_comments",
+                        description=(
+                            "Comments before imports still resolve the imported "
+                            "base theory."
+                        ),
+                        tags=["basic", "imports", "comments"],
+                        theory={
+                            "facts": {"bird": [[]], "flies": [[]]},
+                            "strict_rules": [],
+                            "defeasible_rules": [
+                                {"id": "r1", "head": "happy", "body": ["flies"]},
+                            ],
+                            "defeaters": [],
+                            "superiority": [],
+                        },
+                        expect={
+                            "definitely": {"bird": [[]], "flies": [[]]},
+                            "defeasibly": {"happy": [[]]},
+                        },
+                    ),
+                    _case_from_source(
+                        TEST_ROOT / "penguin-exception.dfl",
+                        name="spindle_racket_penguin_exception_test",
+                        description=(
+                            "A penguin exception blocks flight while still "
+                            "deriving swimming."
+                        ),
+                        tags=["basic", "exceptions", "superiority"],
+                        expect={
+                            "definitely": {"bird": [[]], "penguin": [[]]},
+                            "defeasibly": {"swims": [[]], "~flies": [[]]},
+                            "not_defeasibly": {"flies": [[]]},
+                        },
+                    ),
+                    _case_from_source(
+                        TEST_ROOT / "imports" / "extension.dfl",
+                        name="spindle_racket_import_extension",
+                        description=(
+                            "A simple import adds a bird default and a happy "
+                            "follow-up rule."
+                        ),
+                        tags=["basic", "imports", "chaining"],
+                        theory={
+                            "facts": {"bird": [[]], "flies": [[]]},
+                            "strict_rules": [],
+                            "defeasible_rules": [
+                                {"id": "r2", "head": "happy", "body": ["flies"]},
+                            ],
+                            "defeaters": [],
+                            "superiority": [],
+                        },
+                        expect={
+                            "definitely": {"bird": [[]], "flies": [[]]},
+                            "defeasibly": {"happy": [[]]},
+                        },
+                    ),
+                    _case_from_source(
+                        TEST_ROOT / "medical-treatment.dfl",
+                        name="spindle_racket_medical_treatment",
+                        description=(
+                            "A contraindication defeats the first treatment and enables "
+                            "the fallback."
+                        ),
+                        tags=["basic", "superiority", "safety"],
+                        expect={
+                            "definitely": {"hasConditionX": [[]], "allergicToA": [[]]},
+                            "defeasibly": {
+                                "~recommendTreatmentA": [[]],
+                                "recommendTreatmentB": [[]],
+                            },
+                            "not_defeasibly": {"recommendTreatmentA": [[]]},
+                        },
+                    ),
+                    _case_from_source(
+                        TEST_ROOT / "imports" / "nested-a.dfl",
+                        name="spindle_racket_import_nested",
+                        description=(
+                            "A nested import carries forward conclusions from the base and "
+                            "intermediate theories."
+                        ),
+                        tags=["basic", "imports", "chaining"],
+                        theory={
+                            "facts": {"bird": [[]], "flies": [[]], "step2": [[]]},
+                            "strict_rules": [],
+                            "defeasible_rules": [
+                                {"id": "r3", "head": "step3", "body": ["step2"]},
+                            ],
+                            "defeaters": [],
+                            "superiority": [],
+                        },
+                        expect={
+                            "definitely": {"bird": [[]], "flies": [[]], "step2": [[]]},
+                            "defeasibly": {"step3": [[]]},
+                        },
+                    ),
+                    _case_from_source(
+                        TEST_ROOT / "imports" / "prefixed.dfl",
+                        name="spindle_racket_import_prefixed",
+                        description=(
+                            "A prefixed import namespaces the inherited bird "
+                            "facts and rules."
+                        ),
+                        tags=["basic", "imports", "prefix"],
+                        theory={
+                            "facts": {"b:bird": [[]], "b:flies": [[]]},
+                            "strict_rules": [],
+                            "defeasible_rules": [
+                                {"id": "r1", "head": "soars", "body": ["b:flies"]},
+                            ],
+                            "defeaters": [],
+                            "superiority": [],
+                        },
+                        expect={
+                            "definitely": {"b:bird": [[]], "b:flies": [[]]},
+                            "defeasibly": {"soars": [[]]},
+                        },
+                    ),
+                ],
+            },
+        )
 
-    _write_yaml(
-        DEST_ROOT / "spindle_racket_inline_tests.yaml",
-        {
-            "source": "spindle-racket/tests/spindle-tests.rkt",
-            "tags": ["defeasible", "spindle-racket"],
-            "tests": [
-                _inline_case(
+    if not args.theory_only:
+        _write_yaml(
+            DEST_ROOT / "spindle_racket_inline_tests.yaml",
+            {
+                "source": "spindle-racket/tests/spindle-tests.rkt",
+                "tags": ["defeasible", "spindle-racket"],
+                "tests": [
+                    _inline_case(
                     name="spindle_racket_fact_vs_strict_rule_conflict",
                     description=(
                         "A fact and a conflicting strict-rule conclusion are both "
@@ -161,8 +292,8 @@ def main() -> None:
                         "conflicts": [["p", "~p"]],
                     },
                     expect={"definitely": {"p": [[]], "q": [[]], "~p": [[]]}},
-                ),
-                _inline_case(
+                    ),
+                    _inline_case(
                     name="spindle_racket_multiple_antecedents",
                     description="A defeasible rule fires when all three antecedents are present.",
                     source="spindle-racket/tests/spindle-tests.rkt::Rule with multiple antecedents",
@@ -180,10 +311,13 @@ def main() -> None:
                         "definitely": {"p": [[]], "q": [[]], "r": [[]]},
                         "defeasibly": {"s": [[]]},
                     },
-                ),
-                _inline_case(
+                    ),
+                    _inline_case(
                     name="spindle_racket_mixed_strict_defeasible_conflict",
-                    description="A strict rule for c blocks a competing defeasible rule for ~c.",
+                    description=(
+                        "A strict rule for c blocks a competing defeasible rule "
+                        "for ~c."
+                    ),
                     source=(
                         "spindle-racket/tests/spindle-tests.rkt::"
                         "Interaction between strict and defeasible rules"
@@ -205,8 +339,8 @@ def main() -> None:
                         "definitely": {"a": [[]], "b": [[]], "c": [[]]},
                         "not_defeasibly": {"~c": [[]]},
                     },
-                ),
-                _inline_case(
+                    ),
+                    _inline_case(
                     name="spindle_racket_defeater_negative_conclusions",
                     description="A defeater blocks q and still does not prove ~q.",
                     source=(
@@ -230,8 +364,8 @@ def main() -> None:
                         "definitely": {"p": [[]]},
                         "not_defeasibly": {"q": [[]], "~q": [[]]},
                     },
-                ),
-                _inline_case(
+                    ),
+                    _inline_case(
                     name="spindle_racket_simple_fact",
                     description="A simple fact is definitely provable.",
                     source=(
@@ -247,8 +381,8 @@ def main() -> None:
                         "superiority": [],
                     },
                     expect={"definitely": {"p": [[]]}},
-                ),
-                _inline_case(
+                    ),
+                    _inline_case(
                     name="spindle_racket_negated_fact",
                     description="A negated fact is definitely provable.",
                     source=(
@@ -264,8 +398,8 @@ def main() -> None:
                         "superiority": [],
                     },
                     expect={"definitely": {"~q": [[]]}},
-                ),
-                _inline_case(
+                    ),
+                    _inline_case(
                     name="spindle_racket_strict_rule_with_fact",
                     description=(
                         "A strict rule with a satisfied antecedent derives its head "
@@ -286,8 +420,8 @@ def main() -> None:
                         "superiority": [],
                     },
                     expect={"definitely": {"p": [[]], "q": [[]]}},
-                ),
-                _inline_case(
+                    ),
+                    _inline_case(
                     name="spindle_racket_defeasible_rule_with_fact",
                     description=(
                         "A defeasible rule with a satisfied antecedent derives its "
@@ -311,18 +445,22 @@ def main() -> None:
                         "definitely": {"p": [[]]},
                         "defeasibly": {"q": [[]]},
                     },
-                ),
+                    ),
             ],
-        },
-    )
+            },
+        )
 
     print(
         f"Wrote {_count_cases(DEST_ROOT / 'spindle_racket_test_theories.yaml')} "
         "SPINdle theory cases"
+        if not args.inline_only
+        else "Skipped SPINdle theory cases"
     )
     print(
         f"Wrote {_count_cases(DEST_ROOT / 'spindle_racket_inline_tests.yaml')} "
         "SPINdle inline cases"
+        if not args.theory_only
+        else "Skipped SPINdle inline cases"
     )
 
 
@@ -333,17 +471,13 @@ def _case_from_source(
     description: str,
     tags: list[str],
     expect: dict[str, Any],
+    theory: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    parsed = _parse_dfl(path.read_text(encoding="utf-8"))
-    source_root = (
-        "spindle-racket/src/test-theories"
-        if path.parent == THEORY_ROOT
-        else "spindle-racket/tests"
-    )
+    parsed = theory if theory is not None else _parse_dfl(path.read_text(encoding="utf-8"))
     return {
         "name": name,
         "description": description,
-        "source": f"{source_root}/{path.name}",
+        "source": _source_path(path),
         "tags": tags,
         "theory": parsed,
         "expect": expect,
@@ -373,6 +507,13 @@ def _count_cases(path: Path) -> int:
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
     tests = data.get("tests", [])
     return len(tests)
+
+
+def _source_path(path: Path) -> str:
+    try:
+        return f"spindle-racket/{path.relative_to(SPINDLE_ROOT).as_posix()}"
+    except ValueError:
+        return f"spindle-racket/{path.as_posix()}"
 
 
 def _write_yaml(path: Path, payload: dict[str, Any]) -> None:

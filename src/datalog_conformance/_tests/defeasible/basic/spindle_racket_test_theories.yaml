@@ -1,4 +1,4 @@
-source: spindle-racket/src/test-theories
+source: spindle-racket
 tags:
 - defeasible
 - spindle-racket
@@ -223,6 +223,32 @@ tests:
     not_defeasibly:
       ~c:
       - []
+- name: spindle_racket_import_base
+  description: A base import fixture derives flies from the bird fact.
+  source: spindle-racket/tests/imports/base.dfl
+  tags:
+  - basic
+  - facts
+  - imports
+  theory:
+    facts:
+      bird:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: flies
+      body:
+      - bird
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      bird:
+      - []
+    defeasibly:
+      flies:
+      - []
 - name: spindle_racket_birds_fly
   description: A bird fact supports the default that birds fly.
   source: spindle-racket/tests/birds-fly.dfl
@@ -247,6 +273,36 @@ tests:
       - []
     defeasibly:
       flies:
+      - []
+- name: spindle_racket_import_comments
+  description: Comments before imports still resolve the imported base theory.
+  source: spindle-racket/tests/imports/commented.dfl
+  tags:
+  - basic
+  - imports
+  - comments
+  theory:
+    facts:
+      bird:
+      - []
+      flies:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: happy
+      body:
+      - flies
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      bird:
+      - []
+      flies:
+      - []
+    defeasibly:
+      happy:
       - []
 - name: spindle_racket_penguin_exception_test
   description: A penguin exception blocks flight while still deriving swimming.
@@ -293,6 +349,36 @@ tests:
     not_defeasibly:
       flies:
       - []
+- name: spindle_racket_import_extension
+  description: A simple import adds a bird default and a happy follow-up rule.
+  source: spindle-racket/tests/imports/extension.dfl
+  tags:
+  - basic
+  - imports
+  - chaining
+  theory:
+    facts:
+      bird:
+      - []
+      flies:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r2
+      head: happy
+      body:
+      - flies
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      bird:
+      - []
+      flies:
+      - []
+    defeasibly:
+      happy:
+      - []
 - name: spindle_racket_medical_treatment
   description: A contraindication defeats the first treatment and enables the fallback.
   source: spindle-racket/tests/medical-treatment.dfl
@@ -338,4 +424,69 @@ tests:
       - []
     not_defeasibly:
       recommendTreatmentA:
+      - []
+- name: spindle_racket_import_nested
+  description: A nested import carries forward conclusions from the base and intermediate
+    theories.
+  source: spindle-racket/tests/imports/nested-a.dfl
+  tags:
+  - basic
+  - imports
+  - chaining
+  theory:
+    facts:
+      bird:
+      - []
+      flies:
+      - []
+      step2:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r3
+      head: step3
+      body:
+      - step2
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      bird:
+      - []
+      flies:
+      - []
+      step2:
+      - []
+    defeasibly:
+      step3:
+      - []
+- name: spindle_racket_import_prefixed
+  description: A prefixed import namespaces the inherited bird facts and rules.
+  source: spindle-racket/tests/imports/prefixed.dfl
+  tags:
+  - basic
+  - imports
+  - prefix
+  theory:
+    facts:
+      b:bird:
+      - []
+      b:flies:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: soars
+      body:
+      - b:flies
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      b:bird:
+      - []
+      b:flies:
+      - []
+    defeasibly:
+      soars:
       - []
