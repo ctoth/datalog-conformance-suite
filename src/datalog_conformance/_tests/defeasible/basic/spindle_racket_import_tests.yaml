@@ -1,0 +1,129 @@
+source: spindle-racket/tests/import-tests.rkt
+tags:
+- defeasible
+- spindle-racket
+tests:
+- name: spindle_racket_import_tests_basic_resolution
+  description: Importing the extension theory injects bird and flies before deriving happy.
+  source: spindle-racket/tests/import-tests.rkt::Basic import resolution
+  tags:
+  - basic
+  - imports
+  - chaining
+  theory:
+    facts:
+      bird:
+      - []
+      flies:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r2
+      head: happy
+      body:
+      - flies
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      bird:
+      - []
+      flies:
+      - []
+    defeasibly:
+      happy:
+      - []
+- name: spindle_racket_import_tests_comments_before_imports
+  description: Comments before an import still resolve the imported base theory.
+  source: spindle-racket/tests/import-tests.rkt::Comments before imports in file
+  tags:
+  - basic
+  - imports
+  - comments
+  theory:
+    facts:
+      bird:
+      - []
+      flies:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: happy
+      body:
+      - flies
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      bird:
+      - []
+      flies:
+      - []
+    defeasibly:
+      happy:
+      - []
+- name: spindle_racket_import_tests_nested_resolution
+  description: Nested imports carry forward conclusions from the base and intermediate theories.
+  source: spindle-racket/tests/import-tests.rkt::Nested import resolution
+  tags:
+  - basic
+  - imports
+  - chaining
+  theory:
+    facts:
+      bird:
+      - []
+      flies:
+      - []
+      step2:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r3
+      head: step3
+      body:
+      - step2
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      bird:
+      - []
+      flies:
+      - []
+      step2:
+      - []
+    defeasibly:
+      step3:
+      - []
+- name: spindle_racket_import_tests_prefixed_resolution
+  description: A prefixed import namespaces inherited facts and rules.
+  source: spindle-racket/tests/import-tests.rkt::Prefixed import resolution
+  tags:
+  - basic
+  - imports
+  - prefix
+  theory:
+    facts:
+      b:bird:
+      - []
+      b:flies:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: soars
+      body:
+      - b:flies
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      b:bird:
+      - []
+      b:flies:
+      - []
+    defeasibly:
+      soars:
+      - []
