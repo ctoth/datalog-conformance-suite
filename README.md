@@ -53,7 +53,7 @@ uv run pytest tests --datalog-evaluator=mypackage.MyEvaluator --datalog-tags=def
 ## Current Corpus
 
 - Core Datalog cases: 282
-- Defeasible cases: 305
+- Defeasible cases: 316
 - Property tests: 15
 
 Current notable sources:
@@ -65,7 +65,7 @@ Current notable sources:
 - spindle-racket test theories
 - spindle-racket inline reasoning tests
 - Derived strict-only defeasible lifts from the core corpus
-- Maher 2021 Example 2, authored from local page images
+- Maher 2021 Examples 2-3, authored from local page images
 
 See [docs/IMPLEMENTATIONS.md](docs/IMPLEMENTATIONS.md) for concrete runtimes to confirm against.
 

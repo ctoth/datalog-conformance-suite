@@ -6,7 +6,7 @@ This file records where the bundled YAML suites came from, what translation choi
 ## Current Corpus Summary
 
 - Core Datalog cases currently in `basic/`, `recursion/`, `negation/`, and `errors/`: 282
-- Defeasible cases currently in `defeasible/`: 305
+- Defeasible cases currently in `defeasible/`: 316
 - Property tests in `tests/test_properties.py`: 15
 
 The current defeasible corpus is dominated by strict-only derived lifts from the core corpus, plus
@@ -109,9 +109,11 @@ The current defeasible corpus is dominated by strict-only derived lifts from the
 - Paper-reading rule followed here:
   - I did not use `pdftotext` as the basis for rereading any paper
   - the first retained paper-derived case was authored from local page images in `pngs/`
-- Current retained paper-derived case:
+- Current retained paper-derived cases:
   - `src/datalog_conformance/_tests/defeasible/superiority/maher_example2_tweety.yaml`
   - source: Maher 2021 Example 2, from local page images corresponding to pp.7-8
+  - `src/datalog_conformance/_tests/defeasible/superiority/maher_example3_freddie_nonflight.yaml`
+  - source: Maher 2021 Example 3, from local page images corresponding to pp.8-9
 - Additional paper sources present locally:
   - `Maher_2021_DefeasibleReasoningDatalog`
   - `Antoniou_2007_DefeasibleReasoningSemanticWeb`
@@ -138,7 +140,7 @@ The current defeasible corpus is dominated by strict-only derived lifts from the
   - `src/datalog_conformance/_tests/defeasible/basic/spindle_racket_test_theories.yaml`
   - `src/datalog_conformance/_tests/defeasible/basic/spindle_racket_inline_tests.yaml`
   - `scripts/harvest_spindle.py` currently regenerates the `src/test-theories` slice
-  - the bundled SPINdle-family slice currently covers 17 cases total
+  - the bundled SPINdle-family slice currently covers 22 cases total
 - Translation policy for the current slice:
   - facts use zero-arity predicate rows such as `p: [[]]`
   - `->` maps to `strict_rules`
