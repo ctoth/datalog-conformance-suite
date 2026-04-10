@@ -1,0 +1,39 @@
+name: maher_example3_freddie_nonflight
+description: >
+  Maher 2021 Example 3. Freddie is explicitly a bird and injured, so the strict
+  injury rule yields non-flight.
+source: paper/maher-2021-example-3-p8-p9
+tags: [defeasible, superiority, paper, maher2021]
+theory:
+  facts:
+    penguin: [[tweety]]
+    bird: [[freddie]]
+    injured: [[freddie]]
+  strict_rules:
+    - id: r3
+      head: "bird(X)"
+      body: ["penguin(X)"]
+    - id: r4
+      head: "~fly(X)"
+      body: ["injured(X)"]
+  defeasible_rules:
+    - id: r1
+      head: "fly(X)"
+      body: ["bird(X)"]
+    - id: r2
+      head: "~fly(X)"
+      body: ["penguin(X)"]
+  defeaters: []
+  superiority:
+    - [r2, r1]
+expect:
+  definitely:
+    bird: [[freddie]]
+    injured: [[freddie]]
+    "~fly": [[freddie]]
+  defeasibly:
+    bird: [[freddie]]
+    injured: [[freddie]]
+    "~fly": [[freddie]]
+  not_defeasibly:
+    fly: [[freddie]]
