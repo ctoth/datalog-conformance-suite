@@ -1,0 +1,27 @@
+name: strict_and_defeasible_interaction
+description: Strict facts combine with defeasible rules and defeaters.
+source: manual/scaffold
+tags: [defeasible, basic]
+theory:
+  facts:
+    bird: [[tweety]]
+    penguin: [[opus]]
+  strict_rules:
+    - id: r1
+      head: "bird(X)"
+      body: ["penguin(X)"]
+  defeasible_rules:
+    - id: r2
+      head: "flies(X)"
+      body: ["bird(X)"]
+  defeaters:
+    - id: r3
+      head: "~flies(X)"
+      body: ["penguin(X)"]
+  superiority:
+    - [r3, r2]
+expect:
+  defeasibly:
+    flies: [[tweety]]
+  not_defeasibly:
+    flies: [[opus]]

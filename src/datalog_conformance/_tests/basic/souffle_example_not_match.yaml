@@ -1,0 +1,24 @@
+source: souffle/example/not_match
+tags:
+- example
+- souffle
+tests:
+- name: souffle_not_match_outputData
+  description: Harvested from Souffle testcase not_match, asserting exported relation
+    outputData.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts:
+      inputData:
+      - - aaaa
+      - - abba
+      - - bcab
+      - - bdab
+    rules: []
+  expect:
+    outputData:
+    - - bcab
+    - - bdab

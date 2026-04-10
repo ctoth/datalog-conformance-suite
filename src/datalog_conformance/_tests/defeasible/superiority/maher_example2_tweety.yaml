@@ -1,0 +1,41 @@
+name: maher_example2_tweety
+description: >
+  Maher 2021 Example 2. Penguin non-flight defeats the generic bird-flight rule, and
+  injured(freddie) strictly implies non-flight.
+source: paper/maher-2021-example-2-p7-p8
+tags: [defeasible, superiority, paper, maher2021]
+theory:
+  facts:
+    penguin: [[tweety]]
+    bird: [[freddie]]
+    injured: [[freddie]]
+  strict_rules:
+    - id: r3
+      head: "bird(X)"
+      body: ["penguin(X)"]
+    - id: r4
+      head: "~fly(X)"
+      body: ["injured(X)"]
+  defeasible_rules:
+    - id: r1
+      head: "fly(X)"
+      body: ["bird(X)"]
+    - id: r2
+      head: "~fly(X)"
+      body: ["penguin(X)"]
+  defeaters: []
+  superiority:
+    - [r2, r1]
+expect:
+  definitely:
+    penguin: [[tweety]]
+    bird: [[freddie], [tweety]]
+    injured: [[freddie]]
+    "~fly": [[freddie]]
+  defeasibly:
+    penguin: [[tweety]]
+    bird: [[freddie], [tweety]]
+    injured: [[freddie]]
+    "~fly": [[freddie], [tweety]]
+  not_defeasibly:
+    fly: [[freddie], [tweety]]

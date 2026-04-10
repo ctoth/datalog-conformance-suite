@@ -1,0 +1,962 @@
+source: souffle/example/trains
+tags:
+- example
+- souffle
+tests:
+- name: souffle_trains_ReachableStops
+  description: Harvested from Souffle testcase trains, asserting exported relation
+    ReachableStops.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts:
+      AdjacentStops:
+      - - Mount Kuring-gai
+        - Mount Colah
+        - T1 North Shore, Northern & Western
+      - - Mount Colah
+        - Asquith
+        - T1 North Shore, Northern & Western
+      - - Asquith
+        - Hornsby
+        - T1 North Shore, Northern & Western
+      - - Hornsby
+        - Waitara
+        - T1 North Shore, Northern & Western
+      - - Waitara
+        - Wahroonga
+        - T1 North Shore, Northern & Western
+      - - Wahroonga
+        - Warrawee
+        - T1 North Shore, Northern & Western
+      - - Warrawee
+        - Turramurra
+        - T1 North Shore, Northern & Western
+      - - Turramurra
+        - Pymble
+        - T1 North Shore, Northern & Western
+      - - Pymble
+        - Gordon
+        - T1 North Shore, Northern & Western
+      - - Gordon
+        - Killara
+        - T1 North Shore, Northern & Western
+      - - Killara
+        - Lindfield
+        - T1 North Shore, Northern & Western
+      - - Lindfield
+        - Roseville
+        - T1 North Shore, Northern & Western
+      - - Hornsby
+        - Normanhurst
+        - T1 North Shore, Northern & Western
+      - - Normanhurst
+        - Thornleigh
+        - T1 North Shore, Northern & Western
+      - - Thornleigh
+        - Pennant Hills
+        - T1 North Shore, Northern & Western
+      - - Pennant Hills
+        - Beecroft
+        - T1 North Shore, Northern & Western
+      - - Beecroft
+        - Cheltenham
+        - T1 North Shore, Northern & Western
+      - - Cheltenham
+        - Epping
+        - T1 North Shore, Northern & Western
+      - - Epping
+        - Macquarie University
+        - T1 North Shore, Northern & Western
+      - - Macquarie University
+        - Macquarie Park
+        - T1 North Shore, Northern & Western
+      - - Macquarie Park
+        - North Ryde
+        - T1 North Shore, Northern & Western
+      - - Chatswood
+        - Artarmon
+        - T1 North Shore, Northern & Western
+      - - Artarmon
+        - St Leonards
+        - T1 North Shore, Northern & Western
+      - - St Leonards
+        - Wollstonecraft
+        - T1 North Shore, Northern & Western
+      - - Wollstonecraft
+        - Waverton
+        - T1 North Shore, Northern & Western
+      - - Waverton
+        - North Sydney
+        - T1 North Shore, Northern & Western
+      - - North Sydney
+        - Milsons Point
+        - T1 North Shore, Northern & Western
+      - - Milsons Point
+        - Wynyard
+        - T1 North Shore, Northern & Western
+      - - Wynyard
+        - Town Hall
+        - T1 North Shore, Northern & Western
+      - - Town Hall
+        - Central
+        - T1 North Shore, Northern & Western
+      - - Central
+        - Redfern
+        - T1 North Shore, Northern & Western
+      - - Redfern
+        - Burwood
+        - T1 North Shore, Northern & Western
+      - - Burwood
+        - Strathfield
+        - T1 North Shore, Northern & Western
+      - - North Strathfield
+        - Concord West
+        - T1 North Shore, Northern & Western
+      - - Concord West
+        - Rhodes
+        - T1 North Shore, Northern & Western
+      - - Rhodes
+        - Meadowbank
+        - T1 North Shore, Northern & Western
+      - - Meadowbank
+        - West Ryde
+        - T1 North Shore, Northern & Western
+      - - West Ryde
+        - Denistone
+        - T1 North Shore, Northern & Western
+      - - Denistone
+        - Eastwood
+        - T1 North Shore, Northern & Western
+      - - Eastwood
+        - Epping
+        - T1 North Shore, Northern & Western
+      - - Lidcombe
+        - Auburn
+        - T1 North Shore, Northern & Western
+      - - Auburn
+        - Clyde
+        - T1 North Shore, Northern & Western
+      - - Clyde
+        - Granville
+        - T1 North Shore, Northern & Western
+      - - Granville
+        - Harris Park
+        - T1 North Shore, Northern & Western
+      - - Harris Park
+        - Parramatta
+        - T1 North Shore, Northern & Western
+      - - Parramatta
+        - Westmead
+        - T1 North Shore, Northern & Western
+      - - Westmead
+        - Wentworthville
+        - T1 North Shore, Northern & Western
+      - - Wentworthville
+        - Pendle Hill
+        - T1 North Shore, Northern & Western
+      - - Pendle Hill
+        - Toongabbie
+        - T1 North Shore, Northern & Western
+      - - Toongabbie
+        - Seven Hills
+        - T1 North Shore, Northern & Western
+      - - Seven Hills
+        - Blacktown
+        - T1 North Shore, Northern & Western
+      - - Doonside
+        - Rooty Hill
+        - T1 North Shore, Northern & Western
+      - - Rooty Hill
+        - Mount Druitt
+        - T1 North Shore, Northern & Western
+      - - Mount Druitt
+        - St Marys
+        - T1 North Shore, Northern & Western
+      - - St Marys
+        - Werrington
+        - T1 North Shore, Northern & Western
+      - - Werrington
+        - Kingswood
+        - T1 North Shore, Northern & Western
+      - - Kingswood
+        - Penrith
+        - T1 North Shore, Northern & Western
+      - - Penrith
+        - Emu Plains
+        - T1 North Shore, Northern & Western
+      - - Marayong
+        - Quakers Hill
+        - T1 North Shore, Northern & Western
+      - - Quakers Hill
+        - Schofields
+        - T1 North Shore, Northern & Western
+      - - Schofields
+        - Riverstone
+        - T1 North Shore, Northern & Western
+      - - Riverstone
+        - Vineyard
+        - T1 North Shore, Northern & Western
+      - - Vineyard
+        - Mulgrave
+        - T1 North Shore, Northern & Western
+      - - Mulgrave
+        - Windsor
+        - T1 North Shore, Northern & Western
+      - - Windsor
+        - Clarendon
+        - T1 North Shore, Northern & Western
+      - - Clarendon
+        - East Richmond
+        - T1 North Shore, Northern & Western
+      - - East Richmond
+        - Richmond
+        - T1 North Shore, Northern & Western
+      - - Town Hall
+        - Wynyard
+        - T3 Bankstown Line
+      - - Wynyard
+        - Circular Quay
+        - T3 Bankstown Line
+      - - Circular Quay
+        - St James
+        - T3 Bankstown Line
+      - - St James
+        - Museum
+        - T3 Bankstown Line
+      - - Museum
+        - Central
+        - T3 Bankstown Line
+      - - Central
+        - Redfern
+        - T3 Bankstown Line
+      - - Redfern
+        - Erskineville
+        - T3 Bankstown Line
+      - - Erskineville
+        - St Peters
+        - T3 Bankstown Line
+      - - St Peters
+        - Sydenham
+        - T3 Bankstown Line
+      - - Sydenham
+        - Marrickville
+        - T3 Bankstown Line
+      - - Marrickville
+        - Dulwich Hill
+        - T3 Bankstown Line
+      - - Dulwich Hill
+        - Hurlstone Park
+        - T3 Bankstown Line
+      - - Hurlstone Park
+        - Canterbury
+        - T3 Bankstown Line
+      - - Canterbury
+        - Campsie
+        - T3 Bankstown Line
+      - - Campsie
+        - Belmore
+        - T3 Bankstown Line
+      - - Belmore
+        - Lakemba
+        - T3 Bankstown Line
+      - - Lakemba
+        - Wiley Park
+        - T3 Bankstown Line
+      - - Wiley Park
+        - Punchbowl
+        - T3 Bankstown Line
+      - - Punchbowl
+        - Bankstown
+        - T3 Bankstown Line
+      - - Bankstown
+        - Yagoona
+        - T3 Bankstown Line
+      - - Yagoona
+        - Birrong
+        - T3 Bankstown Line
+      - - Regents Park
+        - Berala
+        - T3 Bankstown Line
+      - - Berala
+        - Lidcombe
+        - T3 Bankstown Line
+      - - Sefton
+        - Chester Hill
+        - T3 Bankstown Line
+      - - Chester Hill
+        - Leightonfield
+        - T3 Bankstown Line
+      - - Leightonfield
+        - Vilawood
+        - T3 Bankstown Line
+      - - Vilawood
+        - Carramar
+        - T3 Bankstown Line
+      - - Carramar
+        - Cabramatta
+        - T3 Bankstown Line
+      - - Cabramatta
+        - Warwick Farm
+        - T3 Bankstown Line
+      - - Warwick Farm
+        - Liverpool
+        - T3 Bankstown Line
+      - - Liverpool
+        - Town Hall
+        - T3 Bankstown Line
+      - - Town Hall
+        - Central
+        - T3 Bankstown Line
+      - - Central
+        - Redfern
+        - T3 Bankstown Line
+      - - Redfern
+        - Burwood
+        - T3 Bankstown Line
+      - - Burwood
+        - Strathfield
+        - T3 Bankstown Line
+      - - North Strathfield
+        - Concord West
+        - T3 Bankstown Line
+      - - Concord West
+        - Rhodes
+        - T3 Bankstown Line
+      - - Rhodes
+        - Meadowbank
+        - T3 Bankstown Line
+      - - Meadowbank
+        - West Ryde
+        - T3 Bankstown Line
+      - - West Ryde
+        - Denistone
+        - T3 Bankstown Line
+      - - Denistone
+        - Eastwood
+        - T3 Bankstown Line
+      - - Eastwood
+        - Epping(aboveground)
+        - T3 Bankstown Line
+      - - Lidcombe
+        - Auburn
+        - T3 Bankstown Line
+      - - Auburn
+        - Clyde
+        - T3 Bankstown Line
+      - - Clyde
+        - Granville
+        - T3 Bankstown Line
+      - - Granville
+        - Harris Park
+        - T3 Bankstown Line
+      - - Harris Park
+        - Parramatta
+        - T3 Bankstown Line
+      - - Parramatta
+        - Westmead
+        - T3 Bankstown Line
+      - - Westmead
+        - Wentworthville
+        - T3 Bankstown Line
+      - - Wentworthville
+        - Pendle Hill
+        - T3 Bankstown Line
+      - - Pendle Hill
+        - Toongabbie
+        - T3 Bankstown Line
+      - - Toongabbie
+        - Seven Hills
+        - T3 Bankstown Line
+      - - Seven Hills
+        - Blacktown
+        - T3 Bankstown Line
+      - - Doonside
+        - Rooty Hill
+        - T3 Bankstown Line
+      - - Rooty Hill
+        - Mount Druitt
+        - T3 Bankstown Line
+      - - Mount Druitt
+        - St Marys
+        - T3 Bankstown Line
+      - - St Marys
+        - Werrington
+        - T3 Bankstown Line
+      - - Werrington
+        - Kingswood
+        - T3 Bankstown Line
+      - - Kingswood
+        - Penrith
+        - T3 Bankstown Line
+      - - Penrith
+        - Emu Plains
+        - T3 Bankstown Line
+      - - Marayong
+        - Quakers Hill
+        - T3 Bankstown Line
+      - - Quakers Hill
+        - Schofields
+        - T3 Bankstown Line
+      - - Schofields
+        - Riverstone
+        - T3 Bankstown Line
+      - - Riverstone
+        - Vineyard
+        - T3 Bankstown Line
+      - - Vineyard
+        - Mulgrave
+        - T3 Bankstown Line
+      - - Mulgrave
+        - Windsor
+        - T3 Bankstown Line
+      - - Windsor
+        - Clarendon
+        - T3 Bankstown Line
+      - - Clarendon
+        - East Richmond
+        - T3 Bankstown Line
+      - - East Richmond
+        - Richmond
+        - T3 Bankstown Line
+      - - Bondi Junction
+        - Edgecliff
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Edgecliff
+        - Kings Cross
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Kings Cross
+        - Martin Place
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Martin Place
+        - Town Hall
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Town Hall
+        - Central
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Central
+        - Redfern
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Redfern
+        - Sydenham
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Sydenham
+        - Tempe
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Tempe
+        - Wolli Creek
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Wolli Creek
+        - Arncliffe
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Arncliffe
+        - Banksia
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Banksia
+        - Rockdale
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Rockdale
+        - Kogarah
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Kogarah
+        - Carlton
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Carlton
+        - Allawah
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Allawah
+        - Hurstville
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Hurstville
+        - Penshurst
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Penshurst
+        - Mortdale
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Mortdale
+        - Oatley
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Oatley
+        - Como
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Como
+        - Jannali
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Jannali
+        - Sutherland
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Loftus
+        - Engadine
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Engadine
+        - Heathcote
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Heathcote
+        - Waterfall
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Kirrawee
+        - Gymea
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Gymea
+        - Miranda
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Miranda
+        - Caringbah
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Caringbah
+        - Woolooware
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Woolooware
+        - Cronulla
+        - T4 Eastern Suburbs & Illawarra Line
+      - - Schofields
+        - Quakers Hill
+        - T5 Cumberland Line
+      - - Quakers Hill
+        - Marayong
+        - T5 Cumberland Line
+      - - Marayong
+        - Blacktown
+        - T5 Cumberland Line
+      - - Blacktown
+        - Seven Hills
+        - T5 Cumberland Line
+      - - Seven Hills
+        - Toongabbie
+        - T5 Cumberland Line
+      - - Toongabbie
+        - Pendle Hill
+        - T5 Cumberland Line
+      - - Pendle Hill
+        - Wentworthville
+        - T5 Cumberland Line
+      - - Wentworthville
+        - Westmead
+        - T5 Cumberland Line
+      - - Westmead
+        - Parramatta
+        - T5 Cumberland Line
+      - - Parramatta
+        - Harris Park
+        - T5 Cumberland Line
+      - - Harris Park
+        - Merrylands
+        - T5 Cumberland Line
+      - - Merrylands
+        - Guildford
+        - T5 Cumberland Line
+      - - Guildford
+        - Yennora
+        - T5 Cumberland Line
+      - - Yennora
+        - Fairfield
+        - T5 Cumberland Line
+      - - Fairfield
+        - Canley Vale
+        - T5 Cumberland Line
+      - - Canley Vale
+        - Cabramatta
+        - T5 Cumberland Line
+      - - Cabramatta
+        - Warwick Farm
+        - T5 Cumberland Line
+      - - Warwick Farm
+        - Liverpool
+        - T5 Cumberland Line
+      - - Liverpool
+        - Casula
+        - T5 Cumberland Line
+      - - Casula
+        - Glenfield
+        - T5 Cumberland Line
+      - - Glenfield
+        - Macquarie Fields
+        - T5 Cumberland Line
+      - - Macquarie Fields
+        - Ingleburn
+        - T5 Cumberland Line
+      - - Ingleburn
+        - Minto
+        - T5 Cumberland Line
+      - - Minto
+        - Leumeah
+        - T5 Cumberland Line
+      - - Leumeah
+        - Campbelltown
+        - T5 Cumberland Line
+      - - Schofields
+        - Clyde
+        - T6 Carlingford Line
+      - - Clyde
+        - Rosehill
+        - T6 Carlingford Line
+      - - Rosehill
+        - Camellia
+        - T6 Carlingford Line
+      - - Camellia
+        - Rydalmere
+        - T6 Carlingford Line
+      - - Rydalmere
+        - Dundas
+        - T6 Carlingford Line
+      - - Dundas
+        - Telopea
+        - T6 Carlingford Line
+      - - Telopea
+        - Carlingford
+        - T6 Carlingford Line
+      - - Town Hall
+        - Wynyard
+        - T2 Airport, Inner West & South Line
+      - - Wynyard
+        - Circular Quay
+        - T2 Airport, Inner West & South Line
+      - - Circular Quay
+        - St James
+        - T2 Airport, Inner West & South Line
+      - - St James
+        - Museum
+        - T2 Airport, Inner West & South Line
+      - - Museum
+        - Central
+        - T2 Airport, Inner West & South Line
+      - - Green Square
+        - Mascot
+        - T2 Airport, Inner West & South Line
+      - - Mascot
+        - Domestic Airport
+        - T2 Airport, Inner West & South Line
+      - - Domestic Airport
+        - International Airport
+        - T2 Airport, Inner West & South Line
+      - - International Airport
+        - Wolli Creek
+        - T2 Airport, Inner West & South Line
+      - - Turrella
+        - Bardwell Park
+        - T2 Airport, Inner West & South Line
+      - - Bardwell Park
+        - Bexley North
+        - T2 Airport, Inner West & South Line
+      - - Bexley North
+        - Kingsgrove
+        - T2 Airport, Inner West & South Line
+      - - Kingsgrove
+        - Beverly Hills
+        - T2 Airport, Inner West & South Line
+      - - Beverly Hills
+        - Narwee
+        - T2 Airport, Inner West & South Line
+      - - Narwee
+        - Riverwood
+        - T2 Airport, Inner West & South Line
+      - - Riverwood
+        - Padstow
+        - T2 Airport, Inner West & South Line
+      - - Padstow
+        - Revesby
+        - T2 Airport, Inner West & South Line
+      - - Revesby
+        - Panania
+        - T2 Airport, Inner West & South Line
+      - - Panania
+        - East Hills
+        - T2 Airport, Inner West & South Line
+      - - East Hills
+        - Holsworthy
+        - T2 Airport, Inner West & South Line
+      - - Glenfield
+        - Macquarie Fields
+        - T2 Airport, Inner West & South Line
+      - - Macquarie Fields
+        - Ingleburn
+        - T2 Airport, Inner West & South Line
+      - - Ingleburn
+        - Minto
+        - T2 Airport, Inner West & South Line
+      - - Minto
+        - Leumeah
+        - T2 Airport, Inner West & South Line
+      - - Leumeah
+        - Campbelltown
+        - T2 Airport, Inner West & South Line
+      - - Campbelltown
+        - Macarthur
+        - T2 Airport, Inner West & South Line
+      - - Museum
+        - St James
+        - T2 Airport, Inner West & South Line
+      - - St James
+        - Circular Quay
+        - T2 Airport, Inner West & South Line
+      - - Circular Quay
+        - Wynyard
+        - T2 Airport, Inner West & South Line
+      - - Wynyard
+        - Town Hall
+        - T2 Airport, Inner West & South Line
+      - - Town Hall
+        - Central
+        - T2 Airport, Inner West & South Line
+      - - Redfern
+        - Macdonaldtown
+        - T2 Airport, Inner West & South Line
+      - - Macdonaldtown
+        - Newtown
+        - T2 Airport, Inner West & South Line
+      - - Newtown
+        - Stanmore
+        - T2 Airport, Inner West & South Line
+      - - Stanmore
+        - Petersham
+        - T2 Airport, Inner West & South Line
+      - - Petersham
+        - Lewisham
+        - T2 Airport, Inner West & South Line
+      - - Lewisham
+        - Summer Hill
+        - T2 Airport, Inner West & South Line
+      - - Summer Hill
+        - Ashfield
+        - T2 Airport, Inner West & South Line
+      - - Ashfield
+        - Croydon
+        - T2 Airport, Inner West & South Line
+      - - Croydon
+        - Burwood
+        - T2 Airport, Inner West & South Line
+      - - Burwood
+        - Strathfield
+        - T2 Airport, Inner West & South Line
+      - - Strathfield
+        - Homebush
+        - T2 Airport, Inner West & South Line
+      - - Homebush
+        - Flemington
+        - T2 Airport, Inner West & South Line
+      - - Flemington
+        - Lidcombe
+        - T2 Airport, Inner West & South Line
+      - - Lidcombe
+        - Auburn
+        - T2 Airport, Inner West & South Line
+      - - Auburn
+        - Granville
+        - T2 Airport, Inner West & South Line
+      - - Merrylands
+        - Guildford
+        - T2 Airport, Inner West & South Line
+      - - Guildford
+        - Yennora
+        - T2 Airport, Inner West & South Line
+      - - Yennora
+        - Fairfield
+        - T2 Airport, Inner West & South Line
+      - - Fairfield
+        - Canley Vale
+        - T2 Airport, Inner West & South Line
+      - - Canley Vale
+        - Cabramatta
+        - T2 Airport, Inner West & South Line
+      - - Cabramatta
+        - Warwick Farm
+        - T2 Airport, Inner West & South Line
+      - - Warwick Farm
+        - Liverpool
+        - T2 Airport, Inner West & South Line
+      - - Liverpool
+        - Casula
+        - T2 Airport, Inner West & South Line
+      - - Casula
+        - Glenfield
+        - T2 Airport, Inner West & South Line
+      - - Glenfield
+        - Macquarie Fields
+        - T2 Airport, Inner West & South Line
+      - - Macquarie Fields
+        - Ingleburn
+        - T2 Airport, Inner West & South Line
+      - - Ingleburn
+        - Minto
+        - T2 Airport, Inner West & South Line
+      - - Minto
+        - Leumeah
+        - T2 Airport, Inner West & South Line
+      - - Leumeah
+        - Campbelltown
+        - T2 Airport, Inner West & South Line
+      - - Edmondson Park
+        - Leppington
+        - T2 Airport, Inner West & South Line
+    rules:
+    - Connected(a, b) :- Connected(a, c), AdjacentStops(c,b,_).
+  expect:
+    ReachableStops:
+    - - Central
+      - Wynyard
+    - - Central
+      - Town Hall
+    - - Central
+      - Central
+    - - Central
+      - Redfern
+    - - Central
+      - Burwood
+    - - Central
+      - Strathfield
+    - - Central
+      - Lidcombe
+    - - Central
+      - Auburn
+    - - Central
+      - Clyde
+    - - Central
+      - Granville
+    - - Central
+      - Harris Park
+    - - Central
+      - Parramatta
+    - - Central
+      - Westmead
+    - - Central
+      - Wentworthville
+    - - Central
+      - Pendle Hill
+    - - Central
+      - Toongabbie
+    - - Central
+      - Seven Hills
+    - - Central
+      - Blacktown
+    - - Central
+      - Circular Quay
+    - - Central
+      - St James
+    - - Central
+      - Museum
+    - - Central
+      - Erskineville
+    - - Central
+      - St Peters
+    - - Central
+      - Sydenham
+    - - Central
+      - Marrickville
+    - - Central
+      - Dulwich Hill
+    - - Central
+      - Hurlstone Park
+    - - Central
+      - Canterbury
+    - - Central
+      - Campsie
+    - - Central
+      - Belmore
+    - - Central
+      - Lakemba
+    - - Central
+      - Wiley Park
+    - - Central
+      - Punchbowl
+    - - Central
+      - Bankstown
+    - - Central
+      - Yagoona
+    - - Central
+      - Birrong
+    - - Central
+      - Cabramatta
+    - - Central
+      - Warwick Farm
+    - - Central
+      - Liverpool
+    - - Central
+      - Tempe
+    - - Central
+      - Wolli Creek
+    - - Central
+      - Arncliffe
+    - - Central
+      - Banksia
+    - - Central
+      - Rockdale
+    - - Central
+      - Kogarah
+    - - Central
+      - Carlton
+    - - Central
+      - Allawah
+    - - Central
+      - Hurstville
+    - - Central
+      - Penshurst
+    - - Central
+      - Mortdale
+    - - Central
+      - Oatley
+    - - Central
+      - Como
+    - - Central
+      - Jannali
+    - - Central
+      - Sutherland
+    - - Central
+      - Merrylands
+    - - Central
+      - Guildford
+    - - Central
+      - Yennora
+    - - Central
+      - Fairfield
+    - - Central
+      - Canley Vale
+    - - Central
+      - Casula
+    - - Central
+      - Glenfield
+    - - Central
+      - Macquarie Fields
+    - - Central
+      - Ingleburn
+    - - Central
+      - Minto
+    - - Central
+      - Leumeah
+    - - Central
+      - Campbelltown
+    - - Central
+      - Rosehill
+    - - Central
+      - Camellia
+    - - Central
+      - Rydalmere
+    - - Central
+      - Dundas
+    - - Central
+      - Telopea
+    - - Central
+      - Carlingford
+    - - Central
+      - Macarthur
+    - - Central
+      - Macdonaldtown
+    - - Central
+      - Newtown
+    - - Central
+      - Stanmore
+    - - Central
+      - Petersham
+    - - Central
+      - Lewisham
+    - - Central
+      - Summer Hill
+    - - Central
+      - Ashfield
+    - - Central
+      - Croydon
+    - - Central
+      - Homebush
+    - - Central
+      - Flemington

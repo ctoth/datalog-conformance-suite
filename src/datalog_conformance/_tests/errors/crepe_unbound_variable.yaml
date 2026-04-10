@@ -1,0 +1,16 @@
+name: crepe_unbound_variable
+description: In this test, the variable named 'n' is used before binding in a clause.
+source: crepe/tests/ui/unbound_variable.rs
+tags:
+- errors
+- crepe
+program:
+  facts:
+    Fib:
+    - - 0
+      - 0
+    - - 1
+      - 1
+  rules:
+  - Fib(n, x + y) :- Fib(n - 1, x), Fib(n - 2, y), (n <= 25)
+expect_error: unbound_variable

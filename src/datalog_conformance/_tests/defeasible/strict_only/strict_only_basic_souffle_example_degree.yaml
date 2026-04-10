@@ -1,0 +1,79 @@
+source: derived/strict-only/basic/souffle_example_degree.yaml
+tags:
+- defeasible
+- strict-only
+- example
+- souffle
+tests:
+- name: strict_only_souffle_degree_OutDegree
+  description: Strict-only defeasible form of souffle_degree_OutDegree.
+  source: souffle/example/degree
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      Edge: &id002
+      - - a
+        - b
+        - 1
+      - - a
+        - e
+        - 5
+      - - b
+        - c
+        - 2
+      - - b
+        - e
+        - 4
+      - - c
+        - d
+        - 3
+      - - c
+        - e
+        - 40
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      OutDegree:
+      - - a
+        - 2
+      - - b
+        - 2
+      - - c
+        - 2
+    defeasibly: *id001
+- name: strict_only_souffle_degree_InDegree
+  description: Strict-only defeasible form of souffle_degree_InDegree.
+  source: souffle/example/degree
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      Edge: *id002
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id003
+      InDegree:
+      - - b
+        - 1
+      - - e
+        - 3
+      - - c
+        - 1
+      - - d
+        - 1
+    defeasibly: *id003

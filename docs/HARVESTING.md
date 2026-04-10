@@ -1,0 +1,172 @@
+# Harvesting
+
+This file records where the bundled YAML suites came from, what translation choices were made, and
+ what is still blocked or intentionally deferred.
+
+## Current Corpus Summary
+
+- Core Datalog cases currently in `basic/`, `recursion/`, `negation/`, and `errors/`: 282
+- Defeasible cases currently in `defeasible/`: 305
+- Property tests in `tests/test_properties.py`: 15
+
+The current defeasible corpus is dominated by strict-only derived lifts from the core corpus, plus
+ a small set of genuinely defeasible examples.
+
+## Souffle
+
+- Upstream: `https://github.com/souffle-lang/souffle`
+- License note: UPL-1.0
+- Local source path during harvesting: temporary clone under `%TEMP%\datalog-harvest`
+- Harvester: `scripts/harvest_souffle.py`
+- Upstream areas targeted:
+  - `tests/evaluation/`
+  - `tests/example/`
+- Translation policy:
+  - keep portable facts, recursion, joins, and negation slices
+  - skip or avoid Souffle-specific extensions when they do not map cleanly into the suite schema
+  - emit multi-case YAML when one upstream directory produces multiple output relations
+- Output areas:
+  - `src/datalog_conformance/_tests/basic/`
+  - `src/datalog_conformance/_tests/recursion/`
+  - `src/datalog_conformance/_tests/negation/`
+- Notes:
+  - the current harvest materially exceeds the Phase 2 gate
+  - some harvested filenames still reflect their upstream directory names even when the underlying
+    semantics are broader than the local folder label
+
+## Nemo
+
+- Upstream: `https://github.com/knowsys/nemo`
+- License note: Apache-2.0
+- Local source path during harvesting: temporary clone under `%TEMP%\datalog-harvest`
+- Harvester: `scripts/harvest_nemo.py`
+- Upstream area targeted:
+  - `resources/testcases/`
+- Translation policy:
+  - prefer textbook-like joins, projection, union, and negation slices
+  - emit multi-case YAML where one upstream testcase contains multiple asserted relations
+- Output areas:
+  - `src/datalog_conformance/_tests/basic/`
+  - `src/datalog_conformance/_tests/negation/`
+
+## Crepe
+
+- Upstream: `https://github.com/ekzhang/crepe`
+- License note: Apache-2.0
+- Local source path during harvesting: temporary clone under `%TEMP%\datalog-harvest`
+- Harvester: `scripts/harvest_crepe.py`
+- Upstream area targeted:
+  - `tests/ui/`
+- Translation policy:
+  - keep only obviously portable rejection cases
+  - map Rust-macro UI failures into suite-level rejection categories where the semantic intent is
+    still clear
+- Output area:
+  - `src/datalog_conformance/_tests/errors/`
+- Current mapped error families:
+  - `arity_mismatch`
+  - `cyclic_negation`
+  - `unbound_variable`
+  - `safety_violations`
+
+## Strict-Only Defeasible Lifts
+
+- Source basis: existing core YAML corpus in
+  - `src/datalog_conformance/_tests/basic/`
+  - `src/datalog_conformance/_tests/recursion/`
+  - `src/datalog_conformance/_tests/negation/`
+- Generator: `scripts/promote_strict_only_defeasible.py`
+- Output area:
+  - `src/datalog_conformance/_tests/defeasible/strict_only/`
+- Translation policy:
+  - each core program is converted into a defeasible theory containing only `strict_rules`
+  - the original `expect` mapping is copied into both `definitely` and `defeasibly`
+  - this slice exists to exercise strict-only equivalence in the defeasible test surface
+- Notes:
+  - this is derived data, not an upstream external corpus
+  - the generator uses rule-body splitting that respects commas inside argument lists
+
+## DePYsible
+
+- Upstream: `https://github.com/stefano-bragaglia/DePYsible`
+- License note: BSD-2-Clause
+- Local source path during verification: `%TEMP%\datalog-harvest\DePYsible`
+- Verification status:
+  - the upstream test suite passed locally with `PYTHONPATH=src/main/python`
+  - a live adapter in `src/datalog_conformance/examples/depysible_adapter.py` confirmed the first
+    converted cases against the real implementation
+- Current output area:
+  - `src/datalog_conformance/_tests/defeasible/basic/depysible_birds.yaml`
+- Current limitations of the example adapter:
+  - no defeaters
+  - no superiority
+  - no explicit conflict sets
+  - blocking-only policy
+
+## Paper-Derived Cases
+
+- Local paper artifacts exist under `..\propstore\papers\...`
+- Paper-reading rule followed here:
+  - I did not use `pdftotext` as the basis for rereading any paper
+  - the first retained paper-derived case was authored from local page images in `pngs/`
+- Current retained paper-derived case:
+  - `src/datalog_conformance/_tests/defeasible/superiority/maher_example2_tweety.yaml`
+  - source: Maher 2021 Example 2, from local page images corresponding to pp.7-8
+- Additional paper sources present locally:
+  - `Maher_2021_DefeasibleReasoningDatalog`
+  - `Antoniou_2007_DefeasibleReasoningSemanticWeb`
+  - `Morris_2020_DefeasibleDisjunctiveDatalog`
+  - `Goldszmidt_1992_DefeasibleStrictConsistency`
+- Current blocker on expanding this slice quickly:
+  - the existing notes identify example names and page locations, but many do not preserve enough
+    formal detail to author exact YAML expectations without another image-based reread
+
+## SPINdle Family
+
+- Family reference:
+  - `https://spindle-rust.anuna.io/`
+- Documentation page identifies:
+  - original Java SPINdle
+  - `spindle-racket` on Codeberg
+  - `spindle-rust`
+- Usable upstream in this environment:
+  - `https://codeberg.org/anuna/spindle-racket`
+- Verified locally:
+  - the Codeberg `spindle-racket` repo cloned successfully and contains `.dfl` test theories,
+    Racket tests, docs, and examples
+- Current harvested slice:
+  - `src/datalog_conformance/_tests/defeasible/basic/spindle_racket_test_theories.yaml`
+  - `src/datalog_conformance/_tests/defeasible/basic/spindle_racket_inline_tests.yaml`
+  - `scripts/harvest_spindle.py` currently regenerates the `src/test-theories` slice
+  - the bundled SPINdle-family slice currently covers 17 cases total
+- Translation policy for the current slice:
+  - facts use zero-arity predicate rows such as `p: [[]]`
+  - `->` maps to `strict_rules`
+  - `=>` maps to `defeasible_rules`
+  - `~>` maps to `defeaters`
+  - `¬` is normalized to `~`
+  - expectations are taken from the upstream `.dfl` comments and matching Racket assertions in
+    `tests/spindle-tests.rkt`
+- Remaining blocker:
+  - the public `https://github.com/anuna-research/spindle-rust` repository still clones locally as
+    an empty repository, so it is not currently a usable GitHub mirror from this environment
+- Open expansion path:
+  - extend the SPINdle harvester beyond the current simple `src/test-theories` files and into the
+    broader Racket test corpus, especially ambiguity and richer superiority cases
+
+## Manual and Scaffolded Cases
+
+- Manual scaffold files remain in the corpus for baseline coverage and runner/plugin validation:
+  - `basic/facts.yaml`
+  - `basic/joins.yaml`
+  - `recursion/transitive.yaml`
+  - `errors/unbound_variable.yaml`
+  - `defeasible/basic/mixed.yaml`
+
+## Provenance Rules For Future Additions
+
+- Preserve a meaningful `source` string on every case.
+- Record the upstream repo or paper, plus the local translation policy.
+- Note the upstream license here before adding a large harvested slice.
+- If a paper-derived case is authored from notes rather than a direct image reread, say that
+  explicitly instead of implying a direct reread.

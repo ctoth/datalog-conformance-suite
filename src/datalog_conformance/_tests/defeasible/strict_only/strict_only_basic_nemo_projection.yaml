@@ -1,0 +1,260 @@
+source: derived/strict-only/basic/nemo_projection.yaml
+tags:
+- defeasible
+- strict-only
+- basic
+- projection
+- nemo
+tests:
+- name: strict_only_nemo_projection_A
+  description: Strict-only defeasible form of nemo_projection_A.
+  source: nemo/testcases/basic/projection.rls
+  tags:
+  - a
+  - basic
+  - defeasible
+  - nemo
+  - projection
+  - strict-only
+  theory:
+    facts:
+      data: &id002
+      - - A
+        - B
+        - C
+      - - B
+        - B
+        - D
+      - - A
+        - E
+        - F
+      - - C
+        - D
+        - D
+    strict_rules:
+    - id: r1
+      head: A(X, Z)
+      body:
+      - data(X, Y, Z)
+    - id: r2
+      head: B(Y, X)
+      body:
+      - A(X, Y)
+    - id: r3
+      head: C(Y)
+      body:
+      - B(VariableThatIsNotNeeded, Y)
+    - id: r4
+      head: D(Y, Z)
+      body:
+      - data(X, Y, Z)
+    - id: r5
+      head: E(F, E)
+      body:
+      - D(E, F)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      A:
+      - - A
+        - C
+      - - A
+        - F
+      - - B
+        - D
+      - - C
+        - D
+    defeasibly: *id001
+- name: strict_only_nemo_projection_D
+  description: Strict-only defeasible form of nemo_projection_D.
+  source: nemo/testcases/basic/projection.rls
+  tags:
+  - basic
+  - d
+  - defeasible
+  - nemo
+  - projection
+  - strict-only
+  theory:
+    facts:
+      data: *id002
+    strict_rules:
+    - id: r1
+      head: A(X, Z)
+      body:
+      - data(X, Y, Z)
+    - id: r2
+      head: B(Y, X)
+      body:
+      - A(X, Y)
+    - id: r3
+      head: C(Y)
+      body:
+      - B(VariableThatIsNotNeeded, Y)
+    - id: r4
+      head: D(Y, Z)
+      body:
+      - data(X, Y, Z)
+    - id: r5
+      head: E(F, E)
+      body:
+      - D(E, F)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id003
+      D:
+      - - B
+        - C
+      - - B
+        - D
+      - - D
+        - D
+      - - E
+        - F
+    defeasibly: *id003
+- name: strict_only_nemo_projection_C
+  description: Strict-only defeasible form of nemo_projection_C.
+  source: nemo/testcases/basic/projection.rls
+  tags:
+  - basic
+  - c
+  - defeasible
+  - nemo
+  - projection
+  - strict-only
+  theory:
+    facts:
+      data: *id002
+    strict_rules:
+    - id: r1
+      head: A(X, Z)
+      body:
+      - data(X, Y, Z)
+    - id: r2
+      head: B(Y, X)
+      body:
+      - A(X, Y)
+    - id: r3
+      head: C(Y)
+      body:
+      - B(VariableThatIsNotNeeded, Y)
+    - id: r4
+      head: D(Y, Z)
+      body:
+      - data(X, Y, Z)
+    - id: r5
+      head: E(F, E)
+      body:
+      - D(E, F)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id004
+      C:
+      - - A
+      - - B
+      - - C
+    defeasibly: *id004
+- name: strict_only_nemo_projection_E
+  description: Strict-only defeasible form of nemo_projection_E.
+  source: nemo/testcases/basic/projection.rls
+  tags:
+  - basic
+  - defeasible
+  - e
+  - nemo
+  - projection
+  - strict-only
+  theory:
+    facts:
+      data: *id002
+    strict_rules:
+    - id: r1
+      head: A(X, Z)
+      body:
+      - data(X, Y, Z)
+    - id: r2
+      head: B(Y, X)
+      body:
+      - A(X, Y)
+    - id: r3
+      head: C(Y)
+      body:
+      - B(VariableThatIsNotNeeded, Y)
+    - id: r4
+      head: D(Y, Z)
+      body:
+      - data(X, Y, Z)
+    - id: r5
+      head: E(F, E)
+      body:
+      - D(E, F)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id005
+      E:
+      - - C
+        - B
+      - - D
+        - B
+      - - D
+        - D
+      - - F
+        - E
+    defeasibly: *id005
+- name: strict_only_nemo_projection_B
+  description: Strict-only defeasible form of nemo_projection_B.
+  source: nemo/testcases/basic/projection.rls
+  tags:
+  - b
+  - basic
+  - defeasible
+  - nemo
+  - projection
+  - strict-only
+  theory:
+    facts:
+      data: *id002
+    strict_rules:
+    - id: r1
+      head: A(X, Z)
+      body:
+      - data(X, Y, Z)
+    - id: r2
+      head: B(Y, X)
+      body:
+      - A(X, Y)
+    - id: r3
+      head: C(Y)
+      body:
+      - B(VariableThatIsNotNeeded, Y)
+    - id: r4
+      head: D(Y, Z)
+      body:
+      - data(X, Y, Z)
+    - id: r5
+      head: E(F, E)
+      body:
+      - D(E, F)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id006
+      B:
+      - - C
+        - A
+      - - D
+        - B
+      - - D
+        - C
+      - - F
+        - A
+    defeasibly: *id006

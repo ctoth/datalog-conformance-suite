@@ -1,0 +1,22 @@
+source: souffle/evaluation/facts
+tags:
+- evaluation
+- souffle
+tests:
+- name: souffle_facts_N
+  description: Harvested from Souffle testcase facts, asserting exported relation
+    N.
+  tags:
+  - basic
+  - evaluation
+  - souffle
+  program:
+    facts:
+      N:
+      - - 0
+      - - 1
+    rules: []
+  expect:
+    N:
+    - - 0
+    - - 1

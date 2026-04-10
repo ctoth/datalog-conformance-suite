@@ -1,0 +1,18 @@
+source: souffle/evaluation/issue2160
+tags:
+- evaluation
+- souffle
+tests:
+- name: souffle_issue2160_count_even
+  description: Harvested from Souffle testcase issue2160, asserting exported relation
+    count_even.
+  tags:
+  - basic
+  - evaluation
+  - souffle
+  program:
+    facts: {}
+    rules: []
+  expect:
+    count_even:
+    - - 5

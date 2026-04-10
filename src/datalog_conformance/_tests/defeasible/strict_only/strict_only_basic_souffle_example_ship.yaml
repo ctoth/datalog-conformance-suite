@@ -1,0 +1,165 @@
+source: derived/strict-only/basic/souffle_example_ship.yaml
+tags:
+- defeasible
+- strict-only
+- example
+- souffle
+tests:
+- name: strict_only_souffle_ship_ship_to
+  description: Strict-only defeasible form of souffle_ship_ship_to.
+  source: souffle/example/ship
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      customer_city: &id002
+      - - 1
+        - london
+      - - 2
+        - paris
+      - - 3
+        - San Francisco
+      - - 4
+        - munich
+      - - 5
+        - seoul
+      has_ordered: &id003
+      - - 1
+        - 1
+      - - 2
+        - 2
+      - - 3
+        - 3
+      - - 4
+        - 4
+      - - 5
+        - 5
+      product_name: &id004
+      - - 1
+        - tea
+      - - 2
+        - bread
+      - - 3
+        - flowers
+      - - 4
+        - sausage
+      - - 5
+        - horse
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      ship_to:
+      - - tea
+        - london
+      - - bread
+        - paris
+      - - flowers
+        - San Francisco
+      - - sausage
+        - munich
+      - - horse
+        - seoul
+    defeasibly: *id001
+- name: strict_only_souffle_ship_customer_city
+  description: Strict-only defeasible form of souffle_ship_customer_city.
+  source: souffle/example/ship
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      customer_city: *id002
+      has_ordered: *id003
+      product_name: *id004
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id005
+      customer_city:
+      - - 1
+        - london
+      - - 2
+        - paris
+      - - 3
+        - San Francisco
+      - - 4
+        - munich
+      - - 5
+        - seoul
+    defeasibly: *id005
+- name: strict_only_souffle_ship_has_ordered
+  description: Strict-only defeasible form of souffle_ship_has_ordered.
+  source: souffle/example/ship
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      customer_city: *id002
+      has_ordered: *id003
+      product_name: *id004
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id006
+      has_ordered:
+      - - 1
+        - 1
+      - - 2
+        - 2
+      - - 3
+        - 3
+      - - 4
+        - 4
+      - - 5
+        - 5
+    defeasibly: *id006
+- name: strict_only_souffle_ship_product_name
+  description: Strict-only defeasible form of souffle_ship_product_name.
+  source: souffle/example/ship
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      customer_city: *id002
+      has_ordered: *id003
+      product_name: *id004
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id007
+      product_name:
+      - - 1
+        - tea
+      - - 2
+        - bread
+      - - 3
+        - flowers
+      - - 4
+        - sausage
+      - - 5
+        - horse
+    defeasibly: *id007

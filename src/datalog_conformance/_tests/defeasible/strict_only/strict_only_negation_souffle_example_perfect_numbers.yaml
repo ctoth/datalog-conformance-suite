@@ -1,0 +1,33 @@
+source: derived/strict-only/negation/souffle_example_perfect_numbers.yaml
+tags:
+- defeasible
+- strict-only
+- example
+- souffle
+tests:
+- name: strict_only_souffle_perfect_numbers_perfect
+  description: Strict-only defeasible form of souffle_perfect_numbers_perfect.
+  source: souffle/example/perfect_numbers
+  tags:
+  - defeasible
+  - example
+  - negation
+  - souffle
+  - strict-only
+  theory:
+    facts: {}
+    strict_rules:
+    - id: r1
+      head: gen(x+1)
+      body:
+      - gen(x)
+      - not lim(x)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      perfect:
+      - - 6
+      - - 28
+    defeasibly: *id001

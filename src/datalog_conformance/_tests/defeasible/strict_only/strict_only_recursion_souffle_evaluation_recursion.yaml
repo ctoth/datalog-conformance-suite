@@ -1,0 +1,34 @@
+source: derived/strict-only/recursion/souffle_evaluation_recursion.yaml
+tags:
+- defeasible
+- strict-only
+- evaluation
+- souffle
+tests:
+- name: strict_only_souffle_recursion_p
+  description: Strict-only defeasible form of souffle_recursion_p.
+  source: souffle/evaluation/recursion
+  tags:
+  - defeasible
+  - evaluation
+  - recursion
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      p:
+      - - 1
+    strict_rules:
+    - id: r1
+      head: p(X)
+      body:
+      - p(X)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      p:
+      - - 0
+      - - 1
+    defeasibly: *id001

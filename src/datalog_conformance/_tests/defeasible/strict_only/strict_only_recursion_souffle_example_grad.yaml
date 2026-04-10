@@ -1,0 +1,222 @@
+source: derived/strict-only/recursion/souffle_example_grad.yaml
+tags:
+- defeasible
+- strict-only
+- example
+- souffle
+tests:
+- name: strict_only_souffle_grad_student
+  description: Strict-only defeasible form of souffle_grad_student.
+  source: souffle/example/grad
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      student: &id002
+      - - bob
+      - - pete
+      - - scott
+      - - tony
+      course: &id003
+      - - eng
+      - - his
+      - - lp
+      take: &id004
+      - - adam
+        - eng
+      - - pete
+        - his
+      - - pete
+        - eng
+      - - scott
+        - his
+      - - scott
+        - lp
+      - - tony
+        - his
+      pre: &id005
+      - - eng
+        - lp
+      - - hist
+        - eng
+    strict_rules:
+    - id: r1
+      head: pre(Pre,Post)
+      body:
+      - pre(Pre,X)
+      - pre(X,Post)
+    - id: r2
+      head: grad(S)
+      body:
+      - take(S,"his")
+      - take(S,"eng")
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      student:
+      - - adam
+      - - bob
+      - - pete
+      - - scott
+      - - tony
+    defeasibly: *id001
+- name: strict_only_souffle_grad_course
+  description: Strict-only defeasible form of souffle_grad_course.
+  source: souffle/example/grad
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      student: *id002
+      course: *id003
+      take: *id004
+      pre: *id005
+    strict_rules:
+    - id: r1
+      head: pre(Pre,Post)
+      body:
+      - pre(Pre,X)
+      - pre(X,Post)
+    - id: r2
+      head: grad(S)
+      body:
+      - take(S,"his")
+      - take(S,"eng")
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id006
+      course:
+      - - eng
+      - - his
+      - - lp
+    defeasibly: *id006
+- name: strict_only_souffle_grad_pre
+  description: Strict-only defeasible form of souffle_grad_pre.
+  source: souffle/example/grad
+  tags:
+  - defeasible
+  - example
+  - recursion
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      student: *id002
+      course: *id003
+      take: *id004
+      pre: *id005
+    strict_rules:
+    - id: r1
+      head: pre(Pre,Post)
+      body:
+      - pre(Pre,X)
+      - pre(X,Post)
+    - id: r2
+      head: grad(S)
+      body:
+      - take(S,"his")
+      - take(S,"eng")
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id007
+      pre:
+      - - eng
+        - lp
+      - - hist
+        - eng
+      - - hist
+        - lp
+    defeasibly: *id007
+- name: strict_only_souffle_grad_take
+  description: Strict-only defeasible form of souffle_grad_take.
+  source: souffle/example/grad
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      student: *id002
+      course: *id003
+      take: *id004
+      pre: *id005
+    strict_rules:
+    - id: r1
+      head: pre(Pre,Post)
+      body:
+      - pre(Pre,X)
+      - pre(X,Post)
+    - id: r2
+      head: grad(S)
+      body:
+      - take(S,"his")
+      - take(S,"eng")
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id008
+      take:
+      - - adam
+        - eng
+      - - pete
+        - his
+      - - pete
+        - eng
+      - - scott
+        - his
+      - - scott
+        - lp
+      - - tony
+        - his
+    defeasibly: *id008
+- name: strict_only_souffle_grad_grad
+  description: Strict-only defeasible form of souffle_grad_grad.
+  source: souffle/example/grad
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      student: *id002
+      course: *id003
+      take: *id004
+      pre: *id005
+    strict_rules:
+    - id: r1
+      head: pre(Pre,Post)
+      body:
+      - pre(Pre,X)
+      - pre(X,Post)
+    - id: r2
+      head: grad(S)
+      body:
+      - take(S,"his")
+      - take(S,"eng")
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id009
+      grad:
+      - - pete
+    defeasibly: *id009

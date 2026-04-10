@@ -1,0 +1,144 @@
+source: souffle/example/small
+tags:
+- example
+- souffle
+tests:
+- name: souffle_small_mother
+  description: Harvested from Souffle testcase small, asserting exported relation
+    mother.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: &id001
+      mother:
+      - - claudette
+        - ann
+      - - jeannette
+        - bill
+      - - mireille
+        - john
+      father:
+      - - john
+        - ann
+      - - john
+        - bill
+      - - jean-jacques
+        - alphonse
+      - - alphonse
+        - mireille
+      - - brad
+        - john
+    rules: &id002
+    - parent(X,Y) :- father(X,Y).
+    - ancestor(X,Y) :- parent(X,Y).
+    - ancestor(X,Y) :- parent(X,Z), ancestor(Z,Y).
+  expect:
+    mother:
+    - - claudette
+      - ann
+    - - jeannette
+      - bill
+    - - mireille
+      - john
+- name: souffle_small_father
+  description: Harvested from Souffle testcase small, asserting exported relation
+    father.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    father:
+    - - john
+      - ann
+    - - john
+      - bill
+    - - jean-jacques
+      - alphonse
+    - - alphonse
+      - mireille
+    - - brad
+      - john
+- name: souffle_small_parent
+  description: Harvested from Souffle testcase small, asserting exported relation
+    parent.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    parent:
+    - - claudette
+      - ann
+    - - jeannette
+      - bill
+    - - mireille
+      - john
+    - - john
+      - ann
+    - - john
+      - bill
+    - - jean-jacques
+      - alphonse
+    - - alphonse
+      - mireille
+    - - brad
+      - john
+- name: souffle_small_ancestor
+  description: Harvested from Souffle testcase small, asserting exported relation
+    ancestor.
+  tags:
+  - example
+  - recursion
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    ancestor:
+    - - claudette
+      - ann
+    - - jeannette
+      - bill
+    - - mireille
+      - john
+    - - john
+      - ann
+    - - john
+      - bill
+    - - jean-jacques
+      - alphonse
+    - - alphonse
+      - mireille
+    - - brad
+      - john
+    - - mireille
+      - ann
+    - - mireille
+      - bill
+    - - jean-jacques
+      - mireille
+    - - alphonse
+      - john
+    - - brad
+      - ann
+    - - brad
+      - bill
+    - - jean-jacques
+      - john
+    - - alphonse
+      - ann
+    - - alphonse
+      - bill
+    - - jean-jacques
+      - ann
+    - - jean-jacques
+      - bill

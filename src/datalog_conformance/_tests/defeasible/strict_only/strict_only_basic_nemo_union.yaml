@@ -1,0 +1,205 @@
+source: derived/strict-only/basic/nemo_union.yaml
+tags:
+- defeasible
+- strict-only
+- basic
+- union
+- nemo
+tests:
+- name: strict_only_nemo_union_AB
+  description: Strict-only defeasible form of nemo_union_AB.
+  source: nemo/testcases/basic/union.rls
+  tags:
+  - ab
+  - basic
+  - defeasible
+  - nemo
+  - strict-only
+  - union
+  theory:
+    facts:
+      sourceA: &id002
+      - - A
+        - B
+        - C
+      - - B
+        - B
+        - D
+      - - A
+        - E
+        - F
+      - - C
+        - D
+        - D
+      sourceB: &id003
+      - - B
+        - B
+        - D
+      - - B
+        - D
+        - A
+      - - A
+        - C
+        - F
+      - - A
+        - G
+        - Q
+      - - Q
+        - Q
+        - A
+      - - C
+        - D
+        - D
+      sourceC: &id004
+      - - Q
+        - Q
+        - A
+      - - Z
+        - Z
+        - Z
+      - - F
+        - E
+        - D
+      - - D
+        - B
+        - Q
+      - - D
+        - B
+        - Z
+      - - D
+        - B
+        - F
+    strict_rules:
+    - id: r1
+      head: ABC(X, Y, Z)
+      body:
+      - sourceA(X, Y, Z)
+    - id: r2
+      head: ABC(X, Y, Z)
+      body:
+      - sourceB(X, Y, Z)
+    - id: r3
+      head: ABC(X, Y, Z)
+      body:
+      - sourceC(X, Y, Z)
+    - id: r4
+      head: AB(X, Y, Z)
+      body:
+      - sourceA(X, Y, Z)
+    - id: r5
+      head: AB(X, Y, Z)
+      body:
+      - sourceB(X, Y, Z)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      AB:
+      - - A
+        - B
+        - C
+      - - A
+        - C
+        - F
+      - - A
+        - E
+        - F
+      - - A
+        - G
+        - Q
+      - - B
+        - B
+        - D
+      - - B
+        - D
+        - A
+      - - C
+        - D
+        - D
+      - - Q
+        - Q
+        - A
+    defeasibly: *id001
+- name: strict_only_nemo_union_ABC
+  description: Strict-only defeasible form of nemo_union_ABC.
+  source: nemo/testcases/basic/union.rls
+  tags:
+  - abc
+  - basic
+  - defeasible
+  - nemo
+  - strict-only
+  - union
+  theory:
+    facts:
+      sourceA: *id002
+      sourceB: *id003
+      sourceC: *id004
+    strict_rules:
+    - id: r1
+      head: ABC(X, Y, Z)
+      body:
+      - sourceA(X, Y, Z)
+    - id: r2
+      head: ABC(X, Y, Z)
+      body:
+      - sourceB(X, Y, Z)
+    - id: r3
+      head: ABC(X, Y, Z)
+      body:
+      - sourceC(X, Y, Z)
+    - id: r4
+      head: AB(X, Y, Z)
+      body:
+      - sourceA(X, Y, Z)
+    - id: r5
+      head: AB(X, Y, Z)
+      body:
+      - sourceB(X, Y, Z)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id005
+      ABC:
+      - - A
+        - B
+        - C
+      - - A
+        - C
+        - F
+      - - A
+        - E
+        - F
+      - - A
+        - G
+        - Q
+      - - B
+        - B
+        - D
+      - - B
+        - D
+        - A
+      - - C
+        - D
+        - D
+      - - D
+        - B
+        - Q
+      - - D
+        - B
+        - Z
+      - - D
+        - B
+        - F
+      - - F
+        - E
+        - D
+      - - Q
+        - Q
+        - A
+      - - Z
+        - Z
+        - Z
+    defeasibly: *id005

@@ -1,0 +1,22 @@
+source: souffle/evaluation/simple
+tags:
+- evaluation
+- souffle
+tests:
+- name: souffle_simple_the_output
+  description: Harvested from Souffle testcase simple, asserting exported relation
+    the_output.
+  tags:
+  - basic
+  - evaluation
+  - souffle
+  program:
+    facts:
+      the_input:
+      - - helloworld
+    rules:
+    - is_hello_world(X) :- the_input(X), hello_world(X).
+    - the_output(X) :- is_hello_world(X).
+  expect:
+    the_output:
+    - - helloworld

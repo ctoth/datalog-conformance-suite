@@ -1,0 +1,142 @@
+source: souffle/example/dnf
+tags:
+- example
+- souffle
+tests:
+- name: souffle_dnf_U
+  description: Harvested from Souffle testcase dnf, asserting exported relation U.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: &id001
+      B:
+      - - 1
+      - - 2
+      - - 3
+      C:
+      - - 4
+      - - 5
+      - - 6
+      D:
+      - - 3
+      - - 4
+      E:
+      - - 6
+      - - 7
+    rules: &id002 []
+  expect:
+    U:
+    - - 0
+    - - 1
+    - - 2
+    - - 3
+    - - 4
+    - - 5
+    - - 6
+    - - 7
+- name: souffle_dnf_N
+  description: Harvested from Souffle testcase dnf, asserting exported relation N.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    N: []
+- name: souffle_dnf_R1
+  description: Harvested from Souffle testcase dnf, asserting exported relation R1.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    R1:
+    - - 0
+    - - 3
+- name: souffle_dnf_R2
+  description: Harvested from Souffle testcase dnf, asserting exported relation R2.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    R2:
+    - - 0
+    - - 5
+    - - 6
+    - - 7
+- name: souffle_dnf_R3
+  description: Harvested from Souffle testcase dnf, asserting exported relation R3.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    R3:
+    - - 0
+    - - 1
+    - - 2
+    - - 4
+    - - 5
+    - - 6
+    - - 7
+- name: souffle_dnf_R4
+  description: Harvested from Souffle testcase dnf, asserting exported relation R4.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    R4:
+    - - 0
+    - - 5
+    - - 6
+    - - 7
+- name: souffle_dnf_R5
+  description: Harvested from Souffle testcase dnf, asserting exported relation R5.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    R5:
+    - - 0
+    - - 5
+    - - 6
+    - - 7
+- name: souffle_dnf_R6
+  description: Harvested from Souffle testcase dnf, asserting exported relation R6.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    R6:
+    - - 0
+    - - 3
+    - - 4
+    - - 5
+    - - 6
+    - - 7

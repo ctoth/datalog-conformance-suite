@@ -1,0 +1,41 @@
+source: derived/strict-only/basic/joins.yaml
+tags:
+- defeasible
+- strict-only
+- basic
+- joins
+tests:
+- name: strict_only_two_predicate_body
+  description: Strict-only defeasible form of two_predicate_body.
+  source: manual/scaffold
+  tags:
+  - basic
+  - defeasible
+  - joins
+  - strict-only
+  theory:
+    facts:
+      parent:
+      - - ada
+        - bob
+      - - bob
+        - cora
+      female:
+      - - ada
+      - - cora
+    strict_rules:
+    - id: r1
+      head: grandmother(X, Z)
+      body:
+      - parent(X, Y)
+      - parent(Y, Z)
+      - female(X)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      grandmother:
+      - - ada
+        - cora
+    defeasibly: *id001

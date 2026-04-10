@@ -1,0 +1,168 @@
+source: souffle/example/puzzle
+tags:
+- example
+- souffle
+tests:
+- name: souffle_puzzle_safe
+  description: Harvested from Souffle testcase puzzle, asserting exported relation
+    safe.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: &id001
+      opp:
+      - - n
+        - s
+      - - s
+        - n
+      safe:
+      - - n
+        - s
+        - n
+        - s
+      - - n
+        - n
+        - n
+        - n
+      - - n
+        - s
+        - n
+        - n
+      - - n
+        - n
+        - n
+        - s
+      - - s
+        - s
+        - s
+        - s
+      - - s
+        - n
+        - s
+        - n
+      - - s
+        - s
+        - s
+        - n
+      - - s
+        - n
+        - s
+        - s
+    rules: &id002
+    - state(X,X,U,V) :- safe(X,X,U,V), opp(X,X1), state(X1,X1,U,V).
+    - state(X,Y,X,V) :- safe(X,Y,X,V), opp(X,X1), state(X1,Y,X1,V).
+    - state(X,Y,U,X) :- safe(X,Y,U,X), opp(X,X1), state(X1,Y,U,X1).
+    - state(X,Y,U,V) :- safe(X,Y,U,V), opp(X,X1), state(X1,Y,U,V).
+    - safe(X,X,X1,X) :- opp(X,X1).
+  expect:
+    safe:
+    - - n
+      - s
+      - n
+      - s
+    - - n
+      - n
+      - n
+      - n
+    - - n
+      - s
+      - n
+      - n
+    - - n
+      - n
+      - n
+      - s
+    - - s
+      - s
+      - s
+      - s
+    - - s
+      - n
+      - s
+      - n
+    - - s
+      - s
+      - s
+      - n
+    - - s
+      - n
+      - s
+      - s
+    - - n
+      - n
+      - s
+      - n
+    - - s
+      - s
+      - n
+      - s
+- name: souffle_puzzle_state
+  description: Harvested from Souffle testcase puzzle, asserting exported relation
+    state.
+  tags:
+  - example
+  - recursion
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    state:
+    - - n
+      - n
+      - n
+      - n
+    - - s
+      - n
+      - s
+      - n
+    - - n
+      - n
+      - s
+      - n
+    - - s
+      - s
+      - s
+      - n
+    - - s
+      - n
+      - s
+      - s
+    - - n
+      - s
+      - n
+      - n
+    - - n
+      - n
+      - n
+      - s
+    - - s
+      - s
+      - n
+      - s
+    - - n
+      - s
+      - n
+      - s
+    - - s
+      - s
+      - s
+      - s
+- name: souffle_puzzle_opp
+  description: Harvested from Souffle testcase puzzle, asserting exported relation
+    opp.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    opp:
+    - - n
+      - s
+    - - s
+      - n

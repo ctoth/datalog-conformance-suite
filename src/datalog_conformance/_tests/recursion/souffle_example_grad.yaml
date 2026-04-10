@@ -1,0 +1,116 @@
+source: souffle/example/grad
+tags:
+- example
+- souffle
+tests:
+- name: souffle_grad_student
+  description: Harvested from Souffle testcase grad, asserting exported relation student.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: &id001
+      student:
+      - - bob
+      - - pete
+      - - scott
+      - - tony
+      course:
+      - - eng
+      - - his
+      - - lp
+      take:
+      - - adam
+        - eng
+      - - pete
+        - his
+      - - pete
+        - eng
+      - - scott
+        - his
+      - - scott
+        - lp
+      - - tony
+        - his
+      pre:
+      - - eng
+        - lp
+      - - hist
+        - eng
+    rules: &id002
+    - pre(Pre,Post) :- pre(Pre,X), pre(X,Post).
+    - grad(S) :- take(S,"his"), take(S,"eng").
+  expect:
+    student:
+    - - adam
+    - - bob
+    - - pete
+    - - scott
+    - - tony
+- name: souffle_grad_course
+  description: Harvested from Souffle testcase grad, asserting exported relation course.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    course:
+    - - eng
+    - - his
+    - - lp
+- name: souffle_grad_pre
+  description: Harvested from Souffle testcase grad, asserting exported relation pre.
+  tags:
+  - example
+  - recursion
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    pre:
+    - - eng
+      - lp
+    - - hist
+      - eng
+    - - hist
+      - lp
+- name: souffle_grad_take
+  description: Harvested from Souffle testcase grad, asserting exported relation take.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    take:
+    - - adam
+      - eng
+    - - pete
+      - his
+    - - pete
+      - eng
+    - - scott
+      - his
+    - - scott
+      - lp
+    - - tony
+      - his
+- name: souffle_grad_grad
+  description: Harvested from Souffle testcase grad, asserting exported relation grad.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    grad:
+    - - pete

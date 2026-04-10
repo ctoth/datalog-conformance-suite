@@ -1,0 +1,42 @@
+source: souffle/evaluation/contains
+tags:
+- evaluation
+- souffle
+tests:
+- name: souffle_contains_outputData
+  description: Harvested from Souffle testcase contains, asserting exported relation
+    outputData.
+  tags:
+  - basic
+  - evaluation
+  - souffle
+  program:
+    facts:
+      stringTable:
+      - - aaaa
+      - - abba
+      - - bcab
+      - - bdab
+      substringTable:
+      - - a
+      - - ab
+      - - cab
+    rules: []
+  expect:
+    outputData:
+    - - a
+      - aaaa
+    - - a
+      - abba
+    - - a
+      - bcab
+    - - a
+      - bdab
+    - - ab
+      - abba
+    - - ab
+      - bcab
+    - - ab
+      - bdab
+    - - cab
+      - bcab

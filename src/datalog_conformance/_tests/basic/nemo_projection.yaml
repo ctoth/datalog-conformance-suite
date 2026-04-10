@@ -1,0 +1,124 @@
+source: nemo/testcases/basic/projection.rls
+tags:
+- basic
+- projection
+- nemo
+tests:
+- name: nemo_projection_A
+  description: Harvested from Nemo testcase projection, asserting exported relation
+    A.
+  tags:
+  - basic
+  - projection
+  - nemo
+  - a
+  program:
+    facts: &id001
+      data:
+      - - A
+        - B
+        - C
+      - - B
+        - B
+        - D
+      - - A
+        - E
+        - F
+      - - C
+        - D
+        - D
+    rules: &id002
+    - A(X, Z) :- data(X, Y, Z).
+    - B(Y, X) :- A(X, Y).
+    - C(Y) :- B(VariableThatIsNotNeeded, Y).
+    - D(Y, Z) :- data(X, Y, Z).
+    - E(F, E) :- D(E, F).
+  expect:
+    A:
+    - - A
+      - C
+    - - A
+      - F
+    - - B
+      - D
+    - - C
+      - D
+- name: nemo_projection_D
+  description: Harvested from Nemo testcase projection, asserting exported relation
+    D.
+  tags:
+  - basic
+  - projection
+  - nemo
+  - d
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    D:
+    - - B
+      - C
+    - - B
+      - D
+    - - D
+      - D
+    - - E
+      - F
+- name: nemo_projection_C
+  description: Harvested from Nemo testcase projection, asserting exported relation
+    C.
+  tags:
+  - basic
+  - projection
+  - nemo
+  - c
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    C:
+    - - A
+    - - B
+    - - C
+- name: nemo_projection_E
+  description: Harvested from Nemo testcase projection, asserting exported relation
+    E.
+  tags:
+  - basic
+  - projection
+  - nemo
+  - e
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    E:
+    - - C
+      - B
+    - - D
+      - B
+    - - D
+      - D
+    - - F
+      - E
+- name: nemo_projection_B
+  description: Harvested from Nemo testcase projection, asserting exported relation
+    B.
+  tags:
+  - basic
+  - projection
+  - nemo
+  - b
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    B:
+    - - C
+      - A
+    - - D
+      - B
+    - - D
+      - C
+    - - F
+      - A

@@ -1,0 +1,11 @@
+name: crepe_recursive_negation
+description: This test has a negated clause, but it is not stratified.
+source: crepe/tests/ui/recursive_negation.rs
+tags:
+- errors
+- crepe
+program:
+  facts: {}
+  rules:
+  - Ok() :- not Ok()
+expect_error: cyclic_negation

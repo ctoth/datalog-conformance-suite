@@ -1,0 +1,246 @@
+source: derived/strict-only/basic/souffle_evaluation_aggregates2.yaml
+tags:
+- defeasible
+- strict-only
+- evaluation
+- souffle
+tests:
+- name: strict_only_souffle_aggregates2_C1
+  description: Strict-only defeasible form of souffle_aggregates2_C1.
+  source: souffle/evaluation/aggregates2
+  tags:
+  - basic
+  - defeasible
+  - evaluation
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      B: &id002
+      - - 1
+        - 0
+      - - 2
+        - 1
+      - - 3
+        - 1
+      - - 4
+        - 2
+      - - 5
+        - 3
+      - - 6
+        - 3
+      - - 7
+        - 3
+      - - 8
+        - 4
+      - - 9
+        - 5
+      - - 10
+        - 5
+      A: &id003
+      - - 2
+        - 1
+      - - 3
+        - 1
+      - - 4
+        - 1
+      - - 4
+        - 3
+      - - 5
+        - 1
+      - - 5
+        - 4
+      - - 5
+        - 3
+      - - 6
+        - 1
+      - - 6
+        - 4
+      - - 6
+        - 3
+      - - 7
+        - 1
+      - - 7
+        - 4
+      - - 7
+        - 3
+      - - 8
+        - 1
+      - - 8
+        - 4
+      - - 8
+        - 3
+      - - 8
+        - 7
+      - - 9
+        - 1
+      - - 9
+        - 4
+      - - 9
+        - 8
+      - - 9
+        - 3
+      - - 9
+        - 7
+      - - 10
+        - 1
+      - - 10
+        - 4
+      - - 10
+        - 8
+      - - 10
+        - 3
+      - - 10
+        - 7
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      C1:
+      - - 2
+        - 1
+      - - 3
+        - 1
+      - - 4
+        - 3
+      - - 5
+        - 4
+      - - 6
+        - 4
+      - - 7
+        - 4
+      - - 8
+        - 7
+      - - 9
+        - 8
+      - - 10
+        - 8
+    defeasibly: *id001
+- name: strict_only_souffle_aggregates2_C2
+  description: Strict-only defeasible form of souffle_aggregates2_C2.
+  source: souffle/evaluation/aggregates2
+  tags:
+  - basic
+  - defeasible
+  - evaluation
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      B: *id002
+      A: *id003
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id004
+      C2:
+      - - 2
+        - 1
+        - 0
+      - - 3
+        - 1
+        - 0
+      - - 4
+        - 3
+        - 1
+      - - 5
+        - 4
+        - 2
+      - - 6
+        - 4
+        - 2
+      - - 7
+        - 4
+        - 2
+      - - 8
+        - 7
+        - 3
+      - - 9
+        - 8
+        - 4
+      - - 10
+        - 8
+        - 4
+    defeasibly: *id004
+- name: strict_only_souffle_aggregates2_C3
+  description: Strict-only defeasible form of souffle_aggregates2_C3.
+  source: souffle/evaluation/aggregates2
+  tags:
+  - basic
+  - defeasible
+  - evaluation
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      B: *id002
+      A: *id003
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id005
+      C3:
+      - - 2
+        - 1
+      - - 3
+        - 1
+      - - 4
+        - 3
+      - - 5
+        - 4
+      - - 6
+        - 4
+      - - 7
+        - 4
+      - - 8
+        - 7
+      - - 9
+        - 8
+      - - 10
+        - 8
+    defeasibly: *id005
+- name: strict_only_souffle_aggregates2_C4
+  description: Strict-only defeasible form of souffle_aggregates2_C4.
+  source: souffle/evaluation/aggregates2
+  tags:
+  - basic
+  - defeasible
+  - evaluation
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      B: *id002
+      A: *id003
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id006
+      C4:
+      - - 2
+        - 1
+      - - 3
+        - 1
+      - - 4
+        - 3
+      - - 5
+        - 4
+      - - 6
+        - 4
+      - - 7
+        - 4
+      - - 8
+        - 7
+      - - 9
+        - 8
+      - - 10
+        - 8
+    defeasibly: *id006

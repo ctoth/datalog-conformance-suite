@@ -1,0 +1,19 @@
+source: souffle/evaluation/empty_relations2
+tags:
+- evaluation
+- souffle
+tests:
+- name: souffle_empty_relations2_out
+  description: Harvested from Souffle testcase empty_relations2, asserting exported
+    relation out.
+  tags:
+  - basic
+  - evaluation
+  - souffle
+  program:
+    facts:
+      a:
+      - - 2
+    rules: []
+  expect:
+    out: []

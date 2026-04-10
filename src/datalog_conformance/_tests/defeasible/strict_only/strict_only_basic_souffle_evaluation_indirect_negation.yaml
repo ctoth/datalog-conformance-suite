@@ -1,0 +1,464 @@
+source: derived/strict-only/basic/souffle_evaluation_indirect_negation.yaml
+tags:
+- defeasible
+- strict-only
+- evaluation
+- souffle
+tests:
+- name: strict_only_souffle_indirect_negation_i1
+  description: Strict-only defeasible form of souffle_indirect_negation_i1.
+  source: souffle/evaluation/indirect_negation
+  tags:
+  - basic
+  - defeasible
+  - evaluation
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      mark: &id002
+      - - 46
+      - - 6
+      - - 10
+      - - 86
+      - - 35
+      - - 73
+      - - 2
+      - - 82
+      - - 17
+      - - 68
+      - - 19
+      - - 79
+      - - 86
+      - - 19
+      - - 6
+      - - 28
+      - - 33
+      - - 60
+      - - 58
+      - - 21
+      - - 96
+      - - 35
+      - - 98
+      - - 25
+      - - 14
+      - - 41
+      - - 34
+      - - 20
+      - - 2
+      - - 22
+      - - 11
+      - - 15
+      - - 76
+      - - 55
+      - - 71
+      - - 73
+      - - 11
+      - - 67
+      - - 38
+      - - 21
+      - - 38
+      - - 68
+      - - 3
+      - - 20
+      - - 21
+      - - 86
+      - - 47
+      - - 48
+      - - 49
+      - - 95
+      - - 4
+      - - 49
+      - - 99
+      - - 68
+      - - 48
+      - - 8
+      - - 17
+      - - 89
+      - - 39
+      - - 48
+      - - 43
+      - - 39
+      - - 66
+      - - 25
+      - - 33
+      - - 25
+      - - 16
+      - - 47
+      - - 93
+      - - 36
+      - - 50
+      - - 42
+      - - 50
+      - - 32
+      - - 27
+      - - 76
+      - - 4
+      - - 35
+      - - 75
+      - - 56
+      - - 6
+      - - 63
+      - - 71
+      - - 10
+      - - 53
+      - - 53
+      - - 6
+      - - 49
+      - - 72
+      - - 30
+      - - 40
+      - - 38
+      - - 39
+      - - 33
+      - - 6
+      - - 90
+      - - 94
+      - - 9
+      - - 44
+      - - 32
+      edge: &id003
+      - - 55
+        - 62
+      - - 9
+        - 20
+      - - 1
+        - 25
+      - - 76
+        - 51
+      - - 78
+        - 51
+      - - 62
+        - 0
+      - - 23
+        - 67
+      - - 85
+        - 17
+      - - 68
+        - 4
+      - - 81
+        - 49
+      - - 72
+        - 36
+      - - 5
+        - 45
+      - - 35
+        - 55
+      - - 39
+        - 61
+      - - 47
+        - 93
+      - - 2
+        - 48
+      - - 60
+        - 74
+      - - 35
+        - 81
+      - - 59
+        - 38
+      - - 49
+        - 62
+      - - 23
+        - 40
+      - - 98
+        - 36
+      - - 17
+        - 59
+      - - 64
+        - 64
+      - - 81
+        - 84
+      - - 36
+        - 89
+      - - 13
+        - 61
+      - - 98
+        - 26
+      - - 62
+        - 44
+      - - 28
+        - 80
+      - - 6
+        - 63
+      - - 49
+        - 24
+      - - 33
+        - 65
+      - - 32
+        - 97
+      - - 14
+        - 1
+      - - 39
+        - 34
+      - - 79
+        - 50
+      - - 37
+        - 94
+      - - 76
+        - 68
+      - - 49
+        - 23
+      - - 48
+        - 28
+      - - 46
+        - 84
+      - - 61
+        - 0
+      - - 58
+        - 37
+      - - 70
+        - 42
+      - - 47
+        - 70
+      - - 9
+        - 88
+      - - 48
+        - 91
+      - - 3
+        - 19
+      - - 49
+        - 71
+      - - 61
+        - 39
+      - - 61
+        - 89
+      - - 44
+        - 55
+      - - 58
+        - 69
+      - - 41
+        - 62
+      - - 13
+        - 10
+      - - 49
+        - 84
+      - - 87
+        - 55
+      - - 21
+        - 67
+      - - 27
+        - 77
+      - - 17
+        - 79
+      - - 31
+        - 5
+      - - 79
+        - 7
+      - - 78
+        - 15
+      - - 33
+        - 66
+      - - 16
+        - 85
+      - - 61
+        - 75
+      - - 53
+        - 43
+      - - 62
+        - 33
+      - - 16
+        - 69
+      - - 1
+        - 51
+      - - 25
+        - 11
+      - - 86
+        - 48
+      - - 73
+        - 52
+      - - 40
+        - 33
+      - - 65
+        - 17
+      - - 63
+        - 56
+      - - 92
+        - 93
+      - - 36
+        - 45
+      - - 22
+        - 42
+      - - 83
+        - 75
+      - - 75
+        - 63
+      - - 82
+        - 2
+      - - 80
+        - 67
+      - - 56
+        - 76
+      - - 33
+        - 78
+      - - 97
+        - 68
+      - - 57
+        - 86
+      - - 66
+        - 31
+      - - 15
+        - 12
+      - - 11
+        - 29
+      - - 25
+        - 79
+      - - 29
+        - 97
+      - - 8
+        - 60
+      - - 6
+        - 55
+      - - 50
+        - 80
+      - - 27
+        - 80
+      - - 99
+        - 72
+      - - 8
+        - 73
+      - - 29
+        - 34
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      i1:
+      - - 10
+      - - 86
+      - - 73
+      - - 2
+      - - 17
+      - - 68
+      - - 19
+      - - 79
+      - - 28
+      - - 33
+      - - 60
+      - - 25
+      - - 34
+      - - 20
+      - - 11
+      - - 15
+      - - 76
+      - - 55
+      - - 71
+      - - 67
+      - - 38
+      - - 48
+      - - 49
+      - - 4
+      - - 89
+      - - 39
+      - - 43
+      - - 66
+      - - 93
+      - - 36
+      - - 50
+      - - 42
+      - - 75
+      - - 56
+      - - 63
+      - - 72
+      - - 40
+      - - 94
+      - - 44
+    defeasibly: *id001
+- name: strict_only_souffle_indirect_negation_i01
+  description: Strict-only defeasible form of souffle_indirect_negation_i01.
+  source: souffle/evaluation/indirect_negation
+  tags:
+  - basic
+  - defeasible
+  - evaluation
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      mark: *id002
+      edge: *id003
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id004
+      i01: []
+    defeasibly: *id004
+- name: strict_only_souffle_indirect_negation_MarkedNoInA
+  description: Strict-only defeasible form of souffle_indirect_negation_MarkedNoInA.
+  source: souffle/evaluation/indirect_negation
+  tags:
+  - basic
+  - defeasible
+  - evaluation
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      mark: *id002
+      edge: *id003
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id005
+      MarkedNoInA:
+      - - 10
+      - - 19
+      - - 96
+      - - 34
+      - - 20
+      - - 71
+      - - 67
+      - - 38
+      - - 95
+      - - 4
+      - - 89
+      - - 43
+      - - 93
+      - - 42
+      - - 30
+      - - 90
+      - - 94
+    defeasibly: *id005
+- name: strict_only_souffle_indirect_negation_MarkedNoInB
+  description: Strict-only defeasible form of souffle_indirect_negation_MarkedNoInB.
+  source: souffle/evaluation/indirect_negation
+  tags:
+  - basic
+  - defeasible
+  - evaluation
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      mark: *id002
+      edge: *id003
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id006
+      MarkedNoInB:
+      - - 10
+      - - 19
+      - - 96
+      - - 34
+      - - 20
+      - - 71
+      - - 67
+      - - 38
+      - - 95
+      - - 4
+      - - 89
+      - - 43
+      - - 93
+      - - 42
+      - - 30
+      - - 90
+      - - 94
+    defeasibly: *id006

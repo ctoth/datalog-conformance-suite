@@ -1,0 +1,55 @@
+source: derived/strict-only/basic/souffle_example_factorial.yaml
+tags:
+- defeasible
+- strict-only
+- example
+- souffle
+tests:
+- name: strict_only_souffle_factorial_fact
+  description: Strict-only defeasible form of souffle_factorial_fact.
+  source: souffle/example/factorial
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      fact:
+      - - 0
+        - 1
+      lim:
+      - - 11
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      fact:
+      - - 0
+        - 1
+      - - 1
+        - 1
+      - - 2
+        - 2
+      - - 3
+        - 6
+      - - 4
+        - 24
+      - - 5
+        - 120
+      - - 6
+        - 720
+      - - 7
+        - 5040
+      - - 8
+        - 40320
+      - - 9
+        - 362880
+      - - 10
+        - 3628800
+      - - 11
+        - 39916800
+    defeasibly: *id001

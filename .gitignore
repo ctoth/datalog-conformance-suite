@@ -1,0 +1,12 @@
+.hypothesis/
+.pytest_cache/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+tmp/
+pyghidra_mcp_projects/
+
+.DS_Store
+Thumbs.db

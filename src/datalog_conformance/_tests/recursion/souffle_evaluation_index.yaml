@@ -1,0 +1,54 @@
+source: souffle/evaluation/index
+tags:
+- evaluation
+- souffle
+tests:
+- name: souffle_index_A
+  description: Harvested from Souffle testcase index, asserting exported relation
+    A.
+  tags:
+  - basic
+  - evaluation
+  - souffle
+  program:
+    facts: &id001
+      A:
+      - - 3
+        - 4
+      - - 5
+        - 6
+    rules: &id002
+    - R(x,y) :- A(x,y).
+    - R(x,b) :- A(x,y), R(y+1,b).
+  expect:
+    A:
+    - - 1
+      - 2
+    - - 3
+      - 4
+    - - 5
+      - 6
+- name: souffle_index_R
+  description: Harvested from Souffle testcase index, asserting exported relation
+    R.
+  tags:
+  - evaluation
+  - recursion
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    R:
+    - - 1
+      - 2
+    - - 1
+      - 4
+    - - 1
+      - 6
+    - - 3
+      - 4
+    - - 3
+      - 6
+    - - 5
+      - 6

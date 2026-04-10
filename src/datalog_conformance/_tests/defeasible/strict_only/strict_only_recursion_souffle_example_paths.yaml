@@ -1,0 +1,95 @@
+source: derived/strict-only/recursion/souffle_example_paths.yaml
+tags:
+- defeasible
+- strict-only
+- example
+- souffle
+tests:
+- name: strict_only_souffle_paths_path
+  description: Strict-only defeasible form of souffle_paths_path.
+  source: souffle/example/paths
+  tags:
+  - defeasible
+  - example
+  - recursion
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      edge: &id002
+      - - a
+        - c
+      - - b
+        - a
+      - - b
+        - d
+    strict_rules:
+    - id: r1
+      head: path(X,Y)
+      body:
+      - path(X,Z)
+      - edge(Z,Y)
+    - id: r2
+      head: path(X,Y)
+      body:
+      - edge(X,Y)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      path:
+      - - a
+        - b
+      - - a
+        - c
+      - - b
+        - a
+      - - b
+        - d
+      - - a
+        - a
+      - - a
+        - d
+      - - b
+        - b
+      - - b
+        - c
+    defeasibly: *id001
+- name: strict_only_souffle_paths_edge
+  description: Strict-only defeasible form of souffle_paths_edge.
+  source: souffle/example/paths
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      edge: *id002
+    strict_rules:
+    - id: r1
+      head: path(X,Y)
+      body:
+      - path(X,Z)
+      - edge(Z,Y)
+    - id: r2
+      head: path(X,Y)
+      body:
+      - edge(X,Y)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id003
+      edge:
+      - - a
+        - b
+      - - a
+        - c
+      - - b
+        - a
+      - - b
+        - d
+    defeasibly: *id003

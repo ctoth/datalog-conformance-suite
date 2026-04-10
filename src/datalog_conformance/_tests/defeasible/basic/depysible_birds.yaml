@@ -1,0 +1,342 @@
+source: depysible/README.md
+tags:
+- defeasible
+- basic
+- depysible
+tests:
+- name: depysible_bird_tina
+  description: Tina is definitely and defeasibly a bird by the strict chicken rule.
+  tags: [bird, tina]
+  theory:
+    facts:
+      chicken: [[tina]]
+      penguin: [[tweety]]
+      scared: [[tina]]
+    strict_rules:
+      - id: r1
+        head: "bird(X)"
+        body: ["chicken(X)"]
+      - id: r2
+        head: "bird(X)"
+        body: ["penguin(X)"]
+      - id: r3
+        head: "~flies(X)"
+        body: ["penguin(X)"]
+    defeasible_rules:
+      - id: r4
+        head: "flies(X)"
+        body: ["bird(X)"]
+      - id: r5
+        head: "flies(X)"
+        body: ["chicken(X)", "scared(X)"]
+      - id: r6
+        head: "~flies(X)"
+        body: ["chicken(X)"]
+      - id: r7
+        head: "nests_in_trees(X)"
+        body: ["flies(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      bird: [[tina], [tweety]]
+    defeasibly:
+      bird: [[tina], [tweety]]
+- name: depysible_not_flies_tweety
+  description: Tweety does not fly for sure by the strict penguin rule.
+  tags: [penguin, tweety]
+  theory:
+    facts:
+      chicken: [[tina]]
+      penguin: [[tweety]]
+      scared: [[tina]]
+    strict_rules:
+      - id: r1
+        head: "bird(X)"
+        body: ["chicken(X)"]
+      - id: r2
+        head: "bird(X)"
+        body: ["penguin(X)"]
+      - id: r3
+        head: "~flies(X)"
+        body: ["penguin(X)"]
+    defeasible_rules:
+      - id: r4
+        head: "flies(X)"
+        body: ["bird(X)"]
+      - id: r5
+        head: "flies(X)"
+        body: ["chicken(X)", "scared(X)"]
+      - id: r6
+        head: "~flies(X)"
+        body: ["chicken(X)"]
+      - id: r7
+        head: "nests_in_trees(X)"
+        body: ["flies(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      "~flies": [[tweety]]
+    not_defeasibly:
+      flies: [[tweety]]
+- name: depysible_flies_tina
+  description: Tina flies defeasibly because she is a scared chicken.
+  tags: [chicken, tina, flies]
+  theory:
+    facts:
+      chicken: [[tina]]
+      penguin: [[tweety]]
+      scared: [[tina]]
+    strict_rules:
+      - id: r1
+        head: "bird(X)"
+        body: ["chicken(X)"]
+      - id: r2
+        head: "bird(X)"
+        body: ["penguin(X)"]
+      - id: r3
+        head: "~flies(X)"
+        body: ["penguin(X)"]
+    defeasible_rules:
+      - id: r4
+        head: "flies(X)"
+        body: ["bird(X)"]
+      - id: r5
+        head: "flies(X)"
+        body: ["chicken(X)", "scared(X)"]
+      - id: r6
+        head: "~flies(X)"
+        body: ["chicken(X)"]
+      - id: r7
+        head: "nests_in_trees(X)"
+        body: ["flies(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    defeasibly:
+      flies: [[tina]]
+- name: depysible_chicken_tina
+  description: Tina's chicken fact is definitely and defeasibly true.
+  tags: [chicken, tina, fact]
+  theory:
+    facts:
+      chicken: [[tina]]
+      penguin: [[tweety]]
+      scared: [[tina]]
+    strict_rules:
+      - id: r1
+        head: "bird(X)"
+        body: ["chicken(X)"]
+      - id: r2
+        head: "bird(X)"
+        body: ["penguin(X)"]
+      - id: r3
+        head: "~flies(X)"
+        body: ["penguin(X)"]
+    defeasible_rules:
+      - id: r4
+        head: "flies(X)"
+        body: ["bird(X)"]
+      - id: r5
+        head: "flies(X)"
+        body: ["chicken(X)", "scared(X)"]
+      - id: r6
+        head: "~flies(X)"
+        body: ["chicken(X)"]
+      - id: r7
+        head: "nests_in_trees(X)"
+        body: ["flies(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      chicken: [[tina]]
+    defeasibly:
+      chicken: [[tina]]
+- name: depysible_scared_tina
+  description: Tina's scared fact is definitely and defeasibly true.
+  tags: [scared, tina, fact]
+  theory:
+    facts:
+      chicken: [[tina]]
+      penguin: [[tweety]]
+      scared: [[tina]]
+    strict_rules:
+      - id: r1
+        head: "bird(X)"
+        body: ["chicken(X)"]
+      - id: r2
+        head: "bird(X)"
+        body: ["penguin(X)"]
+      - id: r3
+        head: "~flies(X)"
+        body: ["penguin(X)"]
+    defeasible_rules:
+      - id: r4
+        head: "flies(X)"
+        body: ["bird(X)"]
+      - id: r5
+        head: "flies(X)"
+        body: ["chicken(X)", "scared(X)"]
+      - id: r6
+        head: "~flies(X)"
+        body: ["chicken(X)"]
+      - id: r7
+        head: "nests_in_trees(X)"
+        body: ["flies(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      scared: [[tina]]
+    defeasibly:
+      scared: [[tina]]
+- name: depysible_bird_tweety
+  description: Tweety joins Tina as a definitely and defeasibly derived bird.
+  tags: [bird, penguin, tweety]
+  theory:
+    facts:
+      chicken: [[tina]]
+      penguin: [[tweety]]
+      scared: [[tina]]
+    strict_rules:
+      - id: r1
+        head: "bird(X)"
+        body: ["chicken(X)"]
+      - id: r2
+        head: "bird(X)"
+        body: ["penguin(X)"]
+      - id: r3
+        head: "~flies(X)"
+        body: ["penguin(X)"]
+    defeasible_rules:
+      - id: r4
+        head: "flies(X)"
+        body: ["bird(X)"]
+      - id: r5
+        head: "flies(X)"
+        body: ["chicken(X)", "scared(X)"]
+      - id: r6
+        head: "~flies(X)"
+        body: ["chicken(X)"]
+      - id: r7
+        head: "nests_in_trees(X)"
+        body: ["flies(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      bird: [[tina], [tweety]]
+      penguin: [[tweety]]
+    defeasibly:
+      bird: [[tina], [tweety]]
+      penguin: [[tweety]]
+- name: depysible_not_flies_tina
+  description: Tina is not defeasibly flyable because the chicken rule is defeated.
+  tags: [chicken, tina, flies, negation]
+  theory:
+    facts:
+      chicken: [[tina]]
+      penguin: [[tweety]]
+      scared: [[tina]]
+    strict_rules:
+      - id: r1
+        head: "bird(X)"
+        body: ["chicken(X)"]
+      - id: r2
+        head: "bird(X)"
+        body: ["penguin(X)"]
+      - id: r3
+        head: "~flies(X)"
+        body: ["penguin(X)"]
+    defeasible_rules:
+      - id: r4
+        head: "flies(X)"
+        body: ["bird(X)"]
+      - id: r5
+        head: "flies(X)"
+        body: ["chicken(X)", "scared(X)"]
+      - id: r6
+        head: "~flies(X)"
+        body: ["chicken(X)"]
+      - id: r7
+        head: "nests_in_trees(X)"
+        body: ["flies(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    not_defeasibly:
+      "~flies": [[tina]]
+- name: depysible_nests_in_trees_tina
+  description: Tina nests in trees defeasibly through the flying conclusion.
+  tags: [tina, flies, trees]
+  theory:
+    facts:
+      chicken: [[tina]]
+      penguin: [[tweety]]
+      scared: [[tina]]
+    strict_rules:
+      - id: r1
+        head: "bird(X)"
+        body: ["chicken(X)"]
+      - id: r2
+        head: "bird(X)"
+        body: ["penguin(X)"]
+      - id: r3
+        head: "~flies(X)"
+        body: ["penguin(X)"]
+    defeasible_rules:
+      - id: r4
+        head: "flies(X)"
+        body: ["bird(X)"]
+      - id: r5
+        head: "flies(X)"
+        body: ["chicken(X)", "scared(X)"]
+      - id: r6
+        head: "~flies(X)"
+        body: ["chicken(X)"]
+      - id: r7
+        head: "nests_in_trees(X)"
+        body: ["flies(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    defeasibly:
+      nests_in_trees: [[tina]]
+- name: depysible_nests_in_trees_tweety
+  description: Tweety's nesting conclusion stays undecided because flying is blocked.
+  tags: [penguin, tweety, trees, undecided]
+  theory:
+    facts:
+      chicken: [[tina]]
+      penguin: [[tweety]]
+      scared: [[tina]]
+    strict_rules:
+      - id: r1
+        head: "bird(X)"
+        body: ["chicken(X)"]
+      - id: r2
+        head: "bird(X)"
+        body: ["penguin(X)"]
+      - id: r3
+        head: "~flies(X)"
+        body: ["penguin(X)"]
+    defeasible_rules:
+      - id: r4
+        head: "flies(X)"
+        body: ["bird(X)"]
+      - id: r5
+        head: "flies(X)"
+        body: ["chicken(X)", "scared(X)"]
+      - id: r6
+        head: "~flies(X)"
+        body: ["chicken(X)"]
+      - id: r7
+        head: "nests_in_trees(X)"
+        body: ["flies(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    undecided:
+      nests_in_trees: [[tweety]]

@@ -1,0 +1,4482 @@
+source: derived/strict-only/negation/souffle_example_tic-tac-toe.yaml
+tags:
+- defeasible
+- strict-only
+- example
+- souffle
+tests:
+- name: strict_only_souffle_tic-tac-toe_decided_games
+  description: Strict-only defeasible form of souffle_tic-tac-toe_decided_games.
+  source: souffle/example/tic-tac-toe
+  tags:
+  - defeasible
+  - example
+  - negation
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      player:
+      - - O
+      cell:
+      - - X
+      - - O
+      other:
+      - - O
+        - X
+      reachable_state:
+      - - 0
+    strict_rules:
+    - id: r1
+      head: reachable_state( a1,b1,c1,a2,b2,c2,a3,b3,c3, p )
+      body:
+      - state_succ( _,_,_, _,_,_, _,_,_, _, a1,b1,c1, a2,b2,c2, a3,b3,c3, p )
+    - id: r2
+      head: row2( a1,b1,c1,a2,b2,c2,a3,b3,c3, a2,b2,c2 )
+      body:
+      - all_states(a1,b1,c1,a2,b2,c2,a3,b3,c3,_)
+    - id: r3
+      head: row3( a1,b1,c1,a2,b2,c2,a3,b3,c3, a3,b3,c3 )
+      body:
+      - all_states(a1,b1,c1,a2,b2,c2,a3,b3,c3,_)
+    - id: r4
+      head: col1( a1,b1,c1,a2,b2,c2,a3,b3,c3, a1,a2,a3 )
+      body:
+      - all_states(a1,b1,c1,a2,b2,c2,a3,b3,c3,_)
+    - id: r5
+      head: col2( a1,b1,c1,a2,b2,c2,a3,b3,c3, b1,b2,b3 )
+      body:
+      - all_states(a1,b1,c1,a2,b2,c2,a3,b3,c3,_)
+    - id: r6
+      head: col3( a1,b1,c1,a2,b2,c2,a3,b3,c3, c1,c2,c3 )
+      body:
+      - all_states(a1,b1,c1,a2,b2,c2,a3,b3,c3,_)
+    - id: r7
+      head: dig1( a1,b1,c1,a2,b2,c2,a3,b3,c3, a1,b2,c3 )
+      body:
+      - all_states(a1,b1,c1,a2,b2,c2,a3,b3,c3,_)
+    - id: r8
+      head: dig2( a1,b1,c1,a2,b2,c2,a3,b3,c3, c1,b2,a3 )
+      body:
+      - all_states(a1,b1,c1,a2,b2,c2,a3,b3,c3,_)
+    - id: r9
+      head: has_won( a1,b1,c1,a2,b2,c2,a3,b3,c3, x )
+      body:
+      - row2( a1,b1,c1,a2,b2,c2,a3,b3,c3, x,x,x )
+    - id: r10
+      head: has_won( a1,b1,c1,a2,b2,c2,a3,b3,c3, x )
+      body:
+      - row3( a1,b1,c1,a2,b2,c2,a3,b3,c3, x,x,x )
+    - id: r11
+      head: has_won( a1,b1,c1,a2,b2,c2,a3,b3,c3, x )
+      body:
+      - col1( a1,b1,c1,a2,b2,c2,a3,b3,c3, x,x,x )
+    - id: r12
+      head: has_won( a1,b1,c1,a2,b2,c2,a3,b3,c3, x )
+      body:
+      - col2( a1,b1,c1,a2,b2,c2,a3,b3,c3, x,x,x )
+    - id: r13
+      head: has_won( a1,b1,c1,a2,b2,c2,a3,b3,c3, x )
+      body:
+      - col3( a1,b1,c1,a2,b2,c2,a3,b3,c3, x,x,x )
+    - id: r14
+      head: has_won( a1,b1,c1,a2,b2,c2,a3,b3,c3, x )
+      body:
+      - dig1( a1,b1,c1,a2,b2,c2,a3,b3,c3, x,x,x )
+    - id: r15
+      head: has_won( a1,b1,c1,a2,b2,c2,a3,b3,c3, x )
+      body:
+      - dig2( a1,b1,c1,a2,b2,c2,a3,b3,c3, x,x,x )
+    - id: r16
+      head: won( a1,b1,c1,a2,b2,c2,a3,b3,c3 )
+      body:
+      - has_won(a1,b1,c1,a2,b2,c2,a3,b3,c3,"O")
+    - id: r17
+      head: finished( a1,b1,c1,a2,b2,c2,a3,b3,c3 )
+      body:
+      - draw(a1,b1,c1,a2,b2,c2,a3,b3,c3)
+    - id: r18
+      head: valid_move( aa1," ",ac1,aa2,ab2,ac2,aa3,ab3,ac3, a, aa1, a ,ac1,aa2,ab2,ac2,aa3,ab3,ac3
+        )
+      body:
+      - reachable_state(aa1," ",ac1,aa2,ab2,ac2,aa3,ab3,ac3, a)
+    - id: r19
+      head: valid_move( aa1,ab1," ",aa2,ab2,ac2,aa3,ab3,ac3, a, aa1,ab1, a ,aa2,ab2,ac2,aa3,ab3,ac3
+        )
+      body:
+      - reachable_state(aa1,ab1," ",aa2,ab2,ac2,aa3,ab3,ac3, a)
+    - id: r20
+      head: valid_move( aa1,ab1,ac1," ",ab2,ac2,aa3,ab3,ac3, a, aa1,ab1,ac1, a ,ab2,ac2,aa3,ab3,ac3
+        )
+      body:
+      - reachable_state(aa1,ab1,ac1," ",ab2,ac2,aa3,ab3,ac3, a)
+    - id: r21
+      head: valid_move( aa1,ab1,ac1,aa2," ",ac2,aa3,ab3,ac3, a, aa1,ab1,ac1,aa2, a
+        ,ac2,aa3,ab3,ac3 )
+      body:
+      - reachable_state(aa1,ab1,ac1,aa2," ",ac2,aa3,ab3,ac3, a)
+    - id: r22
+      head: valid_move( aa1,ab1,ac1,aa2,ab2," ",aa3,ab3,ac3, a, aa1,ab1,ac1,aa2,ab2,
+        a ,aa3,ab3,ac3 )
+      body:
+      - reachable_state(aa1,ab1,ac1,aa2,ab2," ",aa3,ab3,ac3, a)
+    - id: r23
+      head: valid_move( aa1,ab1,ac1,aa2,ab2,ac2," ",ab3,ac3, a, aa1,ab1,ac1,aa2,ab2,ac2,
+        a ,ab3,ac3 )
+      body:
+      - reachable_state(aa1,ab1,ac1,aa2,ab2,ac2," ",ab3,ac3, a)
+    - id: r24
+      head: valid_move( aa1,ab1,ac1,aa2,ab2,ac2,aa3," ",ac3, a, aa1,ab1,ac1,aa2,ab2,ac2,aa3,
+        a ,ac3 )
+      body:
+      - reachable_state(aa1,ab1,ac1,aa2,ab2,ac2,aa3," ",ac3, a)
+    - id: r25
+      head: valid_move( aa1,ab1,ac1,aa2,ab2,ac2,aa3,ab3," ", a, aa1,ab1,ac1,aa2,ab2,ac2,aa3,ab3,
+        a )
+      body:
+      - reachable_state(aa1,ab1,ac1,aa2,ab2,ac2,aa3,ab3," ", a)
+    - id: r26
+      head: state_succ( aa1,ab1,ac1,aa2,ab2,ac2,aa3,ab3,ac3, a, ba1,bb1,bc1,ba2,bb2,bc2,ba3,bb3,bc3,
+        b )
+      body:
+      - reachable_state( aa1,ab1,ac1,aa2,ab2,ac2,aa3,ab3,ac3, a )
+      - other(a,b)
+      - not finished( aa1,ab1,ac1,aa2,ab2,ac2,aa3,ab3,ac3 )
+      - valid_move( aa1,ab1,ac1,aa2,ab2,ac2,aa3,ab3,ac3, a, ba1,bb1,bc1,ba2,bb2,bc2,ba3,bb3,bc3
+        )
+    - id: r27
+      head: possible_results( a1,b1,c1,a2,b2,c2,a3,b3,c3, p, "O")
+      body:
+      - reachable_state(a1,b1,c1,a2,b2,c2,a3,b3,c3, p)
+      - has_won( a1,b1,c1,a2,b2,c2,a3,b3,c3, "O" )
+    - id: r28
+      head: possible_results( aa1,ab1,ac1,aa2,ab2,ac2,aa3,ab3,ac3, ap, x)
+      body:
+      - state_succ( aa1,ab1,ac1,aa2,ab2,ac2,aa3,ab3,ac3, ap, ba1,bb1,bc1,ba2,bb2,bc2,ba3,bb3,bc3,
+        bp )
+      - possible_results( ba1,bb1,bc1,ba2,bb2,bc2,ba3,bb3,bc3, bp, x)
+    - id: r29
+      head: decided_games( a1,b1,c1,a2,b2,c2,a3,b3,c3, "X", "O" )
+      body:
+      - not won(a1,b1,c1,a2,b2,c2,a3,b3,c3)
+      - possible_results( a1,b1,c1,a2,b2,c2,a3,b3,c3, "X", "O" )
+      - not possible_results( a1,b1,c1,a2,b2,c2,a3,b3,c3, "X", "X" )
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      decided_games:
+      - - ''
+        - ''
+        - ''
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - ''
+        - ''
+        - ''
+        - X
+        - X
+        - X
+        - O
+        - O
+        - O
+        - X
+      - - ''
+        - ''
+        - ''
+        - O
+        - O
+        - X
+        - X
+        - X
+        - O
+        - X
+        - O
+      - - ''
+        - ''
+        - ''
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - ''
+        - ''
+        - O
+        - X
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - X
+      - - ''
+        - ''
+        - ''
+        - O
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+      - - ''
+        - ''
+        - ''
+        - O
+        - X
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - ''
+        - ''
+        - ''
+        - X
+        - O
+        - O
+        - O
+        - X
+        - X
+        - X
+        - O
+      - - ''
+        - ''
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - X
+        - O
+        - X
+        - O
+      - - ''
+        - ''
+        - ''
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - ''
+        - ''
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - ''
+        - ''
+        - X
+        - X
+        - O
+        - O
+        - ''
+        - X
+        - O
+        - X
+      - - ''
+        - ''
+        - O
+        - ''
+        - O
+        - X
+        - X
+        - O
+        - X
+        - X
+        - O
+      - - ''
+        - ''
+        - O
+        - O
+        - X
+        - X
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - ''
+        - O
+        - O
+        - X
+        - X
+        - X
+        - X
+        - O
+        - O
+        - X
+      - - ''
+        - ''
+        - O
+        - X
+        - O
+        - X
+        - ''
+        - O
+        - X
+        - X
+        - O
+      - - ''
+        - ''
+        - O
+        - X
+        - X
+        - O
+        - O
+        - X
+        - X
+        - O
+        - X
+      - - ''
+        - ''
+        - O
+        - X
+        - X
+        - O
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - ''
+        - X
+        - ''
+        - O
+        - O
+        - O
+        - X
+        - X
+        - X
+        - O
+      - - ''
+        - ''
+        - X
+        - ''
+        - O
+        - O
+        - X
+        - O
+        - X
+        - X
+        - O
+      - - ''
+        - ''
+        - X
+        - ''
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - ''
+        - X
+        - ''
+        - X
+        - O
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - ''
+        - ''
+        - X
+        - O
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - X
+        - O
+      - - ''
+        - ''
+        - X
+        - O
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - O
+      - - ''
+        - ''
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - ''
+        - X
+        - O
+        - X
+      - - ''
+        - ''
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - ''
+        - ''
+        - X
+        - X
+        - O
+        - X
+        - ''
+        - O
+        - O
+        - X
+        - O
+      - - ''
+        - ''
+        - X
+        - X
+        - O
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - O
+      - - ''
+        - ''
+        - X
+        - X
+        - X
+        - O
+        - O
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - ''
+        - X
+        - X
+        - X
+        - O
+        - O
+        - X
+        - O
+        - O
+        - X
+      - - ''
+        - O
+        - ''
+        - O
+        - X
+        - X
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - O
+        - ''
+        - O
+        - X
+        - X
+        - X
+        - X
+        - O
+        - O
+        - X
+      - - ''
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - O
+        - X
+        - X
+        - O
+        - X
+      - - ''
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - O
+        - O
+        - ''
+        - X
+        - ''
+        - X
+        - X
+        - O
+        - X
+        - O
+      - - ''
+        - O
+        - O
+        - X
+        - O
+        - X
+        - ''
+        - ''
+        - X
+        - X
+        - O
+      - - ''
+        - O
+        - X
+        - ''
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - X
+        - O
+      - - ''
+        - O
+        - X
+        - ''
+        - O
+        - X
+        - X
+        - ''
+        - O
+        - X
+        - O
+      - - ''
+        - O
+        - X
+        - ''
+        - X
+        - ''
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - ''
+        - X
+        - ''
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - ''
+        - ''
+        - X
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - ''
+        - X
+        - ''
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - X
+        - X
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - ''
+        - X
+        - X
+        - O
+        - X
+        - O
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - O
+        - ''
+        - X
+        - X
+        - X
+        - O
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - O
+        - O
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - O
+        - X
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - O
+        - X
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - X
+        - ''
+        - ''
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - X
+        - ''
+        - O
+        - ''
+        - X
+        - ''
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - X
+        - ''
+        - O
+        - X
+        - X
+        - O
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - X
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - X
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - X
+        - O
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - X
+        - O
+        - O
+        - X
+        - X
+        - ''
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - X
+        - O
+        - X
+        - ''
+        - ''
+        - O
+        - X
+        - O
+      - - ''
+        - O
+        - X
+        - X
+        - O
+        - X
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - X
+        - O
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - X
+        - X
+        - O
+        - ''
+        - ''
+        - ''
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - X
+        - X
+        - O
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - ''
+        - O
+        - X
+        - X
+        - X
+        - O
+        - O
+        - ''
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - ''
+        - ''
+        - O
+        - O
+        - O
+        - X
+        - X
+        - X
+        - O
+      - - ''
+        - X
+        - ''
+        - ''
+        - O
+        - O
+        - X
+        - X
+        - O
+        - X
+        - O
+      - - ''
+        - X
+        - ''
+        - ''
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - ''
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - ''
+        - X
+        - ''
+        - O
+        - O
+        - ''
+        - O
+        - X
+        - X
+        - X
+        - O
+      - - ''
+        - X
+        - ''
+        - O
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - X
+        - O
+      - - ''
+        - X
+        - ''
+        - O
+        - O
+        - X
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - ''
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - ''
+        - X
+        - ''
+        - O
+        - X
+        - O
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - ''
+        - O
+        - X
+        - X
+        - X
+        - O
+        - O
+        - O
+        - X
+      - - ''
+        - X
+        - ''
+        - X
+        - ''
+        - O
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - O
+      - - ''
+        - X
+        - ''
+        - X
+        - X
+        - O
+        - O
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - ''
+        - ''
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - ''
+        - ''
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - ''
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - X
+        - O
+      - - ''
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - ''
+        - O
+        - X
+        - X
+        - O
+      - - ''
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - X
+        - O
+      - - ''
+        - X
+        - O
+        - ''
+        - X
+        - ''
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - ''
+        - X
+        - O
+        - ''
+        - ''
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - ''
+        - X
+        - X
+        - X
+        - O
+        - O
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - O
+        - ''
+        - X
+        - X
+        - ''
+        - ''
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - O
+        - ''
+        - X
+        - X
+        - X
+        - O
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - O
+        - O
+        - X
+        - X
+        - ''
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - O
+        - O
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - O
+        - X
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - O
+        - X
+        - X
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - O
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - X
+        - ''
+        - O
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - X
+        - ''
+        - X
+        - X
+        - O
+        - O
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - X
+        - O
+        - ''
+        - ''
+        - X
+        - O
+        - X
+        - O
+      - - ''
+        - X
+        - O
+        - X
+        - O
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - X
+        - O
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - X
+        - O
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - O
+        - X
+        - X
+        - O
+        - O
+        - ''
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - X
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - O
+        - O
+        - X
+      - - ''
+        - X
+        - X
+        - O
+        - O
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - ''
+        - X
+        - X
+        - O
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+        - O
+        - O
+        - X
+      - - ''
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - X
+        - O
+        - O
+        - O
+        - X
+      - - ''
+        - X
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - X
+        - X
+        - O
+        - O
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - X
+        - X
+        - O
+        - O
+        - O
+        - ''
+        - X
+        - O
+        - X
+      - - ''
+        - X
+        - X
+        - X
+        - O
+        - O
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - ''
+        - X
+        - X
+        - X
+        - O
+        - O
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - O
+        - ''
+        - ''
+        - O
+        - X
+        - X
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - ''
+        - ''
+        - O
+        - X
+        - X
+        - X
+        - X
+        - O
+        - O
+        - X
+      - - O
+        - ''
+        - ''
+        - X
+        - O
+        - ''
+        - X
+        - O
+        - X
+        - X
+        - O
+      - - O
+        - ''
+        - ''
+        - X
+        - O
+        - X
+        - X
+        - O
+        - ''
+        - X
+        - O
+      - - O
+        - ''
+        - ''
+        - X
+        - X
+        - O
+        - O
+        - X
+        - X
+        - O
+        - X
+      - - O
+        - ''
+        - ''
+        - X
+        - X
+        - O
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - ''
+        - O
+        - ''
+        - ''
+        - X
+        - O
+        - X
+        - X
+        - X
+        - O
+      - - O
+        - ''
+        - O
+        - ''
+        - ''
+        - X
+        - X
+        - O
+        - X
+        - X
+        - O
+      - - O
+        - ''
+        - O
+        - ''
+        - X
+        - ''
+        - X
+        - O
+        - X
+        - X
+        - O
+      - - O
+        - ''
+        - O
+        - O
+        - X
+        - X
+        - ''
+        - ''
+        - X
+        - X
+        - O
+      - - O
+        - ''
+        - O
+        - X
+        - ''
+        - ''
+        - X
+        - O
+        - X
+        - X
+        - O
+      - - O
+        - ''
+        - O
+        - X
+        - ''
+        - ''
+        - X
+        - X
+        - O
+        - X
+        - O
+      - - O
+        - ''
+        - O
+        - X
+        - O
+        - X
+        - ''
+        - ''
+        - X
+        - X
+        - O
+      - - O
+        - ''
+        - O
+        - X
+        - O
+        - X
+        - ''
+        - X
+        - ''
+        - X
+        - O
+      - - O
+        - ''
+        - O
+        - X
+        - O
+        - X
+        - X
+        - ''
+        - ''
+        - X
+        - O
+      - - O
+        - ''
+        - O
+        - X
+        - X
+        - O
+        - X
+        - ''
+        - ''
+        - X
+        - O
+      - - O
+        - ''
+        - X
+        - ''
+        - ''
+        - O
+        - O
+        - X
+        - X
+        - X
+        - O
+      - - O
+        - ''
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - ''
+        - X
+        - X
+        - O
+      - - O
+        - ''
+        - X
+        - X
+        - ''
+        - ''
+        - O
+        - ''
+        - X
+        - O
+        - X
+      - - O
+        - ''
+        - X
+        - X
+        - ''
+        - O
+        - ''
+        - ''
+        - X
+        - O
+        - X
+      - - O
+        - ''
+        - X
+        - X
+        - ''
+        - O
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - ''
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - X
+        - O
+        - X
+      - - O
+        - ''
+        - X
+        - X
+        - O
+        - ''
+        - X
+        - O
+        - ''
+        - X
+        - O
+      - - O
+        - ''
+        - X
+        - X
+        - O
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - X
+      - - O
+        - ''
+        - X
+        - X
+        - O
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - X
+      - - O
+        - ''
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - ''
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - X
+        - O
+        - O
+        - X
+      - - O
+        - ''
+        - X
+        - X
+        - X
+        - O
+        - ''
+        - ''
+        - ''
+        - O
+        - X
+      - - O
+        - ''
+        - X
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - ''
+        - X
+        - X
+        - X
+        - O
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - O
+        - ''
+        - X
+        - X
+        - X
+        - O
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - O
+        - O
+        - ''
+        - ''
+        - X
+        - ''
+        - O
+        - X
+        - X
+        - X
+        - O
+      - - O
+        - O
+        - ''
+        - X
+        - O
+        - X
+        - X
+        - ''
+        - ''
+        - X
+        - O
+      - - O
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - X
+      - - O
+        - O
+        - X
+        - ''
+        - X
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - O
+        - O
+        - X
+        - O
+        - ''
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - X
+      - - O
+        - O
+        - X
+        - X
+        - ''
+        - ''
+        - O
+        - X
+        - X
+        - O
+        - X
+      - - O
+        - O
+        - X
+        - X
+        - ''
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - X
+      - - O
+        - O
+        - X
+        - X
+        - ''
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - X
+      - - O
+        - O
+        - X
+        - X
+        - ''
+        - O
+        - X
+        - X
+        - ''
+        - O
+        - X
+      - - O
+        - O
+        - X
+        - X
+        - ''
+        - X
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - O
+        - O
+        - X
+        - X
+        - O
+        - ''
+        - ''
+        - X
+        - X
+        - O
+        - X
+      - - O
+        - O
+        - X
+        - X
+        - X
+        - ''
+        - ''
+        - ''
+        - ''
+        - O
+        - X
+      - - O
+        - O
+        - X
+        - X
+        - X
+        - ''
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - O
+        - X
+        - X
+        - X
+        - ''
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - O
+        - O
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - ''
+        - X
+        - O
+        - X
+      - - O
+        - O
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - O
+        - O
+        - X
+        - X
+        - X
+        - O
+        - ''
+        - ''
+        - X
+        - O
+        - X
+      - - O
+        - O
+        - X
+        - X
+        - X
+        - O
+        - ''
+        - X
+        - ''
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - ''
+        - ''
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - ''
+        - O
+        - ''
+        - O
+        - X
+        - X
+        - X
+        - O
+      - - O
+        - X
+        - ''
+        - ''
+        - O
+        - X
+        - O
+        - X
+        - ''
+        - X
+        - O
+      - - O
+        - X
+        - ''
+        - ''
+        - O
+        - X
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - ''
+        - X
+        - ''
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - ''
+        - X
+        - X
+        - X
+        - O
+        - O
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - O
+        - O
+        - X
+        - X
+        - ''
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - O
+        - X
+        - ''
+        - X
+        - ''
+        - ''
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - O
+        - X
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - O
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - O
+        - X
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - X
+        - ''
+        - ''
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - X
+        - ''
+        - O
+        - ''
+        - ''
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - X
+        - ''
+        - O
+        - O
+        - X
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - ''
+        - X
+        - O
+      - - O
+        - X
+        - ''
+        - X
+        - O
+        - ''
+        - X
+        - O
+        - ''
+        - X
+        - O
+      - - O
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - X
+        - O
+        - X
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - X
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - X
+        - X
+        - O
+        - O
+        - ''
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - ''
+        - X
+        - X
+        - O
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - O
+        - X
+        - O
+        - ''
+        - ''
+        - ''
+        - X
+        - ''
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - X
+        - ''
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - O
+        - ''
+        - X
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - O
+        - ''
+        - X
+        - X
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - O
+        - ''
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+      - - O
+        - X
+        - O
+        - ''
+        - X
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - O
+        - X
+        - O
+        - O
+        - ''
+        - X
+        - X
+        - ''
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - O
+        - O
+        - ''
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - X
+      - - O
+        - X
+        - O
+        - O
+        - X
+        - ''
+        - X
+        - ''
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - O
+        - O
+        - X
+        - X
+        - X
+        - ''
+        - ''
+        - O
+        - X
+      - - O
+        - X
+        - O
+        - X
+        - ''
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - O
+        - X
+        - ''
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - O
+        - X
+        - ''
+        - X
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - O
+        - X
+        - ''
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - O
+        - X
+        - O
+        - X
+        - O
+        - ''
+        - X
+        - ''
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - O
+        - X
+        - O
+        - X
+        - ''
+        - ''
+        - ''
+        - X
+        - O
+      - - O
+        - X
+        - O
+        - X
+        - X
+        - ''
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - O
+        - X
+        - X
+        - ''
+        - O
+        - ''
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - O
+        - X
+        - X
+        - ''
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - O
+        - X
+        - O
+        - X
+        - X
+        - O
+        - ''
+        - ''
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - X
+        - ''
+        - ''
+        - O
+        - O
+        - ''
+        - X
+        - X
+        - O
+      - - O
+        - X
+        - X
+        - ''
+        - ''
+        - O
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - X
+        - ''
+        - ''
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - O
+      - - O
+        - X
+        - X
+        - ''
+        - O
+        - ''
+        - O
+        - X
+        - ''
+        - X
+        - O
+      - - O
+        - X
+        - X
+        - ''
+        - O
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - ''
+        - ''
+        - X
+        - X
+        - O
+      - - O
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - ''
+        - X
+        - ''
+        - X
+        - O
+      - - O
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+        - ''
+        - ''
+        - X
+        - O
+      - - O
+        - X
+        - X
+        - ''
+        - X
+        - ''
+        - O
+        - O
+        - ''
+        - X
+        - O
+      - - O
+        - X
+        - X
+        - ''
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - X
+        - O
+        - ''
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - X
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - O
+        - X
+        - X
+        - O
+        - O
+        - ''
+        - ''
+        - X
+        - ''
+        - X
+        - O
+      - - O
+        - X
+        - X
+        - X
+        - ''
+        - ''
+        - O
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - O
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - O
+        - X
+        - X
+        - X
+        - O
+        - ''
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - ''
+        - X
+        - O
+        - X
+      - - O
+        - X
+        - X
+        - X
+        - O
+        - O
+        - ''
+        - ''
+        - ''
+        - X
+        - O
+      - - O
+        - X
+        - X
+        - X
+        - X
+        - O
+        - ''
+        - ''
+        - O
+        - O
+        - X
+      - - O
+        - X
+        - X
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - ''
+        - O
+        - X
+      - - O
+        - X
+        - X
+        - X
+        - X
+        - O
+        - O
+        - ''
+        - ''
+        - O
+        - X
+      - - X
+        - ''
+        - ''
+        - ''
+        - O
+        - O
+        - O
+        - X
+        - X
+        - X
+        - O
+      - - X
+        - ''
+        - ''
+        - O
+        - ''
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - ''
+        - ''
+        - O
+        - ''
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+      - - X
+        - ''
+        - ''
+        - O
+        - O
+        - ''
+        - X
+        - O
+        - X
+        - X
+        - O
+      - - X
+        - ''
+        - ''
+        - O
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - X
+        - O
+      - - X
+        - ''
+        - ''
+        - O
+        - X
+        - ''
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - ''
+        - ''
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - X
+        - ''
+        - ''
+        - O
+        - X
+        - X
+        - O
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - ''
+        - ''
+        - O
+        - X
+        - X
+        - X
+        - O
+        - O
+        - O
+        - X
+      - - X
+        - ''
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - O
+      - - X
+        - ''
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - O
+        - ''
+        - X
+        - O
+      - - X
+        - ''
+        - ''
+        - X
+        - X
+        - O
+        - O
+        - ''
+        - O
+        - X
+        - O
+      - - X
+        - ''
+        - O
+        - ''
+        - ''
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+      - - X
+        - ''
+        - O
+        - ''
+        - O
+        - X
+        - ''
+        - O
+        - X
+        - X
+        - O
+      - - X
+        - ''
+        - O
+        - ''
+        - O
+        - X
+        - X
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - ''
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - ''
+        - O
+        - ''
+        - X
+        - X
+        - X
+        - O
+        - O
+        - O
+        - X
+      - - X
+        - ''
+        - O
+        - O
+        - ''
+        - ''
+        - X
+        - X
+        - O
+        - X
+        - O
+      - - X
+        - ''
+        - O
+        - O
+        - ''
+        - X
+        - X
+        - ''
+        - ''
+        - O
+        - X
+      - - X
+        - ''
+        - O
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - X
+        - ''
+        - O
+        - O
+        - O
+        - X
+        - X
+        - ''
+        - X
+        - O
+        - X
+      - - X
+        - ''
+        - O
+        - O
+        - O
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - ''
+        - O
+        - O
+        - X
+        - ''
+        - X
+        - ''
+        - O
+        - X
+        - O
+      - - X
+        - ''
+        - O
+        - O
+        - X
+        - X
+        - ''
+        - ''
+        - ''
+        - O
+        - X
+      - - X
+        - ''
+        - O
+        - O
+        - X
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - ''
+        - O
+        - O
+        - X
+        - X
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - ''
+        - O
+        - O
+        - X
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - X
+        - ''
+        - X
+        - ''
+        - ''
+        - ''
+        - O
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - ''
+        - X
+        - ''
+        - O
+        - X
+        - O
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - ''
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - ''
+        - X
+        - O
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - ''
+        - X
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - O
+        - O
+        - X
+      - - X
+        - ''
+        - X
+        - O
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - ''
+        - X
+        - O
+        - O
+        - X
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - ''
+        - X
+        - O
+        - O
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+      - - X
+        - ''
+        - X
+        - O
+        - X
+        - ''
+        - O
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - ''
+        - ''
+        - ''
+        - O
+        - X
+      - - X
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - ''
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - O
+        - X
+        - O
+        - X
+      - - X
+        - ''
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - ''
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - ''
+        - X
+        - X
+        - O
+        - O
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - ''
+        - X
+        - X
+        - O
+        - O
+        - O
+        - ''
+        - X
+        - O
+        - X
+      - - X
+        - ''
+        - X
+        - X
+        - O
+        - O
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - ''
+        - ''
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - ''
+        - O
+        - X
+        - X
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - ''
+        - X
+        - ''
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - ''
+        - X
+        - ''
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - ''
+        - X
+        - X
+        - O
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - ''
+        - X
+        - X
+        - X
+        - O
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - O
+        - ''
+        - X
+        - ''
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - O
+        - ''
+        - X
+        - O
+        - X
+        - X
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - O
+        - O
+        - X
+        - ''
+        - X
+        - X
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - O
+        - O
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - O
+        - X
+        - ''
+        - ''
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - O
+        - X
+        - ''
+        - X
+        - ''
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - O
+        - X
+        - ''
+        - X
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - O
+        - X
+        - O
+        - X
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - O
+        - X
+        - X
+        - ''
+        - ''
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - O
+        - X
+        - X
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - O
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - O
+        - X
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - X
+        - ''
+        - O
+        - O
+        - X
+        - X
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - X
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - X
+        - O
+        - ''
+        - O
+        - ''
+        - X
+        - X
+        - O
+      - - X
+        - O
+        - ''
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - ''
+        - X
+        - O
+      - - X
+        - O
+        - ''
+        - X
+        - O
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - X
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - ''
+        - ''
+        - X
+        - O
+      - - X
+        - O
+        - ''
+        - X
+        - X
+        - ''
+        - O
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - O
+        - ''
+        - ''
+        - X
+        - X
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - O
+        - ''
+        - O
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - O
+        - ''
+        - X
+        - X
+        - ''
+        - ''
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - O
+        - ''
+        - X
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - O
+        - ''
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - O
+        - ''
+        - X
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - O
+        - O
+        - ''
+        - X
+        - ''
+        - X
+        - X
+        - O
+        - X
+      - - X
+        - O
+        - O
+        - O
+        - ''
+        - X
+        - X
+        - ''
+        - X
+        - O
+        - X
+      - - X
+        - O
+        - O
+        - O
+        - ''
+        - X
+        - X
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - O
+        - O
+        - X
+        - ''
+        - X
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - O
+        - O
+        - X
+        - X
+        - ''
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - O
+        - O
+        - X
+        - X
+        - X
+        - ''
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - O
+        - X
+        - ''
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - X
+      - - X
+        - O
+        - O
+        - X
+        - ''
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - O
+        - X
+        - X
+        - ''
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - ''
+        - ''
+        - ''
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - ''
+        - ''
+        - ''
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - ''
+        - ''
+        - O
+        - O
+        - X
+        - X
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - ''
+        - ''
+        - O
+        - X
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - ''
+        - ''
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - O
+      - - X
+        - O
+        - X
+        - ''
+        - O
+        - ''
+        - O
+        - X
+        - X
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - ''
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - ''
+        - O
+        - O
+        - ''
+        - ''
+        - X
+        - X
+        - O
+      - - X
+        - O
+        - X
+        - ''
+        - O
+        - X
+        - ''
+        - ''
+        - O
+        - X
+        - O
+      - - X
+        - O
+        - X
+        - ''
+        - O
+        - X
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - ''
+        - X
+        - ''
+        - O
+        - ''
+        - O
+        - X
+        - O
+      - - X
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - ''
+        - ''
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - O
+        - ''
+        - ''
+        - O
+        - X
+        - X
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - O
+        - ''
+        - ''
+        - X
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - O
+        - ''
+        - X
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - O
+        - ''
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - O
+        - O
+        - ''
+        - X
+        - ''
+        - ''
+        - X
+        - O
+      - - X
+        - O
+        - X
+        - O
+        - O
+        - X
+        - ''
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - O
+        - X
+        - ''
+        - ''
+        - ''
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - O
+        - X
+        - ''
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - O
+        - X
+        - ''
+        - O
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - O
+        - X
+        - O
+        - ''
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - O
+        - X
+        - X
+        - ''
+        - ''
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - O
+        - X
+        - X
+        - ''
+        - O
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - O
+        - X
+        - X
+        - O
+        - ''
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - X
+        - ''
+        - ''
+        - O
+        - ''
+        - O
+        - X
+        - O
+      - - X
+        - O
+        - X
+        - X
+        - ''
+        - O
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - ''
+        - X
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - X
+        - O
+        - ''
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - ''
+        - ''
+        - X
+        - O
+      - - X
+        - O
+        - X
+        - X
+        - O
+        - O
+        - ''
+        - X
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - X
+        - X
+        - O
+        - ''
+        - ''
+        - O
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - ''
+        - O
+        - X
+      - - X
+        - O
+        - X
+        - X
+        - X
+        - O
+        - O
+        - ''
+        - ''
+        - O
+        - X
+      - - X
+        - X
+        - ''
+        - ''
+        - O
+        - X
+        - X
+        - O
+        - O
+        - O
+        - X
+      - - X
+        - X
+        - ''
+        - O
+        - ''
+        - X
+        - O
+        - O
+        - X
+        - O
+        - X
+      - - X
+        - X
+        - ''
+        - O
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - X
+        - ''
+        - O
+        - ''
+        - X
+        - X
+        - O
+        - O
+        - O
+        - X
+      - - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+      - - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - X
+        - X
+        - ''
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - O
+        - X
+      - - X
+        - X
+        - ''
+        - O
+        - X
+        - O
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - X
+        - X
+        - ''
+        - X
+        - ''
+        - O
+        - O
+        - O
+        - X
+        - O
+        - X
+      - - X
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - X
+        - X
+        - O
+        - ''
+        - ''
+        - O
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - X
+        - X
+        - O
+        - ''
+        - ''
+        - X
+        - X
+        - O
+        - O
+        - O
+        - X
+      - - X
+        - X
+        - O
+        - ''
+        - O
+        - ''
+        - ''
+        - X
+        - O
+        - X
+        - O
+      - - X
+        - X
+        - O
+        - ''
+        - O
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - X
+        - X
+        - O
+        - ''
+        - O
+        - O
+        - ''
+        - X
+        - ''
+        - X
+        - O
+      - - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - X
+        - ''
+        - O
+        - O
+        - X
+      - - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - X
+        - X
+        - O
+        - ''
+        - X
+        - ''
+        - ''
+        - O
+        - O
+        - X
+        - O
+      - - X
+        - X
+        - O
+        - O
+        - ''
+        - ''
+        - X
+        - ''
+        - O
+        - X
+        - O
+      - - X
+        - X
+        - O
+        - O
+        - ''
+        - ''
+        - X
+        - O
+        - X
+        - O
+        - X
+      - - X
+        - X
+        - O
+        - O
+        - ''
+        - X
+        - ''
+        - O
+        - X
+        - O
+        - X
+      - - X
+        - X
+        - O
+        - O
+        - ''
+        - X
+        - ''
+        - X
+        - O
+        - O
+        - X
+      - - X
+        - X
+        - O
+        - O
+        - O
+        - ''
+        - ''
+        - ''
+        - X
+        - X
+        - O
+      - - X
+        - X
+        - O
+        - O
+        - O
+        - ''
+        - ''
+        - X
+        - ''
+        - X
+        - O
+      - - X
+        - X
+        - O
+        - O
+        - O
+        - ''
+        - X
+        - ''
+        - ''
+        - X
+        - O
+      - - X
+        - X
+        - O
+        - O
+        - O
+        - X
+        - ''
+        - ''
+        - ''
+        - X
+        - O
+      - - X
+        - X
+        - O
+        - O
+        - X
+        - ''
+        - X
+        - O
+        - ''
+        - O
+        - X
+      - - X
+        - X
+        - O
+        - O
+        - X
+        - X
+        - ''
+        - ''
+        - O
+        - O
+        - X
+      - - X
+        - X
+        - O
+        - O
+        - X
+        - X
+        - ''
+        - O
+        - ''
+        - O
+        - X
+      - - X
+        - X
+        - O
+        - O
+        - X
+        - X
+        - O
+        - ''
+        - ''
+        - O
+        - X
+      - - X
+        - X
+        - O
+        - X
+        - ''
+        - ''
+        - O
+        - ''
+        - O
+        - X
+        - O
+      - - X
+        - X
+        - O
+        - X
+        - ''
+        - O
+        - ''
+        - O
+        - X
+        - O
+        - X
+    defeasibly: *id001

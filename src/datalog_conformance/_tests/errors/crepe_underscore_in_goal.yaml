@@ -1,0 +1,11 @@
+name: crepe_underscore_in_goal
+description: This test tries to derive a rule with an ignored variable "_"
+source: crepe/tests/ui/underscore_in_goal.rs
+tags:
+- errors
+- crepe
+program:
+  facts: {}
+  rules:
+  - Ok(_) :- Ok(_)
+expect_error: safety_violations

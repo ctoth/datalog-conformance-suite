@@ -1,0 +1,73 @@
+source: derived/strict-only/basic/souffle_example_bigrams.yaml
+tags:
+- defeasible
+- strict-only
+- example
+- souffle
+tests:
+- name: strict_only_souffle_bigrams_bigram
+  description: Strict-only defeasible form of souffle_bigrams_bigram.
+  source: souffle/example/bigrams
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      words:
+      - - 0
+        - There
+      - - 1
+        - are
+      - - 2
+        - four
+      - - 3
+        - red
+      - - 4
+        - birds
+      - - 5
+        - and
+      - - 6
+        - five
+      - - 7
+        - green
+      - - 8
+        - birds
+      - - 9
+        - in
+      - - 10
+        - the
+      - - 11
+        - tree
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      bigram:
+      - - There
+        - are
+      - - are
+        - four
+      - - four
+        - red
+      - - red
+        - birds
+      - - birds
+        - and
+      - - birds
+        - in
+      - - and
+        - five
+      - - five
+        - green
+      - - green
+        - birds
+      - - in
+        - the
+      - - the
+        - tree
+    defeasibly: *id001

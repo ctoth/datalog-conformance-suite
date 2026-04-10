@@ -1,0 +1,76 @@
+source: derived/strict-only/recursion/souffle_evaluation_mutrecursion.yaml
+tags:
+- defeasible
+- strict-only
+- evaluation
+- souffle
+tests:
+- name: strict_only_souffle_mutrecursion_p
+  description: Strict-only defeasible form of souffle_mutrecursion_p.
+  source: souffle/evaluation/mutrecursion
+  tags:
+  - defeasible
+  - evaluation
+  - recursion
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      p: &id002
+      - - b
+      q: &id003
+      - - c
+      - - d
+    strict_rules:
+    - id: r1
+      head: p(X)
+      body:
+      - q(X)
+    - id: r2
+      head: q(X)
+      body:
+      - p(X)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      p:
+      - - a
+      - - b
+      - - c
+      - - d
+    defeasibly: *id001
+- name: strict_only_souffle_mutrecursion_q
+  description: Strict-only defeasible form of souffle_mutrecursion_q.
+  source: souffle/evaluation/mutrecursion
+  tags:
+  - defeasible
+  - evaluation
+  - recursion
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      p: *id002
+      q: *id003
+    strict_rules:
+    - id: r1
+      head: p(X)
+      body:
+      - q(X)
+    - id: r2
+      head: q(X)
+      body:
+      - p(X)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id004
+      q:
+      - - c
+      - - d
+      - - a
+      - - b
+    defeasibly: *id004

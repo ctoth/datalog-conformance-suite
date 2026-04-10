@@ -1,0 +1,86 @@
+source: souffle/evaluation/rmut
+tags:
+- evaluation
+- souffle
+tests:
+- name: souffle_rmut_X
+  description: Harvested from Souffle testcase rmut, asserting exported relation X.
+  tags:
+  - basic
+  - evaluation
+  - souffle
+  program:
+    facts: &id001
+      X:
+      - - b
+      - - c
+    rules: &id002
+    - A(x) :- X(x).
+    - B(x) :- X(x), A(x).
+    - C(x) :- X(x), A(x), B(x).
+    - D(x) :- X(x), A(x), B(x), C(x).
+    - A(x) :- X(x), A(x), B(x), C(x), D(x).
+    - B(x) :- X(x), A(x), B(x), C(x), D(x).
+    - C(x) :- X(x), A(x), B(x), C(x), D(x).
+    - D(x) :- X(x), A(x), B(x), C(x), D(x).
+  expect:
+    X:
+    - - a
+    - - b
+    - - c
+- name: souffle_rmut_A
+  description: Harvested from Souffle testcase rmut, asserting exported relation A.
+  tags:
+  - evaluation
+  - recursion
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    A:
+    - - a
+    - - b
+    - - c
+- name: souffle_rmut_B
+  description: Harvested from Souffle testcase rmut, asserting exported relation B.
+  tags:
+  - evaluation
+  - recursion
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    B:
+    - - a
+    - - b
+    - - c
+- name: souffle_rmut_C
+  description: Harvested from Souffle testcase rmut, asserting exported relation C.
+  tags:
+  - evaluation
+  - recursion
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    C:
+    - - a
+    - - b
+    - - c
+- name: souffle_rmut_D
+  description: Harvested from Souffle testcase rmut, asserting exported relation D.
+  tags:
+  - evaluation
+  - recursion
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    D:
+    - - a
+    - - b
+    - - c

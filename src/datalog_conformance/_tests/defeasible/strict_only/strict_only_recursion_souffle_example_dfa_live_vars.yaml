@@ -1,0 +1,127 @@
+source: derived/strict-only/recursion/souffle_example_dfa_live_vars.yaml
+tags:
+- defeasible
+- strict-only
+- example
+- souffle
+tests:
+- name: strict_only_souffle_dfa_live_vars_live_vars_in
+  description: Strict-only defeasible form of souffle_dfa_live_vars_live_vars_in.
+  source: souffle/example/dfa_live_vars
+  tags:
+  - defeasible
+  - example
+  - recursion
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      cf_edge: &id002
+      - - B
+        - C
+      - - C
+        - C
+      - - C
+        - D
+      - - B
+        - D
+      - - D
+        - E
+      def: &id003
+      - - A
+        - x1
+      - - B
+        - x2
+      - - C
+        - x2
+      - - D
+        - x3
+      use: &id004
+      - - B
+        - x1
+      - - C
+        - x2
+      - - D
+        - x2
+      - - E
+        - x2
+      - - E
+        - x3
+    strict_rules:
+    - id: r1
+      head: live_vars_in(x,v)
+      body:
+      - use(x,v)
+    - id: r2
+      head: live_vars_in(x,v)
+      body:
+      - not def(x,v)
+      - live_vars_out(x,v)
+    - id: r3
+      head: live_vars_out(x,v)
+      body:
+      - cf_edge(x,y)
+      - live_vars_in(y,v)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      live_vars_in:
+      - - B
+        - x1
+      - - C
+        - x2
+      - - D
+        - x2
+      - - E
+        - x2
+      - - E
+        - x3
+    defeasibly: *id001
+- name: strict_only_souffle_dfa_live_vars_live_vars_out
+  description: Strict-only defeasible form of souffle_dfa_live_vars_live_vars_out.
+  source: souffle/example/dfa_live_vars
+  tags:
+  - defeasible
+  - example
+  - recursion
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      cf_edge: *id002
+      def: *id003
+      use: *id004
+    strict_rules:
+    - id: r1
+      head: live_vars_in(x,v)
+      body:
+      - use(x,v)
+    - id: r2
+      head: live_vars_in(x,v)
+      body:
+      - not def(x,v)
+      - live_vars_out(x,v)
+    - id: r3
+      head: live_vars_out(x,v)
+      body:
+      - cf_edge(x,y)
+      - live_vars_in(y,v)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id005
+      live_vars_out:
+      - - A
+        - x1
+      - - B
+        - x2
+      - - C
+        - x2
+      - - D
+        - x2
+      - - D
+        - x3
+    defeasibly: *id005

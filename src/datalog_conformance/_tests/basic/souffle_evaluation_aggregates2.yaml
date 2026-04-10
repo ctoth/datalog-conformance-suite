@@ -1,0 +1,210 @@
+source: souffle/evaluation/aggregates2
+tags:
+- evaluation
+- souffle
+tests:
+- name: souffle_aggregates2_C1
+  description: Harvested from Souffle testcase aggregates2, asserting exported relation
+    C1.
+  tags:
+  - basic
+  - evaluation
+  - souffle
+  program:
+    facts: &id001
+      B:
+      - - 1
+        - 0
+      - - 2
+        - 1
+      - - 3
+        - 1
+      - - 4
+        - 2
+      - - 5
+        - 3
+      - - 6
+        - 3
+      - - 7
+        - 3
+      - - 8
+        - 4
+      - - 9
+        - 5
+      - - 10
+        - 5
+      A:
+      - - 2
+        - 1
+      - - 3
+        - 1
+      - - 4
+        - 1
+      - - 4
+        - 3
+      - - 5
+        - 1
+      - - 5
+        - 4
+      - - 5
+        - 3
+      - - 6
+        - 1
+      - - 6
+        - 4
+      - - 6
+        - 3
+      - - 7
+        - 1
+      - - 7
+        - 4
+      - - 7
+        - 3
+      - - 8
+        - 1
+      - - 8
+        - 4
+      - - 8
+        - 3
+      - - 8
+        - 7
+      - - 9
+        - 1
+      - - 9
+        - 4
+      - - 9
+        - 8
+      - - 9
+        - 3
+      - - 9
+        - 7
+      - - 10
+        - 1
+      - - 10
+        - 4
+      - - 10
+        - 8
+      - - 10
+        - 3
+      - - 10
+        - 7
+    rules: &id002 []
+  expect:
+    C1:
+    - - 2
+      - 1
+    - - 3
+      - 1
+    - - 4
+      - 3
+    - - 5
+      - 4
+    - - 6
+      - 4
+    - - 7
+      - 4
+    - - 8
+      - 7
+    - - 9
+      - 8
+    - - 10
+      - 8
+- name: souffle_aggregates2_C2
+  description: Harvested from Souffle testcase aggregates2, asserting exported relation
+    C2.
+  tags:
+  - basic
+  - evaluation
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    C2:
+    - - 2
+      - 1
+      - 0
+    - - 3
+      - 1
+      - 0
+    - - 4
+      - 3
+      - 1
+    - - 5
+      - 4
+      - 2
+    - - 6
+      - 4
+      - 2
+    - - 7
+      - 4
+      - 2
+    - - 8
+      - 7
+      - 3
+    - - 9
+      - 8
+      - 4
+    - - 10
+      - 8
+      - 4
+- name: souffle_aggregates2_C3
+  description: Harvested from Souffle testcase aggregates2, asserting exported relation
+    C3.
+  tags:
+  - basic
+  - evaluation
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    C3:
+    - - 2
+      - 1
+    - - 3
+      - 1
+    - - 4
+      - 3
+    - - 5
+      - 4
+    - - 6
+      - 4
+    - - 7
+      - 4
+    - - 8
+      - 7
+    - - 9
+      - 8
+    - - 10
+      - 8
+- name: souffle_aggregates2_C4
+  description: Harvested from Souffle testcase aggregates2, asserting exported relation
+    C4.
+  tags:
+  - basic
+  - evaluation
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    C4:
+    - - 2
+      - 1
+    - - 3
+      - 1
+    - - 4
+      - 3
+    - - 5
+      - 4
+    - - 6
+      - 4
+    - - 7
+      - 4
+    - - 8
+      - 7
+    - - 9
+      - 8
+    - - 10
+      - 8

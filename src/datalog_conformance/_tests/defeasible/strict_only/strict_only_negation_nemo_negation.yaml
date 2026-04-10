@@ -1,0 +1,1788 @@
+source: derived/strict-only/negation/nemo_negation.yaml
+tags:
+- defeasible
+- strict-only
+- basic
+- negation
+- nemo
+tests:
+- name: strict_only_nemo_negation_projectedZ
+  description: Strict-only defeasible form of nemo_negation_projectedZ.
+  source: nemo/testcases/basic/negation.rls
+  tags:
+  - basic
+  - defeasible
+  - negation
+  - nemo
+  - projectedz
+  - strict-only
+  theory:
+    facts:
+      main: &id002
+      - - 2
+        - 0
+        - 0
+      - - 2
+        - 0
+        - 1
+      - - 2
+        - 1
+        - 0
+      - - 2
+        - 5
+        - 2
+      - - 2
+        - 5
+        - 3
+      - - 4
+        - 0
+        - 0
+      - - 4
+        - 2
+        - 1
+      - - 4
+        - 5
+        - 1
+      - - 6
+        - 2
+        - 0
+      - - 6
+        - 9
+        - 2
+      - - 8
+        - 1
+        - 2
+      - - 8
+        - 4
+        - 2
+      - - 8
+        - 5
+        - 1
+      s1: &id003
+      - - 0
+      - - 1
+      - - 3
+      - - 6
+      - - 9
+      - - 10
+      s2: &id004
+      - - 2
+        - 5
+      - - 4
+        - 2
+      - - 6
+        - 0
+      - - 8
+        - 2
+      - - 9
+        - 2
+      s3: &id005
+      - - 2
+        - 0
+        - 0
+      - - 2
+        - 0
+        - 1
+      - - 2
+        - 1
+        - 0
+      - - 2
+        - 5
+        - 2
+      - - 2
+        - 2
+        - 9
+      - - 2
+        - 5
+        - 3
+      - - 3
+        - 3
+        - 7
+      - - 4
+        - 0
+        - 0
+      - - 4
+        - 2
+        - 1
+      - - 4
+        - 4
+        - 8
+      - - 4
+        - 5
+        - 1
+      - - 6
+        - 2
+        - 0
+      - - 6
+        - 9
+        - 2
+      - - 6
+        - 4
+        - 6
+      - - 8
+        - 1
+        - 2
+      - - 8
+        - 4
+        - 2
+      - - 8
+        - 5
+        - 1
+      - - 8
+        - 5
+        - 8
+    strict_rules:
+    - id: r1
+      head: singlePositionX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+    - id: r2
+      head: singlePositionY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Y)
+    - id: r3
+      head: singlePositionZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Z)
+    - id: r4
+      head: multiple(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+      - not s2(X, Y)
+      - not s2(X, Z)
+      - not s2(Y, Z)
+    - id: r5
+      head: reordered(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s2(Z, Y)
+    - id: r6
+      head: filteredX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, X)
+    - id: r7
+      head: filteredY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(4, Y, Y)
+    - id: r8
+      head: filteredZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(Z, Z, 7)
+    - id: r9
+      head: projectedXY(X, Y)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, P)
+    - id: r10
+      head: projectedYZ(Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, Y)
+    - id: r11
+      head: projectedXZ(X, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, Z, P)
+    - id: r12
+      head: projectedX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, P, P)
+    - id: r13
+      head: projectedY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, P, Y)
+    - id: r14
+      head: projectedZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, P)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      projectedZ:
+      - - 2
+        - 0
+        - 0
+      - - 2
+        - 0
+        - 1
+      - - 2
+        - 1
+        - 0
+      - - 2
+        - 5
+        - 2
+      - - 2
+        - 5
+        - 3
+      - - 4
+        - 0
+        - 0
+      - - 4
+        - 2
+        - 1
+      - - 4
+        - 5
+        - 1
+      - - 6
+        - 2
+        - 0
+      - - 6
+        - 9
+        - 2
+      - - 8
+        - 1
+        - 2
+      - - 8
+        - 4
+        - 2
+      - - 8
+        - 5
+        - 1
+    defeasibly: *id001
+- name: strict_only_nemo_negation_filteredX
+  description: Strict-only defeasible form of nemo_negation_filteredX.
+  source: nemo/testcases/basic/negation.rls
+  tags:
+  - basic
+  - defeasible
+  - filteredx
+  - negation
+  - nemo
+  - strict-only
+  theory:
+    facts:
+      main: *id002
+      s1: *id003
+      s2: *id004
+      s3: *id005
+    strict_rules:
+    - id: r1
+      head: singlePositionX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+    - id: r2
+      head: singlePositionY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Y)
+    - id: r3
+      head: singlePositionZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Z)
+    - id: r4
+      head: multiple(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+      - not s2(X, Y)
+      - not s2(X, Z)
+      - not s2(Y, Z)
+    - id: r5
+      head: reordered(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s2(Z, Y)
+    - id: r6
+      head: filteredX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, X)
+    - id: r7
+      head: filteredY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(4, Y, Y)
+    - id: r8
+      head: filteredZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(Z, Z, 7)
+    - id: r9
+      head: projectedXY(X, Y)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, P)
+    - id: r10
+      head: projectedYZ(Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, Y)
+    - id: r11
+      head: projectedXZ(X, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, Z, P)
+    - id: r12
+      head: projectedX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, P, P)
+    - id: r13
+      head: projectedY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, P, Y)
+    - id: r14
+      head: projectedZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, P)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id006
+      filteredX:
+      - - 4
+        - 0
+        - 0
+      - - 4
+        - 2
+        - 1
+      - - 4
+        - 5
+        - 1
+      - - 6
+        - 2
+        - 0
+      - - 6
+        - 9
+        - 2
+    defeasibly: *id006
+- name: strict_only_nemo_negation_projectedX
+  description: Strict-only defeasible form of nemo_negation_projectedX.
+  source: nemo/testcases/basic/negation.rls
+  tags:
+  - basic
+  - defeasible
+  - negation
+  - nemo
+  - projectedx
+  - strict-only
+  theory:
+    facts:
+      main: *id002
+      s1: *id003
+      s2: *id004
+      s3: *id005
+    strict_rules:
+    - id: r1
+      head: singlePositionX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+    - id: r2
+      head: singlePositionY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Y)
+    - id: r3
+      head: singlePositionZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Z)
+    - id: r4
+      head: multiple(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+      - not s2(X, Y)
+      - not s2(X, Z)
+      - not s2(Y, Z)
+    - id: r5
+      head: reordered(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s2(Z, Y)
+    - id: r6
+      head: filteredX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, X)
+    - id: r7
+      head: filteredY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(4, Y, Y)
+    - id: r8
+      head: filteredZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(Z, Z, 7)
+    - id: r9
+      head: projectedXY(X, Y)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, P)
+    - id: r10
+      head: projectedYZ(Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, Y)
+    - id: r11
+      head: projectedXZ(X, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, Z, P)
+    - id: r12
+      head: projectedX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, P, P)
+    - id: r13
+      head: projectedY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, P, Y)
+    - id: r14
+      head: projectedZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, P)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id007
+      projectedX:
+      - - 6
+        - 2
+        - 0
+      - - 6
+        - 9
+        - 2
+      - - 8
+        - 1
+        - 2
+      - - 8
+        - 4
+        - 2
+      - - 8
+        - 5
+        - 1
+    defeasibly: *id007
+- name: strict_only_nemo_negation_projectedY
+  description: Strict-only defeasible form of nemo_negation_projectedY.
+  source: nemo/testcases/basic/negation.rls
+  tags:
+  - basic
+  - defeasible
+  - negation
+  - nemo
+  - projectedy
+  - strict-only
+  theory:
+    facts:
+      main: *id002
+      s1: *id003
+      s2: *id004
+      s3: *id005
+    strict_rules:
+    - id: r1
+      head: singlePositionX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+    - id: r2
+      head: singlePositionY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Y)
+    - id: r3
+      head: singlePositionZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Z)
+    - id: r4
+      head: multiple(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+      - not s2(X, Y)
+      - not s2(X, Z)
+      - not s2(Y, Z)
+    - id: r5
+      head: reordered(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s2(Z, Y)
+    - id: r6
+      head: filteredX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, X)
+    - id: r7
+      head: filteredY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(4, Y, Y)
+    - id: r8
+      head: filteredZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(Z, Z, 7)
+    - id: r9
+      head: projectedXY(X, Y)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, P)
+    - id: r10
+      head: projectedYZ(Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, Y)
+    - id: r11
+      head: projectedXZ(X, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, Z, P)
+    - id: r12
+      head: projectedX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, P, P)
+    - id: r13
+      head: projectedY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, P, Y)
+    - id: r14
+      head: projectedZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, P)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id008
+      projectedY:
+      - - 2
+        - 0
+        - 0
+      - - 2
+        - 0
+        - 1
+      - - 2
+        - 1
+        - 0
+      - - 2
+        - 5
+        - 2
+      - - 2
+        - 5
+        - 3
+      - - 4
+        - 0
+        - 0
+      - - 4
+        - 2
+        - 1
+      - - 4
+        - 5
+        - 1
+      - - 6
+        - 2
+        - 0
+      - - 8
+        - 1
+        - 2
+      - - 8
+        - 4
+        - 2
+      - - 8
+        - 5
+        - 1
+    defeasibly: *id008
+- name: strict_only_nemo_negation_projectedXZ
+  description: Strict-only defeasible form of nemo_negation_projectedXZ.
+  source: nemo/testcases/basic/negation.rls
+  tags:
+  - basic
+  - defeasible
+  - negation
+  - nemo
+  - projectedxz
+  - strict-only
+  theory:
+    facts:
+      main: *id002
+      s1: *id003
+      s2: *id004
+      s3: *id005
+    strict_rules:
+    - id: r1
+      head: singlePositionX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+    - id: r2
+      head: singlePositionY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Y)
+    - id: r3
+      head: singlePositionZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Z)
+    - id: r4
+      head: multiple(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+      - not s2(X, Y)
+      - not s2(X, Z)
+      - not s2(Y, Z)
+    - id: r5
+      head: reordered(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s2(Z, Y)
+    - id: r6
+      head: filteredX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, X)
+    - id: r7
+      head: filteredY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(4, Y, Y)
+    - id: r8
+      head: filteredZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(Z, Z, 7)
+    - id: r9
+      head: projectedXY(X, Y)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, P)
+    - id: r10
+      head: projectedYZ(Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, Y)
+    - id: r11
+      head: projectedXZ(X, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, Z, P)
+    - id: r12
+      head: projectedX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, P, P)
+    - id: r13
+      head: projectedY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, P, Y)
+    - id: r14
+      head: projectedZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, P)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id009
+      projectedXZ:
+      - - 2
+        - 3
+      - - 4
+        - 1
+      - - 6
+        - 0
+      - - 8
+        - 2
+    defeasibly: *id009
+- name: strict_only_nemo_negation_multiple
+  description: Strict-only defeasible form of nemo_negation_multiple.
+  source: nemo/testcases/basic/negation.rls
+  tags:
+  - basic
+  - defeasible
+  - multiple
+  - negation
+  - nemo
+  - strict-only
+  theory:
+    facts:
+      main: *id002
+      s1: *id003
+      s2: *id004
+      s3: *id005
+    strict_rules:
+    - id: r1
+      head: singlePositionX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+    - id: r2
+      head: singlePositionY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Y)
+    - id: r3
+      head: singlePositionZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Z)
+    - id: r4
+      head: multiple(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+      - not s2(X, Y)
+      - not s2(X, Z)
+      - not s2(Y, Z)
+    - id: r5
+      head: reordered(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s2(Z, Y)
+    - id: r6
+      head: filteredX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, X)
+    - id: r7
+      head: filteredY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(4, Y, Y)
+    - id: r8
+      head: filteredZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(Z, Z, 7)
+    - id: r9
+      head: projectedXY(X, Y)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, P)
+    - id: r10
+      head: projectedYZ(Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, Y)
+    - id: r11
+      head: projectedXZ(X, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, Z, P)
+    - id: r12
+      head: projectedX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, P, P)
+    - id: r13
+      head: projectedY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, P, Y)
+    - id: r14
+      head: projectedZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, P)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id010
+      multiple:
+      - - 2
+        - 0
+        - 0
+      - - 2
+        - 0
+        - 1
+      - - 2
+        - 1
+        - 0
+      - - 4
+        - 0
+        - 0
+      - - 4
+        - 5
+        - 1
+      - - 8
+        - 5
+        - 1
+    defeasibly: *id010
+- name: strict_only_nemo_negation_singlePositionY
+  description: Strict-only defeasible form of nemo_negation_singlePositionY.
+  source: nemo/testcases/basic/negation.rls
+  tags:
+  - basic
+  - defeasible
+  - negation
+  - nemo
+  - singlepositiony
+  - strict-only
+  theory:
+    facts:
+      main: *id002
+      s1: *id003
+      s2: *id004
+      s3: *id005
+    strict_rules:
+    - id: r1
+      head: singlePositionX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+    - id: r2
+      head: singlePositionY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Y)
+    - id: r3
+      head: singlePositionZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Z)
+    - id: r4
+      head: multiple(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+      - not s2(X, Y)
+      - not s2(X, Z)
+      - not s2(Y, Z)
+    - id: r5
+      head: reordered(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s2(Z, Y)
+    - id: r6
+      head: filteredX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, X)
+    - id: r7
+      head: filteredY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(4, Y, Y)
+    - id: r8
+      head: filteredZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(Z, Z, 7)
+    - id: r9
+      head: projectedXY(X, Y)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, P)
+    - id: r10
+      head: projectedYZ(Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, Y)
+    - id: r11
+      head: projectedXZ(X, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, Z, P)
+    - id: r12
+      head: projectedX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, P, P)
+    - id: r13
+      head: projectedY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, P, Y)
+    - id: r14
+      head: projectedZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, P)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id011
+      singlePositionY:
+      - - 2
+        - 5
+        - 2
+      - - 2
+        - 5
+        - 3
+      - - 4
+        - 2
+        - 1
+      - - 4
+        - 5
+        - 1
+      - - 6
+        - 2
+        - 0
+      - - 8
+        - 4
+        - 2
+      - - 8
+        - 5
+        - 1
+    defeasibly: *id011
+- name: strict_only_nemo_negation_filteredY
+  description: Strict-only defeasible form of nemo_negation_filteredY.
+  source: nemo/testcases/basic/negation.rls
+  tags:
+  - basic
+  - defeasible
+  - filteredy
+  - negation
+  - nemo
+  - strict-only
+  theory:
+    facts:
+      main: *id002
+      s1: *id003
+      s2: *id004
+      s3: *id005
+    strict_rules:
+    - id: r1
+      head: singlePositionX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+    - id: r2
+      head: singlePositionY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Y)
+    - id: r3
+      head: singlePositionZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Z)
+    - id: r4
+      head: multiple(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+      - not s2(X, Y)
+      - not s2(X, Z)
+      - not s2(Y, Z)
+    - id: r5
+      head: reordered(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s2(Z, Y)
+    - id: r6
+      head: filteredX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, X)
+    - id: r7
+      head: filteredY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(4, Y, Y)
+    - id: r8
+      head: filteredZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(Z, Z, 7)
+    - id: r9
+      head: projectedXY(X, Y)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, P)
+    - id: r10
+      head: projectedYZ(Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, Y)
+    - id: r11
+      head: projectedXZ(X, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, Z, P)
+    - id: r12
+      head: projectedX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, P, P)
+    - id: r13
+      head: projectedY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, P, Y)
+    - id: r14
+      head: projectedZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, P)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id012
+      filteredY:
+      - - 2
+        - 1
+        - 0
+      - - 2
+        - 5
+        - 2
+      - - 2
+        - 5
+        - 3
+      - - 4
+        - 2
+        - 1
+      - - 4
+        - 5
+        - 1
+      - - 6
+        - 2
+        - 0
+      - - 6
+        - 9
+        - 2
+      - - 8
+        - 1
+        - 2
+      - - 8
+        - 4
+        - 2
+      - - 8
+        - 5
+        - 1
+    defeasibly: *id012
+- name: strict_only_nemo_negation_reordered
+  description: Strict-only defeasible form of nemo_negation_reordered.
+  source: nemo/testcases/basic/negation.rls
+  tags:
+  - basic
+  - defeasible
+  - negation
+  - nemo
+  - reordered
+  - strict-only
+  theory:
+    facts:
+      main: *id002
+      s1: *id003
+      s2: *id004
+      s3: *id005
+    strict_rules:
+    - id: r1
+      head: singlePositionX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+    - id: r2
+      head: singlePositionY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Y)
+    - id: r3
+      head: singlePositionZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Z)
+    - id: r4
+      head: multiple(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+      - not s2(X, Y)
+      - not s2(X, Z)
+      - not s2(Y, Z)
+    - id: r5
+      head: reordered(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s2(Z, Y)
+    - id: r6
+      head: filteredX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, X)
+    - id: r7
+      head: filteredY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(4, Y, Y)
+    - id: r8
+      head: filteredZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(Z, Z, 7)
+    - id: r9
+      head: projectedXY(X, Y)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, P)
+    - id: r10
+      head: projectedYZ(Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, Y)
+    - id: r11
+      head: projectedXZ(X, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, Z, P)
+    - id: r12
+      head: projectedX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, P, P)
+    - id: r13
+      head: projectedY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, P, Y)
+    - id: r14
+      head: projectedZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, P)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id013
+      reordered:
+      - - 2
+        - 0
+        - 0
+      - - 2
+        - 0
+        - 1
+      - - 2
+        - 1
+        - 0
+      - - 2
+        - 5
+        - 3
+      - - 4
+        - 0
+        - 0
+      - - 4
+        - 2
+        - 1
+      - - 4
+        - 5
+        - 1
+      - - 6
+        - 2
+        - 0
+      - - 6
+        - 9
+        - 2
+      - - 8
+        - 1
+        - 2
+      - - 8
+        - 4
+        - 2
+      - - 8
+        - 5
+        - 1
+    defeasibly: *id013
+- name: strict_only_nemo_negation_filteredZ
+  description: Strict-only defeasible form of nemo_negation_filteredZ.
+  source: nemo/testcases/basic/negation.rls
+  tags:
+  - basic
+  - defeasible
+  - filteredz
+  - negation
+  - nemo
+  - strict-only
+  theory:
+    facts:
+      main: *id002
+      s1: *id003
+      s2: *id004
+      s3: *id005
+    strict_rules:
+    - id: r1
+      head: singlePositionX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+    - id: r2
+      head: singlePositionY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Y)
+    - id: r3
+      head: singlePositionZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Z)
+    - id: r4
+      head: multiple(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+      - not s2(X, Y)
+      - not s2(X, Z)
+      - not s2(Y, Z)
+    - id: r5
+      head: reordered(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s2(Z, Y)
+    - id: r6
+      head: filteredX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, X)
+    - id: r7
+      head: filteredY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(4, Y, Y)
+    - id: r8
+      head: filteredZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(Z, Z, 7)
+    - id: r9
+      head: projectedXY(X, Y)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, P)
+    - id: r10
+      head: projectedYZ(Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, Y)
+    - id: r11
+      head: projectedXZ(X, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, Z, P)
+    - id: r12
+      head: projectedX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, P, P)
+    - id: r13
+      head: projectedY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, P, Y)
+    - id: r14
+      head: projectedZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, P)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id014
+      filteredZ:
+      - - 2
+        - 0
+        - 0
+      - - 2
+        - 0
+        - 1
+      - - 2
+        - 1
+        - 0
+      - - 2
+        - 5
+        - 2
+      - - 4
+        - 0
+        - 0
+      - - 4
+        - 2
+        - 1
+      - - 4
+        - 5
+        - 1
+      - - 6
+        - 2
+        - 0
+      - - 6
+        - 9
+        - 2
+      - - 8
+        - 1
+        - 2
+      - - 8
+        - 4
+        - 2
+      - - 8
+        - 5
+        - 1
+    defeasibly: *id014
+- name: strict_only_nemo_negation_projectedXY
+  description: Strict-only defeasible form of nemo_negation_projectedXY.
+  source: nemo/testcases/basic/negation.rls
+  tags:
+  - basic
+  - defeasible
+  - negation
+  - nemo
+  - projectedxy
+  - strict-only
+  theory:
+    facts:
+      main: *id002
+      s1: *id003
+      s2: *id004
+      s3: *id005
+    strict_rules:
+    - id: r1
+      head: singlePositionX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+    - id: r2
+      head: singlePositionY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Y)
+    - id: r3
+      head: singlePositionZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Z)
+    - id: r4
+      head: multiple(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+      - not s2(X, Y)
+      - not s2(X, Z)
+      - not s2(Y, Z)
+    - id: r5
+      head: reordered(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s2(Z, Y)
+    - id: r6
+      head: filteredX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, X)
+    - id: r7
+      head: filteredY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(4, Y, Y)
+    - id: r8
+      head: filteredZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(Z, Z, 7)
+    - id: r9
+      head: projectedXY(X, Y)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, P)
+    - id: r10
+      head: projectedYZ(Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, Y)
+    - id: r11
+      head: projectedXZ(X, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, Z, P)
+    - id: r12
+      head: projectedX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, P, P)
+    - id: r13
+      head: projectedY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, P, Y)
+    - id: r14
+      head: projectedZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, P)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id015
+      projectedXY:
+      - - 6
+        - 2
+      - - 6
+        - 9
+    defeasibly: *id015
+- name: strict_only_nemo_negation_projectedYZ
+  description: Strict-only defeasible form of nemo_negation_projectedYZ.
+  source: nemo/testcases/basic/negation.rls
+  tags:
+  - basic
+  - defeasible
+  - negation
+  - nemo
+  - projectedyz
+  - strict-only
+  theory:
+    facts:
+      main: *id002
+      s1: *id003
+      s2: *id004
+      s3: *id005
+    strict_rules:
+    - id: r1
+      head: singlePositionX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+    - id: r2
+      head: singlePositionY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Y)
+    - id: r3
+      head: singlePositionZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Z)
+    - id: r4
+      head: multiple(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+      - not s2(X, Y)
+      - not s2(X, Z)
+      - not s2(Y, Z)
+    - id: r5
+      head: reordered(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s2(Z, Y)
+    - id: r6
+      head: filteredX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, X)
+    - id: r7
+      head: filteredY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(4, Y, Y)
+    - id: r8
+      head: filteredZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(Z, Z, 7)
+    - id: r9
+      head: projectedXY(X, Y)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, P)
+    - id: r10
+      head: projectedYZ(Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, Y)
+    - id: r11
+      head: projectedXZ(X, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, Z, P)
+    - id: r12
+      head: projectedX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, P, P)
+    - id: r13
+      head: projectedY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, P, Y)
+    - id: r14
+      head: projectedZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, P)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id016
+      projectedYZ:
+      - - 2
+        - 0
+      - - 4
+        - 2
+      - - 5
+        - 1
+      - - 5
+        - 2
+      - - 5
+        - 3
+    defeasibly: *id016
+- name: strict_only_nemo_negation_singlePositionX
+  description: Strict-only defeasible form of nemo_negation_singlePositionX.
+  source: nemo/testcases/basic/negation.rls
+  tags:
+  - basic
+  - defeasible
+  - negation
+  - nemo
+  - singlepositionx
+  - strict-only
+  theory:
+    facts:
+      main: *id002
+      s1: *id003
+      s2: *id004
+      s3: *id005
+    strict_rules:
+    - id: r1
+      head: singlePositionX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+    - id: r2
+      head: singlePositionY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Y)
+    - id: r3
+      head: singlePositionZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Z)
+    - id: r4
+      head: multiple(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+      - not s2(X, Y)
+      - not s2(X, Z)
+      - not s2(Y, Z)
+    - id: r5
+      head: reordered(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s2(Z, Y)
+    - id: r6
+      head: filteredX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, X)
+    - id: r7
+      head: filteredY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(4, Y, Y)
+    - id: r8
+      head: filteredZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(Z, Z, 7)
+    - id: r9
+      head: projectedXY(X, Y)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, P)
+    - id: r10
+      head: projectedYZ(Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, Y)
+    - id: r11
+      head: projectedXZ(X, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, Z, P)
+    - id: r12
+      head: projectedX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, P, P)
+    - id: r13
+      head: projectedY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, P, Y)
+    - id: r14
+      head: projectedZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, P)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id017
+      singlePositionX:
+      - - 2
+        - 0
+        - 0
+      - - 2
+        - 0
+        - 1
+      - - 2
+        - 1
+        - 0
+      - - 2
+        - 5
+        - 2
+      - - 2
+        - 5
+        - 3
+      - - 4
+        - 0
+        - 0
+      - - 4
+        - 2
+        - 1
+      - - 4
+        - 5
+        - 1
+      - - 8
+        - 1
+        - 2
+      - - 8
+        - 4
+        - 2
+      - - 8
+        - 5
+        - 1
+    defeasibly: *id017
+- name: strict_only_nemo_negation_singlePositionZ
+  description: Strict-only defeasible form of nemo_negation_singlePositionZ.
+  source: nemo/testcases/basic/negation.rls
+  tags:
+  - basic
+  - defeasible
+  - negation
+  - nemo
+  - singlepositionz
+  - strict-only
+  theory:
+    facts:
+      main: *id002
+      s1: *id003
+      s2: *id004
+      s3: *id005
+    strict_rules:
+    - id: r1
+      head: singlePositionX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+    - id: r2
+      head: singlePositionY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Y)
+    - id: r3
+      head: singlePositionZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(Z)
+    - id: r4
+      head: multiple(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s1(X)
+      - not s2(X, Y)
+      - not s2(X, Z)
+      - not s2(Y, Z)
+    - id: r5
+      head: reordered(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s2(Z, Y)
+    - id: r6
+      head: filteredX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, X)
+    - id: r7
+      head: filteredY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(4, Y, Y)
+    - id: r8
+      head: filteredZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(Z, Z, 7)
+    - id: r9
+      head: projectedXY(X, Y)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, 5, P)
+    - id: r10
+      head: projectedYZ(Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, Y)
+    - id: r11
+      head: projectedXZ(X, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, Z, P)
+    - id: r12
+      head: projectedX(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(X, P, P)
+    - id: r13
+      head: projectedY(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, P, Y)
+    - id: r14
+      head: projectedZ(X, Y, Z)
+      body:
+      - main(X, Y, Z)
+      - not s3(P, Z, P)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id018
+      singlePositionZ:
+      - - 2
+        - 5
+        - 2
+      - - 6
+        - 9
+        - 2
+      - - 8
+        - 1
+        - 2
+      - - 8
+        - 4
+        - 2
+    defeasibly: *id018

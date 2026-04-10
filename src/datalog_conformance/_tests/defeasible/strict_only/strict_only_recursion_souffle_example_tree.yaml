@@ -1,0 +1,96 @@
+source: derived/strict-only/recursion/souffle_example_tree.yaml
+tags:
+- defeasible
+- strict-only
+- example
+- souffle
+tests:
+- name: strict_only_souffle_tree_S
+  description: Strict-only defeasible form of souffle_tree_S.
+  source: souffle/example/tree
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      R: &id002
+      - - 1
+        - a
+        - 2
+      - - 2
+        - b
+        - 3
+      - - 3
+        - a
+        - 4
+      - - 4
+        - a
+        - 5
+      - - 5
+        - a
+        - 6
+    strict_rules:
+    - id: r1
+      head: T (x1, x4)
+      body:
+      - R(x1, _, x2)
+      - R(x2, _, x3)
+      - T(x3, x4)
+    - id: r2
+      head: T (x1, x3)
+      body:
+      - R(x1, a, x2)
+      - R(x2, a, x3)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      S:
+      - - 3
+        - 6
+      - - 1
+        - 6
+    defeasibly: *id001
+- name: strict_only_souffle_tree_T
+  description: Strict-only defeasible form of souffle_tree_T.
+  source: souffle/example/tree
+  tags:
+  - defeasible
+  - example
+  - recursion
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      R: *id002
+    strict_rules:
+    - id: r1
+      head: T (x1, x4)
+      body:
+      - R(x1, _, x2)
+      - R(x2, _, x3)
+      - T(x3, x4)
+    - id: r2
+      head: T (x1, x3)
+      body:
+      - R(x1, a, x2)
+      - R(x2, a, x3)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id003
+      T:
+      - - 3
+        - 5
+      - - 4
+        - 6
+      - - 1
+        - 5
+      - - 2
+        - 6
+    defeasibly: *id003

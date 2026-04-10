@@ -1,0 +1,53 @@
+source: derived/strict-only/recursion/transitive.yaml
+tags:
+- defeasible
+- strict-only
+- recursion
+- basic
+tests:
+- name: strict_only_transitive_closure
+  description: Strict-only defeasible form of transitive_closure.
+  source: manual/scaffold
+  tags:
+  - basic
+  - defeasible
+  - recursion
+  - strict-only
+  theory:
+    facts:
+      edge:
+      - - a
+        - b
+      - - b
+        - c
+      - - c
+        - d
+    strict_rules:
+    - id: r1
+      head: path(X, Y)
+      body:
+      - edge(X, Y)
+    - id: r2
+      head: path(X, Y)
+      body:
+      - edge(X, Z)
+      - path(Z, Y)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      path:
+      - - a
+        - b
+      - - a
+        - c
+      - - a
+        - d
+      - - b
+        - c
+      - - b
+        - d
+      - - c
+        - d
+    defeasibly: *id001

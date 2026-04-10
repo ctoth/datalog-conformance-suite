@@ -1,0 +1,31 @@
+source: souffle/evaluation/plus
+tags:
+- evaluation
+- souffle
+tests:
+- name: souffle_plus_A
+  description: Harvested from Souffle testcase plus, asserting exported relation A.
+  tags:
+  - basic
+  - evaluation
+  - souffle
+  program:
+    facts:
+      R:
+      - - 2
+        - 3
+      - - 3
+        - 5
+    rules:
+    - A(a, b, a+b) :- R(a,b).
+  expect:
+    A:
+    - - 1
+      - 2
+      - 3
+    - - 2
+      - 3
+      - 5
+    - - 3
+      - 5
+      - 8

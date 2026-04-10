@@ -1,0 +1,239 @@
+source: derived/strict-only/recursion/souffle_example_cliquer.yaml
+tags:
+- defeasible
+- strict-only
+- example
+- souffle
+tests:
+- name: strict_only_souffle_cliquer_reachable
+  description: Strict-only defeasible form of souffle_cliquer_reachable.
+  source: souffle/example/cliquer
+  tags:
+  - defeasible
+  - example
+  - recursion
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      edge: &id002
+      - - a
+        - b
+      - - b
+        - c
+      - - c
+        - d
+      - - d
+        - a
+      reachable: &id003
+      - - e
+        - f
+    strict_rules:
+    - id: r1
+      head: reachable(X,Y)
+      body:
+      - edge(X,Y)
+    - id: r2
+      head: reachable(X,Y)
+      body:
+      - edge(X,Z)
+      - reachable(Z,Y)
+    - id: r3
+      head: same_clique(X,Y)
+      body:
+      - reachable(X,Y)
+      - reachable(Y,X)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      reachable:
+      - - a
+        - a
+      - - a
+        - b
+      - - a
+        - c
+      - - a
+        - d
+      - - b
+        - a
+      - - b
+        - b
+      - - b
+        - c
+      - - b
+        - d
+      - - c
+        - a
+      - - c
+        - b
+      - - c
+        - c
+      - - c
+        - d
+      - - d
+        - a
+      - - d
+        - b
+      - - d
+        - c
+      - - d
+        - d
+      - - e
+        - f
+    defeasibly: *id001
+- name: strict_only_souffle_cliquer_same_clique
+  description: Strict-only defeasible form of souffle_cliquer_same_clique.
+  source: souffle/example/cliquer
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      edge: *id002
+      reachable: *id003
+    strict_rules:
+    - id: r1
+      head: reachable(X,Y)
+      body:
+      - edge(X,Y)
+    - id: r2
+      head: reachable(X,Y)
+      body:
+      - edge(X,Z)
+      - reachable(Z,Y)
+    - id: r3
+      head: same_clique(X,Y)
+      body:
+      - reachable(X,Y)
+      - reachable(Y,X)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id004
+      same_clique:
+      - - a
+        - a
+      - - a
+        - b
+      - - a
+        - c
+      - - a
+        - d
+      - - b
+        - a
+      - - b
+        - b
+      - - b
+        - c
+      - - b
+        - d
+      - - c
+        - a
+      - - c
+        - b
+      - - c
+        - c
+      - - c
+        - d
+      - - d
+        - a
+      - - d
+        - b
+      - - d
+        - c
+      - - d
+        - d
+    defeasibly: *id004
+- name: strict_only_souffle_cliquer_edge
+  description: Strict-only defeasible form of souffle_cliquer_edge.
+  source: souffle/example/cliquer
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      edge: *id002
+      reachable: *id003
+    strict_rules:
+    - id: r1
+      head: reachable(X,Y)
+      body:
+      - edge(X,Y)
+    - id: r2
+      head: reachable(X,Y)
+      body:
+      - edge(X,Z)
+      - reachable(Z,Y)
+    - id: r3
+      head: same_clique(X,Y)
+      body:
+      - reachable(X,Y)
+      - reachable(Y,X)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id005
+      edge:
+      - - a
+        - b
+      - - b
+        - c
+      - - c
+        - d
+      - - d
+        - a
+    defeasibly: *id005
+- name: strict_only_souffle_cliquer_leg
+  description: Strict-only defeasible form of souffle_cliquer_leg.
+  source: souffle/example/cliquer
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      edge: *id002
+      reachable: *id003
+    strict_rules:
+    - id: r1
+      head: reachable(X,Y)
+      body:
+      - edge(X,Y)
+    - id: r2
+      head: reachable(X,Y)
+      body:
+      - edge(X,Z)
+      - reachable(Z,Y)
+    - id: r3
+      head: same_clique(X,Y)
+      body:
+      - reachable(X,Y)
+      - reachable(Y,X)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id006
+      leg:
+      - - a
+        - c
+      - - b
+        - d
+      - - c
+        - a
+      - - d
+        - b
+    defeasibly: *id006

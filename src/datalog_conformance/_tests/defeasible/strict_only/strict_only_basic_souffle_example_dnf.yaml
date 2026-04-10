@@ -1,0 +1,236 @@
+source: derived/strict-only/basic/souffle_example_dnf.yaml
+tags:
+- defeasible
+- strict-only
+- example
+- souffle
+tests:
+- name: strict_only_souffle_dnf_U
+  description: Strict-only defeasible form of souffle_dnf_U.
+  source: souffle/example/dnf
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      B: &id002
+      - - 1
+      - - 2
+      - - 3
+      C: &id003
+      - - 4
+      - - 5
+      - - 6
+      D: &id004
+      - - 3
+      - - 4
+      E: &id005
+      - - 6
+      - - 7
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      U:
+      - - 0
+      - - 1
+      - - 2
+      - - 3
+      - - 4
+      - - 5
+      - - 6
+      - - 7
+    defeasibly: *id001
+- name: strict_only_souffle_dnf_N
+  description: Strict-only defeasible form of souffle_dnf_N.
+  source: souffle/example/dnf
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      B: *id002
+      C: *id003
+      D: *id004
+      E: *id005
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id006
+      N: []
+    defeasibly: *id006
+- name: strict_only_souffle_dnf_R1
+  description: Strict-only defeasible form of souffle_dnf_R1.
+  source: souffle/example/dnf
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      B: *id002
+      C: *id003
+      D: *id004
+      E: *id005
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id007
+      R1:
+      - - 0
+      - - 3
+    defeasibly: *id007
+- name: strict_only_souffle_dnf_R2
+  description: Strict-only defeasible form of souffle_dnf_R2.
+  source: souffle/example/dnf
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      B: *id002
+      C: *id003
+      D: *id004
+      E: *id005
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id008
+      R2:
+      - - 0
+      - - 5
+      - - 6
+      - - 7
+    defeasibly: *id008
+- name: strict_only_souffle_dnf_R3
+  description: Strict-only defeasible form of souffle_dnf_R3.
+  source: souffle/example/dnf
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      B: *id002
+      C: *id003
+      D: *id004
+      E: *id005
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id009
+      R3:
+      - - 0
+      - - 1
+      - - 2
+      - - 4
+      - - 5
+      - - 6
+      - - 7
+    defeasibly: *id009
+- name: strict_only_souffle_dnf_R4
+  description: Strict-only defeasible form of souffle_dnf_R4.
+  source: souffle/example/dnf
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      B: *id002
+      C: *id003
+      D: *id004
+      E: *id005
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id010
+      R4:
+      - - 0
+      - - 5
+      - - 6
+      - - 7
+    defeasibly: *id010
+- name: strict_only_souffle_dnf_R5
+  description: Strict-only defeasible form of souffle_dnf_R5.
+  source: souffle/example/dnf
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      B: *id002
+      C: *id003
+      D: *id004
+      E: *id005
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id011
+      R5:
+      - - 0
+      - - 5
+      - - 6
+      - - 7
+    defeasibly: *id011
+- name: strict_only_souffle_dnf_R6
+  description: Strict-only defeasible form of souffle_dnf_R6.
+  source: souffle/example/dnf
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      B: *id002
+      C: *id003
+      D: *id004
+      E: *id005
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id012
+      R6:
+      - - 0
+      - - 3
+      - - 4
+      - - 5
+      - - 6
+      - - 7
+    defeasibly: *id012

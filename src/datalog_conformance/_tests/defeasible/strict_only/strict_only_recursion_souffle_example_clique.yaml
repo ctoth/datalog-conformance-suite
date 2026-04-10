@@ -1,0 +1,421 @@
+source: derived/strict-only/recursion/souffle_example_clique.yaml
+tags:
+- defeasible
+- strict-only
+- example
+- souffle
+tests:
+- name: strict_only_souffle_clique_reachable
+  description: Strict-only defeasible form of souffle_clique_reachable.
+  source: souffle/example/clique
+  tags:
+  - defeasible
+  - example
+  - recursion
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      edge: &id002
+      - - 0
+        - 1
+      - - 1
+        - 2
+      - - 2
+        - 3
+      - - 3
+        - 4
+      - - 4
+        - 5
+      - - 5
+        - 0
+      - - 5
+        - 6
+      - - 6
+        - 7
+      - - 7
+        - 8
+      - - 8
+        - 9
+      - - 9
+        - 10
+      - - 10
+        - 7
+    strict_rules:
+    - id: r1
+      head: reachable(X,Y)
+      body:
+      - edge(X,Z)
+      - reachable(Z,Y)
+    - id: r2
+      head: same_clique(X,Y)
+      body:
+      - reachable(X,Y)
+      - reachable(Y,X)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      reachable:
+      - - 0
+        - 1
+      - - 1
+        - 2
+      - - 2
+        - 3
+      - - 3
+        - 4
+      - - 4
+        - 5
+      - - 5
+        - 0
+      - - 5
+        - 6
+      - - 6
+        - 7
+      - - 7
+        - 8
+      - - 8
+        - 9
+      - - 9
+        - 10
+      - - 10
+        - 7
+      - - 0
+        - 2
+      - - 1
+        - 3
+      - - 2
+        - 4
+      - - 3
+        - 5
+      - - 4
+        - 0
+      - - 4
+        - 6
+      - - 5
+        - 1
+      - - 5
+        - 7
+      - - 6
+        - 8
+      - - 7
+        - 9
+      - - 8
+        - 10
+      - - 9
+        - 7
+      - - 10
+        - 8
+      - - 0
+        - 3
+      - - 1
+        - 4
+      - - 2
+        - 5
+      - - 3
+        - 0
+      - - 3
+        - 6
+      - - 4
+        - 1
+      - - 4
+        - 7
+      - - 5
+        - 2
+      - - 5
+        - 8
+      - - 6
+        - 9
+      - - 7
+        - 10
+      - - 8
+        - 7
+      - - 9
+        - 8
+      - - 10
+        - 9
+      - - 0
+        - 4
+      - - 1
+        - 5
+      - - 2
+        - 0
+      - - 2
+        - 6
+      - - 3
+        - 1
+      - - 3
+        - 7
+      - - 4
+        - 2
+      - - 4
+        - 8
+      - - 5
+        - 3
+      - - 5
+        - 9
+      - - 6
+        - 10
+      - - 7
+        - 7
+      - - 8
+        - 8
+      - - 9
+        - 9
+      - - 10
+        - 10
+      - - 0
+        - 5
+      - - 1
+        - 0
+      - - 1
+        - 6
+      - - 2
+        - 1
+      - - 2
+        - 7
+      - - 3
+        - 2
+      - - 3
+        - 8
+      - - 4
+        - 3
+      - - 4
+        - 9
+      - - 5
+        - 4
+      - - 5
+        - 10
+      - - 0
+        - 0
+      - - 0
+        - 6
+      - - 1
+        - 1
+      - - 1
+        - 7
+      - - 2
+        - 2
+      - - 2
+        - 8
+      - - 3
+        - 3
+      - - 3
+        - 9
+      - - 4
+        - 4
+      - - 4
+        - 10
+      - - 5
+        - 5
+      - - 0
+        - 7
+      - - 1
+        - 8
+      - - 2
+        - 9
+      - - 3
+        - 10
+      - - 0
+        - 8
+      - - 1
+        - 9
+      - - 2
+        - 10
+      - - 0
+        - 9
+      - - 1
+        - 10
+      - - 0
+        - 10
+    defeasibly: *id001
+- name: strict_only_souffle_clique_same_clique
+  description: Strict-only defeasible form of souffle_clique_same_clique.
+  source: souffle/example/clique
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      edge: *id002
+    strict_rules:
+    - id: r1
+      head: reachable(X,Y)
+      body:
+      - edge(X,Z)
+      - reachable(Z,Y)
+    - id: r2
+      head: same_clique(X,Y)
+      body:
+      - reachable(X,Y)
+      - reachable(Y,X)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id003
+      same_clique:
+      - - 0
+        - 1
+      - - 1
+        - 2
+      - - 2
+        - 3
+      - - 3
+        - 4
+      - - 4
+        - 5
+      - - 5
+        - 0
+      - - 7
+        - 8
+      - - 8
+        - 9
+      - - 9
+        - 10
+      - - 10
+        - 7
+      - - 0
+        - 2
+      - - 1
+        - 3
+      - - 2
+        - 4
+      - - 3
+        - 5
+      - - 4
+        - 0
+      - - 5
+        - 1
+      - - 7
+        - 9
+      - - 8
+        - 10
+      - - 9
+        - 7
+      - - 10
+        - 8
+      - - 0
+        - 3
+      - - 1
+        - 4
+      - - 2
+        - 5
+      - - 3
+        - 0
+      - - 4
+        - 1
+      - - 5
+        - 2
+      - - 7
+        - 10
+      - - 8
+        - 7
+      - - 9
+        - 8
+      - - 10
+        - 9
+      - - 0
+        - 4
+      - - 1
+        - 5
+      - - 2
+        - 0
+      - - 3
+        - 1
+      - - 4
+        - 2
+      - - 5
+        - 3
+      - - 7
+        - 7
+      - - 8
+        - 8
+      - - 9
+        - 9
+      - - 10
+        - 10
+      - - 0
+        - 5
+      - - 1
+        - 0
+      - - 2
+        - 1
+      - - 3
+        - 2
+      - - 4
+        - 3
+      - - 5
+        - 4
+      - - 0
+        - 0
+      - - 1
+        - 1
+      - - 2
+        - 2
+      - - 3
+        - 3
+      - - 4
+        - 4
+      - - 5
+        - 5
+    defeasibly: *id003
+- name: strict_only_souffle_clique_edge
+  description: Strict-only defeasible form of souffle_clique_edge.
+  source: souffle/example/clique
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      edge: *id002
+    strict_rules:
+    - id: r1
+      head: reachable(X,Y)
+      body:
+      - edge(X,Z)
+      - reachable(Z,Y)
+    - id: r2
+      head: same_clique(X,Y)
+      body:
+      - reachable(X,Y)
+      - reachable(Y,X)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id004
+      edge:
+      - - 0
+        - 1
+      - - 1
+        - 2
+      - - 2
+        - 3
+      - - 3
+        - 4
+      - - 4
+        - 5
+      - - 5
+        - 0
+      - - 5
+        - 6
+      - - 6
+        - 7
+      - - 7
+        - 8
+      - - 8
+        - 9
+      - - 9
+        - 10
+      - - 10
+        - 7
+    defeasibly: *id004

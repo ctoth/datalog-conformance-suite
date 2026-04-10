@@ -1,0 +1,24 @@
+source: souffle/evaluation/match
+tags:
+- evaluation
+- souffle
+tests:
+- name: souffle_match_outputData
+  description: Harvested from Souffle testcase match, asserting exported relation
+    outputData.
+  tags:
+  - basic
+  - evaluation
+  - souffle
+  program:
+    facts:
+      inputData:
+      - - aaaa
+      - - abba
+      - - bcab
+      - - bdab
+    rules: []
+  expect:
+    outputData:
+    - - aaaa
+    - - abba

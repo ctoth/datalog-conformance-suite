@@ -1,0 +1,149 @@
+source: nemo/testcases/basic/union.rls
+tags:
+- basic
+- union
+- nemo
+tests:
+- name: nemo_union_AB
+  description: Harvested from Nemo testcase union, asserting exported relation AB.
+  tags:
+  - basic
+  - union
+  - nemo
+  - ab
+  program:
+    facts: &id001
+      sourceA:
+      - - A
+        - B
+        - C
+      - - B
+        - B
+        - D
+      - - A
+        - E
+        - F
+      - - C
+        - D
+        - D
+      sourceB:
+      - - B
+        - B
+        - D
+      - - B
+        - D
+        - A
+      - - A
+        - C
+        - F
+      - - A
+        - G
+        - Q
+      - - Q
+        - Q
+        - A
+      - - C
+        - D
+        - D
+      sourceC:
+      - - Q
+        - Q
+        - A
+      - - Z
+        - Z
+        - Z
+      - - F
+        - E
+        - D
+      - - D
+        - B
+        - Q
+      - - D
+        - B
+        - Z
+      - - D
+        - B
+        - F
+    rules: &id002
+    - ABC(X, Y, Z) :- sourceA(X, Y, Z).
+    - ABC(X, Y, Z) :- sourceB(X, Y, Z).
+    - ABC(X, Y, Z) :- sourceC(X, Y, Z).
+    - AB(X, Y, Z) :- sourceA(X, Y, Z).
+    - AB(X, Y, Z) :- sourceB(X, Y, Z).
+  expect:
+    AB:
+    - - A
+      - B
+      - C
+    - - A
+      - C
+      - F
+    - - A
+      - E
+      - F
+    - - A
+      - G
+      - Q
+    - - B
+      - B
+      - D
+    - - B
+      - D
+      - A
+    - - C
+      - D
+      - D
+    - - Q
+      - Q
+      - A
+- name: nemo_union_ABC
+  description: Harvested from Nemo testcase union, asserting exported relation ABC.
+  tags:
+  - basic
+  - union
+  - nemo
+  - abc
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    ABC:
+    - - A
+      - B
+      - C
+    - - A
+      - C
+      - F
+    - - A
+      - E
+      - F
+    - - A
+      - G
+      - Q
+    - - B
+      - B
+      - D
+    - - B
+      - D
+      - A
+    - - C
+      - D
+      - D
+    - - D
+      - B
+      - Q
+    - - D
+      - B
+      - Z
+    - - D
+      - B
+      - F
+    - - F
+      - E
+      - D
+    - - Q
+      - Q
+      - A
+    - - Z
+      - Z
+      - Z

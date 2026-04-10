@@ -1,0 +1,36 @@
+source: derived/strict-only/basic/souffle_evaluation_number_constants.yaml
+tags:
+- defeasible
+- strict-only
+- evaluation
+- souffle
+tests:
+- name: strict_only_souffle_number_constants_R
+  description: Strict-only defeasible form of souffle_number_constants_R.
+  source: souffle/evaluation/number_constants
+  tags:
+  - basic
+  - defeasible
+  - evaluation
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      R:
+      - - 1
+      - - -1
+      - - 2147483647
+      - - -2147483648
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      R:
+      - - 0
+      - - 1
+      - - -1
+      - - 2147483647
+      - - -2147483648
+    defeasibly: *id001

@@ -1,0 +1,199 @@
+source: souffle/example/tc
+tags:
+- example
+- souffle
+tests:
+- name: souffle_tc_tcl
+  description: Harvested from Souffle testcase tc, asserting exported relation tcl.
+  tags:
+  - example
+  - recursion
+  - souffle
+  program:
+    facts: &id001
+      base:
+      - - d
+        - e
+      - - e
+        - f
+      - - f
+        - g
+    rules: &id002
+    - tcl(X,Y) :- tcl(X,Z), base(Z,Y).
+    - tcr(X,Y) :- base(X,Y).
+    - tcr(X,Y) :- base(X, Z),tcr(Z,Y).
+    - tc(X,Y) :- base(X,Y).
+    - tc(X,Y) :- tc(X,Z),tc(Z,Y).
+  expect:
+    tcl:
+    - - a
+      - b
+    - - b
+      - c
+    - - c
+      - d
+    - - d
+      - e
+    - - e
+      - f
+    - - f
+      - g
+    - - a
+      - c
+    - - b
+      - d
+    - - c
+      - e
+    - - d
+      - f
+    - - e
+      - g
+    - - a
+      - d
+    - - b
+      - e
+    - - c
+      - f
+    - - d
+      - g
+    - - a
+      - e
+    - - b
+      - f
+    - - c
+      - g
+    - - a
+      - f
+    - - b
+      - g
+    - - a
+      - g
+- name: souffle_tc_tcr
+  description: Harvested from Souffle testcase tc, asserting exported relation tcr.
+  tags:
+  - example
+  - recursion
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    tcr:
+    - - a
+      - b
+    - - b
+      - c
+    - - c
+      - d
+    - - d
+      - e
+    - - e
+      - f
+    - - f
+      - g
+    - - a
+      - c
+    - - b
+      - d
+    - - c
+      - e
+    - - d
+      - f
+    - - e
+      - g
+    - - a
+      - d
+    - - b
+      - e
+    - - c
+      - f
+    - - d
+      - g
+    - - a
+      - e
+    - - b
+      - f
+    - - c
+      - g
+    - - a
+      - f
+    - - b
+      - g
+    - - a
+      - g
+- name: souffle_tc_base
+  description: Harvested from Souffle testcase tc, asserting exported relation base.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    base:
+    - - a
+      - b
+    - - b
+      - c
+    - - c
+      - d
+    - - d
+      - e
+    - - e
+      - f
+    - - f
+      - g
+- name: souffle_tc_tc
+  description: Harvested from Souffle testcase tc, asserting exported relation tc.
+  tags:
+  - example
+  - recursion
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    tc:
+    - - a
+      - b
+    - - b
+      - c
+    - - c
+      - d
+    - - d
+      - e
+    - - e
+      - f
+    - - f
+      - g
+    - - a
+      - c
+    - - b
+      - d
+    - - c
+      - e
+    - - d
+      - f
+    - - e
+      - g
+    - - a
+      - d
+    - - b
+      - e
+    - - c
+      - f
+    - - d
+      - g
+    - - a
+      - e
+    - - b
+      - f
+    - - c
+      - g
+    - - a
+      - f
+    - - b
+      - g
+    - - a
+      - g

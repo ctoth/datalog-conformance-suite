@@ -1,0 +1,51 @@
+source: derived/strict-only/basic/souffle_example_shortest_edges.yaml
+tags:
+- defeasible
+- strict-only
+- example
+- souffle
+tests:
+- name: strict_only_souffle_shortest_edges_ShortestEdgeFromN
+  description: Strict-only defeasible form of souffle_shortest_edges_ShortestEdgeFromN.
+  source: souffle/example/shortest_edges
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      Edge:
+      - - a
+        - b
+        - 1
+      - - a
+        - e
+        - 5
+      - - b
+        - c
+        - 2
+      - - b
+        - e
+        - 4
+      - - c
+        - d
+        - 3
+      - - c
+        - e
+        - 40
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      ShortestEdgeFromN:
+      - - a
+        - 1
+      - - b
+        - 2
+      - - c
+        - 3
+    defeasibly: *id001

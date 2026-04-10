@@ -1,0 +1,74 @@
+source: souffle/example/orbits1
+tags:
+- example
+- souffle
+tests:
+- name: souffle_orbits1_star
+  description: Harvested from Souffle testcase orbits1, asserting exported relation
+    star.
+  tags:
+  - example
+  - negation
+  - souffle
+  program:
+    facts: &id001
+      orbits:
+      - - earth
+        - sun
+      - - moon
+        - earth
+    rules: &id002
+    - orbits(X,Y) :- orbits(X,Z), orbits(Z,Y).
+    - planet(X) :- orbits(X,Y), star(Y), not intermediate(X,Y).
+    - intermediate(X,Y) :- orbits(X,Y), orbits(_,Y).
+  expect:
+    star:
+    - - sun
+- name: souffle_orbits1_orbits
+  description: Harvested from Souffle testcase orbits1, asserting exported relation
+    orbits.
+  tags:
+  - example
+  - recursion
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    orbits:
+    - - earth
+      - sun
+    - - moon
+      - earth
+    - - moon
+      - sun
+- name: souffle_orbits1_planet
+  description: Harvested from Souffle testcase orbits1, asserting exported relation
+    planet.
+  tags:
+  - example
+  - negation
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    planet: []
+- name: souffle_orbits1_intermediate
+  description: Harvested from Souffle testcase orbits1, asserting exported relation
+    intermediate.
+  tags:
+  - example
+  - negation
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    intermediate:
+    - - earth
+      - sun
+    - - moon
+      - earth
+    - - moon
+      - sun

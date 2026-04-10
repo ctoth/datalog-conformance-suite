@@ -1,0 +1,9 @@
+name: unbound_variable
+description: Head variables must be range-restricted by the body.
+source: manual/scaffold
+tags: [errors, safety]
+program:
+  facts: {}
+  rules:
+    - "p(X) :- q(Y)."
+expect_error: unbound_variable

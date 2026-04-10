@@ -1,0 +1,43 @@
+source: derived/strict-only/basic/souffle_example_triangle.yaml
+tags:
+- defeasible
+- strict-only
+- example
+- souffle
+tests:
+- name: strict_only_souffle_triangle_out
+  description: Strict-only defeasible form of souffle_triangle_out.
+  source: souffle/example/triangle
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      addrecurse:
+      - - 12
+        - '*'
+        - 0
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      out:
+      - - '*'
+      - - '***'
+      - - '*****'
+      - - '*******'
+      - - '*********'
+      - - '***********'
+      - - '*************'
+      - - '***************'
+      - - '*****************'
+      - - '*******************'
+      - - '*********************'
+      - - '***********************'
+      - - '*************************'
+    defeasibly: *id001

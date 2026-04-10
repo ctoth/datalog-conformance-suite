@@ -1,0 +1,90 @@
+source: souffle/example/circuit_eval
+tags:
+- example
+- souffle
+tests:
+- name: souffle_circuit_eval_g_assignment
+  description: Harvested from Souffle testcase circuit_eval, asserting exported relation
+    g_assignment.
+  tags:
+  - example
+  - recursion
+  - souffle
+  program:
+    facts: &id001
+      g_or:
+      - - x
+        - r
+        - s
+      g_and:
+      - - s
+        - c
+        - d
+      - - r
+        - a
+        - b
+      - - t
+        - d
+        - e
+      g_not:
+      - - y
+        - t
+      set_input:
+      - - a
+        - 'true'
+      - - b
+        - 'false'
+      - - c
+        - 'true'
+      - - d
+        - 'true'
+      - - e
+        - 'false'
+    rules: &id002
+    - g_assignment(x, "false") :- set_input(x, "false"); g_and(x, o1, _), g_assignment(o1,
+      "false"); g_and(x, _, o2), g_assignment(o2, "false"); g_or(x, o1, o2), g_assignment(o1,
+      "false"), g_assignment(o2, "false"), g_not(x, o1), g_assignment(o1, "true").
+  expect:
+    g_assignment:
+    - - c
+      - 'true'
+    - - d
+      - 'true'
+    - - a
+      - 'true'
+    - - b
+      - 'false'
+    - - e
+      - 'false'
+    - - s
+      - 'true'
+    - - r
+      - 'false'
+    - - t
+      - 'false'
+    - - x
+      - 'true'
+    - - y
+      - 'true'
+- name: souffle_circuit_eval_yield_outs
+  description: Harvested from Souffle testcase circuit_eval, asserting exported relation
+    yield_outs.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    yield_outs:
+    - - s
+      - 'true'
+    - - r
+      - 'false'
+    - - t
+      - 'false'
+    - - x
+      - 'true'
+    - - y
+      - 'true'

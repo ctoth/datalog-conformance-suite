@@ -1,0 +1,44 @@
+source: derived/strict-only/basic/souffle_evaluation_plus.yaml
+tags:
+- defeasible
+- strict-only
+- evaluation
+- souffle
+tests:
+- name: strict_only_souffle_plus_A
+  description: Strict-only defeasible form of souffle_plus_A.
+  source: souffle/evaluation/plus
+  tags:
+  - basic
+  - defeasible
+  - evaluation
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      R:
+      - - 2
+        - 3
+      - - 3
+        - 5
+    strict_rules:
+    - id: r1
+      head: A(a, b, a+b)
+      body:
+      - R(a,b)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      A:
+      - - 1
+        - 2
+        - 3
+      - - 2
+        - 3
+        - 5
+      - - 3
+        - 5
+        - 8
+    defeasibly: *id001

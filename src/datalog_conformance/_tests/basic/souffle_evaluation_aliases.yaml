@@ -1,0 +1,50 @@
+source: souffle/evaluation/aliases
+tags:
+- evaluation
+- souffle
+tests:
+- name: souffle_aliases_p
+  description: Harvested from Souffle testcase aliases, asserting exported relation
+    p.
+  tags:
+  - basic
+  - evaluation
+  - souffle
+  program:
+    facts: &id001
+      n:
+      - - 2
+      - - 3
+      - - 4
+      - - 5
+      a:
+      - - 2
+        - 2
+      - - 3
+        - 2
+    rules: &id002 []
+  expect:
+    p:
+    - - 1
+      - 1
+    - - 2
+      - 2
+    - - 3
+      - 3
+    - - 4
+      - 4
+    - - 5
+      - 5
+- name: souffle_aliases_r
+  description: Harvested from Souffle testcase aliases, asserting exported relation
+    r.
+  tags:
+  - basic
+  - evaluation
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    r:
+    - - 2

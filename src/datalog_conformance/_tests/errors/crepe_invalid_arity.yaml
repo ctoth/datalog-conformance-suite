@@ -1,0 +1,16 @@
+name: crepe_invalid_arity
+description: In this test, the relation 'Fib' is given the wrong number of arguments.
+source: crepe/tests/ui/invalid_arity.rs
+tags:
+- errors
+- crepe
+program:
+  facts:
+    Fib:
+    - - 0
+      - 0
+      - 2
+    - - 1
+      - 1
+  rules: []
+expect_error: arity_mismatch

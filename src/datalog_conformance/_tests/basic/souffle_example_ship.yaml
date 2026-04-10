@@ -1,0 +1,122 @@
+source: souffle/example/ship
+tags:
+- example
+- souffle
+tests:
+- name: souffle_ship_ship_to
+  description: Harvested from Souffle testcase ship, asserting exported relation ship_to.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: &id001
+      customer_city:
+      - - 1
+        - london
+      - - 2
+        - paris
+      - - 3
+        - San Francisco
+      - - 4
+        - munich
+      - - 5
+        - seoul
+      has_ordered:
+      - - 1
+        - 1
+      - - 2
+        - 2
+      - - 3
+        - 3
+      - - 4
+        - 4
+      - - 5
+        - 5
+      product_name:
+      - - 1
+        - tea
+      - - 2
+        - bread
+      - - 3
+        - flowers
+      - - 4
+        - sausage
+      - - 5
+        - horse
+    rules: &id002 []
+  expect:
+    ship_to:
+    - - tea
+      - london
+    - - bread
+      - paris
+    - - flowers
+      - San Francisco
+    - - sausage
+      - munich
+    - - horse
+      - seoul
+- name: souffle_ship_customer_city
+  description: Harvested from Souffle testcase ship, asserting exported relation customer_city.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    customer_city:
+    - - 1
+      - london
+    - - 2
+      - paris
+    - - 3
+      - San Francisco
+    - - 4
+      - munich
+    - - 5
+      - seoul
+- name: souffle_ship_has_ordered
+  description: Harvested from Souffle testcase ship, asserting exported relation has_ordered.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    has_ordered:
+    - - 1
+      - 1
+    - - 2
+      - 2
+    - - 3
+      - 3
+    - - 4
+      - 4
+    - - 5
+      - 5
+- name: souffle_ship_product_name
+  description: Harvested from Souffle testcase ship, asserting exported relation product_name.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    product_name:
+    - - 1
+      - tea
+    - - 2
+      - bread
+    - - 3
+      - flowers
+    - - 4
+      - sausage
+    - - 5
+      - horse

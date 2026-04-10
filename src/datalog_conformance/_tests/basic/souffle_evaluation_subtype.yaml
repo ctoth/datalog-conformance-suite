@@ -1,0 +1,24 @@
+source: souffle/evaluation/subtype
+tags:
+- evaluation
+- souffle
+tests:
+- name: souffle_subtype_R4
+  description: Harvested from Souffle testcase subtype, asserting exported relation
+    R4.
+  tags:
+  - basic
+  - evaluation
+  - souffle
+  program:
+    facts:
+      R1:
+      - - 0
+        - 0
+      R2:
+      - - 0
+        - 0
+    rules: []
+  expect:
+    R4:
+    - - 0

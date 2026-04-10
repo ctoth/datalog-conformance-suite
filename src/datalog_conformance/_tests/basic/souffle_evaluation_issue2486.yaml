@@ -1,0 +1,18 @@
+source: souffle/evaluation/issue2486
+tags:
+- evaluation
+- souffle
+tests:
+- name: souffle_issue2486_test
+  description: Harvested from Souffle testcase issue2486, asserting exported relation
+    test.
+  tags:
+  - basic
+  - evaluation
+  - souffle
+  program:
+    facts: {}
+    rules: []
+  expect:
+    test:
+    - - 9

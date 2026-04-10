@@ -1,0 +1,197 @@
+source: derived/strict-only/basic/nemo_join.yaml
+tags:
+- defeasible
+- strict-only
+- basic
+- joins
+- nemo
+tests:
+- name: strict_only_nemo_join_J1
+  description: Strict-only defeasible form of nemo_join_J1.
+  source: nemo/testcases/basic/join.rls
+  tags:
+  - basic
+  - defeasible
+  - j1
+  - joins
+  - nemo
+  - strict-only
+  theory:
+    facts:
+      sourceA: &id002
+      - - A
+        - B
+        - C
+      - - B
+        - B
+        - D
+      - - A
+        - E
+        - F
+      - - C
+        - D
+        - D
+      sourceB: &id003
+      - - B
+        - B
+        - D
+      - - B
+        - D
+        - A
+      - - A
+        - C
+        - F
+      - - A
+        - G
+        - Q
+      - - Q
+        - Q
+        - A
+      - - C
+        - D
+        - D
+      sourceC: &id004
+      - - Q
+        - Q
+        - A
+      - - Z
+        - Z
+        - Z
+      - - F
+        - E
+        - D
+      - - D
+        - B
+        - Q
+      - - D
+        - B
+        - Z
+      - - D
+        - B
+        - F
+    strict_rules:
+    - id: r1
+      head: J1(X, Y, Z)
+      body:
+      - sourceA(X, Z, Y)
+      - sourceB(X, Y, T)
+    - id: r2
+      head: J2(X, Y, Z)
+      body:
+      - sourceA(Z, Y, X)
+      - sourceC(X, Y, T)
+    - id: r3
+      head: J3(X, Y, W)
+      body:
+      - sourceA(T, Y, X)
+      - sourceB(T, Y, X)
+      - sourceC(X, Y, W)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      J1:
+      - - A
+        - C
+        - B
+      - - B
+        - D
+        - B
+      - - C
+        - D
+        - D
+    defeasibly: *id001
+- name: strict_only_nemo_join_J2
+  description: Strict-only defeasible form of nemo_join_J2.
+  source: nemo/testcases/basic/join.rls
+  tags:
+  - basic
+  - defeasible
+  - j2
+  - joins
+  - nemo
+  - strict-only
+  theory:
+    facts:
+      sourceA: *id002
+      sourceB: *id003
+      sourceC: *id004
+    strict_rules:
+    - id: r1
+      head: J1(X, Y, Z)
+      body:
+      - sourceA(X, Z, Y)
+      - sourceB(X, Y, T)
+    - id: r2
+      head: J2(X, Y, Z)
+      body:
+      - sourceA(Z, Y, X)
+      - sourceC(X, Y, T)
+    - id: r3
+      head: J3(X, Y, W)
+      body:
+      - sourceA(T, Y, X)
+      - sourceB(T, Y, X)
+      - sourceC(X, Y, W)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id005
+      J2:
+      - - D
+        - B
+        - B
+      - - F
+        - E
+        - A
+    defeasibly: *id005
+- name: strict_only_nemo_join_J3
+  description: Strict-only defeasible form of nemo_join_J3.
+  source: nemo/testcases/basic/join.rls
+  tags:
+  - basic
+  - defeasible
+  - j3
+  - joins
+  - nemo
+  - strict-only
+  theory:
+    facts:
+      sourceA: *id002
+      sourceB: *id003
+      sourceC: *id004
+    strict_rules:
+    - id: r1
+      head: J1(X, Y, Z)
+      body:
+      - sourceA(X, Z, Y)
+      - sourceB(X, Y, T)
+    - id: r2
+      head: J2(X, Y, Z)
+      body:
+      - sourceA(Z, Y, X)
+      - sourceC(X, Y, T)
+    - id: r3
+      head: J3(X, Y, W)
+      body:
+      - sourceA(T, Y, X)
+      - sourceB(T, Y, X)
+      - sourceC(X, Y, W)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id006
+      J3:
+      - - D
+        - B
+        - F
+      - - D
+        - B
+        - Q
+      - - D
+        - B
+        - Z
+    defeasibly: *id006

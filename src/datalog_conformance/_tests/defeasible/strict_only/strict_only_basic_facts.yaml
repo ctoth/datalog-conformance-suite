@@ -1,0 +1,34 @@
+source: derived/strict-only/basic/facts.yaml
+tags:
+- defeasible
+- strict-only
+- basic
+- facts
+tests:
+- name: strict_only_facts_only
+  description: Strict-only defeasible form of facts_only.
+  source: manual/scaffold
+  tags:
+  - basic
+  - defeasible
+  - facts
+  - strict-only
+  theory:
+    facts:
+      edge:
+      - - a
+        - b
+      - - b
+        - c
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      edge:
+      - - a
+        - b
+      - - b
+        - c
+    defeasibly: *id001

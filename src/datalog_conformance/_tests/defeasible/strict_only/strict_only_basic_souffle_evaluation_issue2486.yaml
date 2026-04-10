@@ -1,0 +1,27 @@
+source: derived/strict-only/basic/souffle_evaluation_issue2486.yaml
+tags:
+- defeasible
+- strict-only
+- evaluation
+- souffle
+tests:
+- name: strict_only_souffle_issue2486_test
+  description: Strict-only defeasible form of souffle_issue2486_test.
+  source: souffle/evaluation/issue2486
+  tags:
+  - basic
+  - defeasible
+  - evaluation
+  - souffle
+  - strict-only
+  theory:
+    facts: {}
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      test:
+      - - 9
+    defeasibly: *id001

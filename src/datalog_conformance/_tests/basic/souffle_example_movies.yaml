@@ -1,0 +1,108 @@
+source: souffle/example/movies
+tags:
+- example
+- souffle
+tests:
+- name: souffle_movies_MovieActorsText
+  description: Harvested from Souffle testcase movies, asserting exported relation
+    MovieActorsText.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: &id001
+      Movie:
+      - - 2
+        - Movie b
+        - 9.3/10
+      - - 3
+        - Movie c
+        - 8.6/10
+      MovieActors:
+      - - 1
+        - 1
+      - - 1
+        - 2
+      - - 1
+        - 3
+      - - 2
+        - 2
+      - - 2
+        - 3
+      - - 2
+        - 4
+      - - 3
+        - 1
+      - - 3
+        - 4
+      Actors:
+      - - 1
+        - John Smith
+      - - 2
+        - Joe Bloggs
+      - - 3
+        - Francesca Allsworth
+      - - 4
+        - Julia Thebest
+    rules: &id002 []
+  expect:
+    MovieActorsText:
+    - - Movie a
+      - John Smith
+    - - Movie a
+      - Joe Bloggs
+    - - Movie a
+      - Francesca Allsworth
+    - - Movie b
+      - Joe Bloggs
+    - - Movie b
+      - Francesca Allsworth
+    - - Movie b
+      - Julia Thebest
+    - - Movie c
+      - John Smith
+    - - Movie c
+      - Julia Thebest
+- name: souffle_movies_JoeBloggsMovies
+  description: Harvested from Souffle testcase movies, asserting exported relation
+    JoeBloggsMovies.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    JoeBloggsMovies:
+    - - Movie a
+    - - Movie b
+- name: souffle_movies_ActorsRatings
+  description: Harvested from Souffle testcase movies, asserting exported relation
+    ActorsRatings.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    ActorsRatings:
+    - - John Smith
+      - 2.3/10
+    - - Joe Bloggs
+      - 2.3/10
+    - - Francesca Allsworth
+      - 2.3/10
+    - - Joe Bloggs
+      - 9.3/10
+    - - Francesca Allsworth
+      - 9.3/10
+    - - Julia Thebest
+      - 9.3/10
+    - - John Smith
+      - 8.6/10
+    - - Julia Thebest
+      - 8.6/10

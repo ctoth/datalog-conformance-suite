@@ -1,0 +1,150 @@
+source: souffle/example/cliquer
+tags:
+- example
+- souffle
+tests:
+- name: souffle_cliquer_reachable
+  description: Harvested from Souffle testcase cliquer, asserting exported relation
+    reachable.
+  tags:
+  - example
+  - recursion
+  - souffle
+  program:
+    facts: &id001
+      edge:
+      - - a
+        - b
+      - - b
+        - c
+      - - c
+        - d
+      - - d
+        - a
+      reachable:
+      - - e
+        - f
+    rules: &id002
+    - reachable(X,Y) :- edge(X,Y).
+    - reachable(X,Y) :- edge(X,Z), reachable(Z,Y).
+    - same_clique(X,Y) :- reachable(X,Y), reachable(Y,X).
+  expect:
+    reachable:
+    - - a
+      - a
+    - - a
+      - b
+    - - a
+      - c
+    - - a
+      - d
+    - - b
+      - a
+    - - b
+      - b
+    - - b
+      - c
+    - - b
+      - d
+    - - c
+      - a
+    - - c
+      - b
+    - - c
+      - c
+    - - c
+      - d
+    - - d
+      - a
+    - - d
+      - b
+    - - d
+      - c
+    - - d
+      - d
+    - - e
+      - f
+- name: souffle_cliquer_same_clique
+  description: Harvested from Souffle testcase cliquer, asserting exported relation
+    same_clique.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    same_clique:
+    - - a
+      - a
+    - - a
+      - b
+    - - a
+      - c
+    - - a
+      - d
+    - - b
+      - a
+    - - b
+      - b
+    - - b
+      - c
+    - - b
+      - d
+    - - c
+      - a
+    - - c
+      - b
+    - - c
+      - c
+    - - c
+      - d
+    - - d
+      - a
+    - - d
+      - b
+    - - d
+      - c
+    - - d
+      - d
+- name: souffle_cliquer_edge
+  description: Harvested from Souffle testcase cliquer, asserting exported relation
+    edge.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    edge:
+    - - a
+      - b
+    - - b
+      - c
+    - - c
+      - d
+    - - d
+      - a
+- name: souffle_cliquer_leg
+  description: Harvested from Souffle testcase cliquer, asserting exported relation
+    leg.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    leg:
+    - - a
+      - c
+    - - b
+      - d
+    - - c
+      - a
+    - - d
+      - b

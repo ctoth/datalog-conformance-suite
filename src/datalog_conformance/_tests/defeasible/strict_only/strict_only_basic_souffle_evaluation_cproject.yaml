@@ -1,0 +1,86 @@
+source: derived/strict-only/basic/souffle_evaluation_cproject.yaml
+tags:
+- defeasible
+- strict-only
+- evaluation
+- souffle
+tests:
+- name: strict_only_souffle_cproject_N
+  description: Strict-only defeasible form of souffle_cproject_N.
+  source: souffle/evaluation/cproject
+  tags:
+  - basic
+  - defeasible
+  - evaluation
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      N: &id002
+      - - 1
+      - - 2
+      - - 3
+    strict_rules:
+    - id: r1
+      head: A ("0",x)
+      body:
+      - N(x)
+    - id: r2
+      head: A ("3",x)
+      body:
+      - N(x)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      N:
+      - - 0
+      - - 1
+      - - 2
+      - - 3
+    defeasibly: *id001
+- name: strict_only_souffle_cproject_A
+  description: Strict-only defeasible form of souffle_cproject_A.
+  source: souffle/evaluation/cproject
+  tags:
+  - basic
+  - defeasible
+  - evaluation
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      N: *id002
+    strict_rules:
+    - id: r1
+      head: A ("0",x)
+      body:
+      - N(x)
+    - id: r2
+      head: A ("3",x)
+      body:
+      - N(x)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id003
+      A:
+      - - 0
+        - 0
+      - - 0
+        - 1
+      - - 0
+        - 2
+      - - 0
+        - 3
+      - - 3
+        - 0
+      - - 3
+        - 1
+      - - 3
+        - 2
+      - - 3
+        - 3
+    defeasibly: *id003

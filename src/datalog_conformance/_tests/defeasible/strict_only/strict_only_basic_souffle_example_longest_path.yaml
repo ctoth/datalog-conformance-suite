@@ -1,0 +1,69 @@
+source: derived/strict-only/basic/souffle_example_longest_path.yaml
+tags:
+- defeasible
+- strict-only
+- example
+- souffle
+tests:
+- name: strict_only_souffle_longest_path_longest_path
+  description: Strict-only defeasible form of souffle_longest_path_longest_path.
+  source: souffle/example/longest_path
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      edge:
+      - - a
+        - b
+      - - a
+        - c
+      - - b
+        - c
+      - - a
+        - d
+      - - c
+        - d
+      - - b
+        - e
+      - - e
+        - f
+      - - c
+        - f
+      - - d
+        - f
+      - - f
+        - g
+      - - g
+        - h
+      - - g
+        - i
+      - - h
+        - i
+      - - a
+        - i
+      - - h
+        - j
+      - - i
+        - j
+      - - a
+        - j
+    strict_rules:
+    - id: r1
+      head: length(x,y,l+1)
+      body:
+      - edge(x, z)
+      - length(z, y, l)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      longest_path:
+      - - j
+        - a
+        - 9
+    defeasibly: *id001

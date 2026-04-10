@@ -1,0 +1,65 @@
+source: derived/strict-only/basic/souffle_evaluation_singleton.yaml
+tags:
+- defeasible
+- strict-only
+- evaluation
+- souffle
+tests:
+- name: strict_only_souffle_singleton_query
+  description: Strict-only defeasible form of souffle_singleton_query.
+  source: souffle/evaluation/singleton
+  tags:
+  - basic
+  - defeasible
+  - evaluation
+  - souffle
+  - strict-only
+  theory:
+    facts: {}
+    strict_rules:
+    - id: r1
+      head: query("t2")
+      body:
+      - a(_x)
+    - id: r2
+      head: query("t3")
+      body:
+      - a(_)
+    - id: r3
+      head: query("t4")
+      body:
+      - b(x)
+    - id: r4
+      head: query("t5")
+      body:
+      - b(_x)
+    - id: r5
+      head: query("t6")
+      body:
+      - b(_)
+    - id: r6
+      head: query("t7")
+      body:
+      - a(x)
+      - b(y)
+    - id: r7
+      head: query("t8")
+      body:
+      - a(x)
+      - a(y)
+    - id: r8
+      head: query("t9")
+      body:
+      - b(x)
+      - b(y)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      query:
+      - - t1
+      - - t2
+      - - t3
+      - - t8
+    defeasibly: *id001

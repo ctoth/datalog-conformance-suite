@@ -1,0 +1,629 @@
+source: nemo/testcases/basic/negation.rls
+tags:
+- basic
+- negation
+- nemo
+tests:
+- name: nemo_negation_projectedZ
+  description: Harvested from Nemo testcase negation, asserting exported relation
+    projectedZ.
+  tags:
+  - basic
+  - negation
+  - nemo
+  - projectedz
+  program:
+    facts: &id001
+      main:
+      - - 2
+        - 0
+        - 0
+      - - 2
+        - 0
+        - 1
+      - - 2
+        - 1
+        - 0
+      - - 2
+        - 5
+        - 2
+      - - 2
+        - 5
+        - 3
+      - - 4
+        - 0
+        - 0
+      - - 4
+        - 2
+        - 1
+      - - 4
+        - 5
+        - 1
+      - - 6
+        - 2
+        - 0
+      - - 6
+        - 9
+        - 2
+      - - 8
+        - 1
+        - 2
+      - - 8
+        - 4
+        - 2
+      - - 8
+        - 5
+        - 1
+      s1:
+      - - 0
+      - - 1
+      - - 3
+      - - 6
+      - - 9
+      - - 10
+      s2:
+      - - 2
+        - 5
+      - - 4
+        - 2
+      - - 6
+        - 0
+      - - 8
+        - 2
+      - - 9
+        - 2
+      s3:
+      - - 2
+        - 0
+        - 0
+      - - 2
+        - 0
+        - 1
+      - - 2
+        - 1
+        - 0
+      - - 2
+        - 5
+        - 2
+      - - 2
+        - 2
+        - 9
+      - - 2
+        - 5
+        - 3
+      - - 3
+        - 3
+        - 7
+      - - 4
+        - 0
+        - 0
+      - - 4
+        - 2
+        - 1
+      - - 4
+        - 4
+        - 8
+      - - 4
+        - 5
+        - 1
+      - - 6
+        - 2
+        - 0
+      - - 6
+        - 9
+        - 2
+      - - 6
+        - 4
+        - 6
+      - - 8
+        - 1
+        - 2
+      - - 8
+        - 4
+        - 2
+      - - 8
+        - 5
+        - 1
+      - - 8
+        - 5
+        - 8
+    rules: &id002
+    - singlePositionX(X, Y, Z) :- main(X, Y, Z), not s1(X).
+    - singlePositionY(X, Y, Z) :- main(X, Y, Z), not s1(Y).
+    - singlePositionZ(X, Y, Z) :- main(X, Y, Z), not s1(Z).
+    - multiple(X, Y, Z) :- main(X, Y, Z), not s1(X), not s2(X, Y), not s2(X, Z), not
+      s2(Y, Z).
+    - reordered(X, Y, Z) :- main(X, Y, Z), not s2(Z, Y).
+    - filteredX(X, Y, Z) :- main(X, Y, Z), not s3(X, 5, X).
+    - filteredY(X, Y, Z) :- main(X, Y, Z), not s3(4, Y, Y).
+    - filteredZ(X, Y, Z) :- main(X, Y, Z), not s3(Z, Z, 7).
+    - projectedXY(X, Y) :- main(X, Y, Z), not s3(X, 5, P).
+    - projectedYZ(Y, Z) :- main(X, Y, Z), not s3(P, Z, Y).
+    - projectedXZ(X, Z) :- main(X, Y, Z), not s3(X, Z, P).
+    - projectedX(X, Y, Z) :- main(X, Y, Z), not s3(X, P, P).
+    - projectedY(X, Y, Z) :- main(X, Y, Z), not s3(P, P, Y).
+    - projectedZ(X, Y, Z) :- main(X, Y, Z), not s3(P, Z, P).
+  expect:
+    projectedZ:
+    - - 2
+      - 0
+      - 0
+    - - 2
+      - 0
+      - 1
+    - - 2
+      - 1
+      - 0
+    - - 2
+      - 5
+      - 2
+    - - 2
+      - 5
+      - 3
+    - - 4
+      - 0
+      - 0
+    - - 4
+      - 2
+      - 1
+    - - 4
+      - 5
+      - 1
+    - - 6
+      - 2
+      - 0
+    - - 6
+      - 9
+      - 2
+    - - 8
+      - 1
+      - 2
+    - - 8
+      - 4
+      - 2
+    - - 8
+      - 5
+      - 1
+- name: nemo_negation_filteredX
+  description: Harvested from Nemo testcase negation, asserting exported relation
+    filteredX.
+  tags:
+  - basic
+  - negation
+  - nemo
+  - filteredx
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    filteredX:
+    - - 4
+      - 0
+      - 0
+    - - 4
+      - 2
+      - 1
+    - - 4
+      - 5
+      - 1
+    - - 6
+      - 2
+      - 0
+    - - 6
+      - 9
+      - 2
+- name: nemo_negation_projectedX
+  description: Harvested from Nemo testcase negation, asserting exported relation
+    projectedX.
+  tags:
+  - basic
+  - negation
+  - nemo
+  - projectedx
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    projectedX:
+    - - 6
+      - 2
+      - 0
+    - - 6
+      - 9
+      - 2
+    - - 8
+      - 1
+      - 2
+    - - 8
+      - 4
+      - 2
+    - - 8
+      - 5
+      - 1
+- name: nemo_negation_projectedY
+  description: Harvested from Nemo testcase negation, asserting exported relation
+    projectedY.
+  tags:
+  - basic
+  - negation
+  - nemo
+  - projectedy
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    projectedY:
+    - - 2
+      - 0
+      - 0
+    - - 2
+      - 0
+      - 1
+    - - 2
+      - 1
+      - 0
+    - - 2
+      - 5
+      - 2
+    - - 2
+      - 5
+      - 3
+    - - 4
+      - 0
+      - 0
+    - - 4
+      - 2
+      - 1
+    - - 4
+      - 5
+      - 1
+    - - 6
+      - 2
+      - 0
+    - - 8
+      - 1
+      - 2
+    - - 8
+      - 4
+      - 2
+    - - 8
+      - 5
+      - 1
+- name: nemo_negation_projectedXZ
+  description: Harvested from Nemo testcase negation, asserting exported relation
+    projectedXZ.
+  tags:
+  - basic
+  - negation
+  - nemo
+  - projectedxz
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    projectedXZ:
+    - - 2
+      - 3
+    - - 4
+      - 1
+    - - 6
+      - 0
+    - - 8
+      - 2
+- name: nemo_negation_multiple
+  description: Harvested from Nemo testcase negation, asserting exported relation
+    multiple.
+  tags:
+  - basic
+  - negation
+  - nemo
+  - multiple
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    multiple:
+    - - 2
+      - 0
+      - 0
+    - - 2
+      - 0
+      - 1
+    - - 2
+      - 1
+      - 0
+    - - 4
+      - 0
+      - 0
+    - - 4
+      - 5
+      - 1
+    - - 8
+      - 5
+      - 1
+- name: nemo_negation_singlePositionY
+  description: Harvested from Nemo testcase negation, asserting exported relation
+    singlePositionY.
+  tags:
+  - basic
+  - negation
+  - nemo
+  - singlepositiony
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    singlePositionY:
+    - - 2
+      - 5
+      - 2
+    - - 2
+      - 5
+      - 3
+    - - 4
+      - 2
+      - 1
+    - - 4
+      - 5
+      - 1
+    - - 6
+      - 2
+      - 0
+    - - 8
+      - 4
+      - 2
+    - - 8
+      - 5
+      - 1
+- name: nemo_negation_filteredY
+  description: Harvested from Nemo testcase negation, asserting exported relation
+    filteredY.
+  tags:
+  - basic
+  - negation
+  - nemo
+  - filteredy
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    filteredY:
+    - - 2
+      - 1
+      - 0
+    - - 2
+      - 5
+      - 2
+    - - 2
+      - 5
+      - 3
+    - - 4
+      - 2
+      - 1
+    - - 4
+      - 5
+      - 1
+    - - 6
+      - 2
+      - 0
+    - - 6
+      - 9
+      - 2
+    - - 8
+      - 1
+      - 2
+    - - 8
+      - 4
+      - 2
+    - - 8
+      - 5
+      - 1
+- name: nemo_negation_reordered
+  description: Harvested from Nemo testcase negation, asserting exported relation
+    reordered.
+  tags:
+  - basic
+  - negation
+  - nemo
+  - reordered
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    reordered:
+    - - 2
+      - 0
+      - 0
+    - - 2
+      - 0
+      - 1
+    - - 2
+      - 1
+      - 0
+    - - 2
+      - 5
+      - 3
+    - - 4
+      - 0
+      - 0
+    - - 4
+      - 2
+      - 1
+    - - 4
+      - 5
+      - 1
+    - - 6
+      - 2
+      - 0
+    - - 6
+      - 9
+      - 2
+    - - 8
+      - 1
+      - 2
+    - - 8
+      - 4
+      - 2
+    - - 8
+      - 5
+      - 1
+- name: nemo_negation_filteredZ
+  description: Harvested from Nemo testcase negation, asserting exported relation
+    filteredZ.
+  tags:
+  - basic
+  - negation
+  - nemo
+  - filteredz
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    filteredZ:
+    - - 2
+      - 0
+      - 0
+    - - 2
+      - 0
+      - 1
+    - - 2
+      - 1
+      - 0
+    - - 2
+      - 5
+      - 2
+    - - 4
+      - 0
+      - 0
+    - - 4
+      - 2
+      - 1
+    - - 4
+      - 5
+      - 1
+    - - 6
+      - 2
+      - 0
+    - - 6
+      - 9
+      - 2
+    - - 8
+      - 1
+      - 2
+    - - 8
+      - 4
+      - 2
+    - - 8
+      - 5
+      - 1
+- name: nemo_negation_projectedXY
+  description: Harvested from Nemo testcase negation, asserting exported relation
+    projectedXY.
+  tags:
+  - basic
+  - negation
+  - nemo
+  - projectedxy
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    projectedXY:
+    - - 6
+      - 2
+    - - 6
+      - 9
+- name: nemo_negation_projectedYZ
+  description: Harvested from Nemo testcase negation, asserting exported relation
+    projectedYZ.
+  tags:
+  - basic
+  - negation
+  - nemo
+  - projectedyz
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    projectedYZ:
+    - - 2
+      - 0
+    - - 4
+      - 2
+    - - 5
+      - 1
+    - - 5
+      - 2
+    - - 5
+      - 3
+- name: nemo_negation_singlePositionX
+  description: Harvested from Nemo testcase negation, asserting exported relation
+    singlePositionX.
+  tags:
+  - basic
+  - negation
+  - nemo
+  - singlepositionx
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    singlePositionX:
+    - - 2
+      - 0
+      - 0
+    - - 2
+      - 0
+      - 1
+    - - 2
+      - 1
+      - 0
+    - - 2
+      - 5
+      - 2
+    - - 2
+      - 5
+      - 3
+    - - 4
+      - 0
+      - 0
+    - - 4
+      - 2
+      - 1
+    - - 4
+      - 5
+      - 1
+    - - 8
+      - 1
+      - 2
+    - - 8
+      - 4
+      - 2
+    - - 8
+      - 5
+      - 1
+- name: nemo_negation_singlePositionZ
+  description: Harvested from Nemo testcase negation, asserting exported relation
+    singlePositionZ.
+  tags:
+  - basic
+  - negation
+  - nemo
+  - singlepositionz
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    singlePositionZ:
+    - - 2
+      - 5
+      - 2
+    - - 6
+      - 9
+      - 2
+    - - 8
+      - 1
+      - 2
+    - - 8
+      - 4
+      - 2

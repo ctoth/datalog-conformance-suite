@@ -1,0 +1,39 @@
+source: souffle/evaluation/multiple_heads
+tags:
+- evaluation
+- souffle
+tests:
+- name: souffle_multiple_heads_B
+  description: Harvested from Souffle testcase multiple_heads, asserting exported
+    relation B.
+  tags:
+  - basic
+  - evaluation
+  - souffle
+  program:
+    facts: &id001
+      A:
+      - - 2
+      C:
+      - - 3
+    rules: &id002
+    - B(X) , C(X) :- A(X).
+  expect:
+    B:
+    - - 1
+    - - 2
+- name: souffle_multiple_heads_C
+  description: Harvested from Souffle testcase multiple_heads, asserting exported
+    relation C.
+  tags:
+  - basic
+  - evaluation
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    C:
+    - - 1
+    - - 2
+    - - 3

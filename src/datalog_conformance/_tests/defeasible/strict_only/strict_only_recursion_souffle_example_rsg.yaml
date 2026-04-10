@@ -1,0 +1,209 @@
+source: derived/strict-only/recursion/souffle_example_rsg.yaml
+tags:
+- defeasible
+- strict-only
+- example
+- souffle
+tests:
+- name: strict_only_souffle_rsg_RSG
+  description: Strict-only defeasible form of souffle_rsg_RSG.
+  source: souffle/example/rsg
+  tags:
+  - defeasible
+  - example
+  - recursion
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      UP: &id002
+      - - a
+        - e
+      - - a
+        - f
+      - - f
+        - m
+      - - g
+        - n
+      - - h
+        - n
+      - - i
+        - o
+      - - j
+        - o
+      FLAT: &id003
+      - - g
+        - f
+      - - m
+        - n
+      - - m
+        - o
+      - - p
+        - m
+      DOWN: &id004
+      - - l
+        - f
+      - - m
+        - f
+      - - g
+        - b
+      - - h
+        - c
+      - - i
+        - d
+      - - p
+        - k
+    strict_rules:
+    - id: r1
+      head: RSG(x,y)
+      body:
+      - UP(x, a)
+      - RSG(b, a)
+      - DOWN(b, y)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      RSG:
+      - - g
+        - f
+      - - m
+        - n
+      - - m
+        - o
+      - - p
+        - m
+      - - a
+        - b
+      - - f
+        - k
+      - - h
+        - f
+      - - i
+        - f
+      - - j
+        - f
+      - - a
+        - c
+      - - a
+        - d
+    defeasibly: *id001
+- name: strict_only_souffle_rsg_FLAT
+  description: Strict-only defeasible form of souffle_rsg_FLAT.
+  source: souffle/example/rsg
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      UP: *id002
+      FLAT: *id003
+      DOWN: *id004
+    strict_rules:
+    - id: r1
+      head: RSG(x,y)
+      body:
+      - UP(x, a)
+      - RSG(b, a)
+      - DOWN(b, y)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id005
+      FLAT:
+      - - g
+        - f
+      - - m
+        - n
+      - - m
+        - o
+      - - p
+        - m
+    defeasibly: *id005
+- name: strict_only_souffle_rsg_UP
+  description: Strict-only defeasible form of souffle_rsg_UP.
+  source: souffle/example/rsg
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      UP: *id002
+      FLAT: *id003
+      DOWN: *id004
+    strict_rules:
+    - id: r1
+      head: RSG(x,y)
+      body:
+      - UP(x, a)
+      - RSG(b, a)
+      - DOWN(b, y)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id006
+      UP:
+      - - a
+        - e
+      - - a
+        - f
+      - - f
+        - m
+      - - g
+        - n
+      - - h
+        - n
+      - - i
+        - o
+      - - j
+        - o
+    defeasibly: *id006
+- name: strict_only_souffle_rsg_DOWN
+  description: Strict-only defeasible form of souffle_rsg_DOWN.
+  source: souffle/example/rsg
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      UP: *id002
+      FLAT: *id003
+      DOWN: *id004
+    strict_rules:
+    - id: r1
+      head: RSG(x,y)
+      body:
+      - UP(x, a)
+      - RSG(b, a)
+      - DOWN(b, y)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id007
+      DOWN:
+      - - l
+        - f
+      - - m
+        - f
+      - - g
+        - b
+      - - h
+        - c
+      - - i
+        - d
+      - - p
+        - k
+    defeasibly: *id007

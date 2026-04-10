@@ -1,0 +1,54 @@
+source: derived/strict-only/basic/souffle_evaluation_count_sccs1.yaml
+tags:
+- defeasible
+- strict-only
+- evaluation
+- souffle
+tests:
+- name: strict_only_souffle_count_sccs1_count_scc
+  description: Strict-only defeasible form of souffle_count_sccs1_count_scc.
+  source: souffle/evaluation/count_sccs1
+  tags:
+  - basic
+  - defeasible
+  - evaluation
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      links:
+      - - A
+        - B
+      - - B
+        - A
+      - - B
+        - C
+      - - C
+        - D
+      - - D
+        - C
+      - - D
+        - E
+    strict_rules:
+    - id: r1
+      head: reaches(A, B)
+      body:
+      - links(A, C)
+      - reaches(C, B)
+    - id: r2
+      head: mutually_reaching(A,A)
+      body:
+      - nodes(A)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      count_scc:
+      - - A
+        - 2
+      - - C
+        - 2
+      - - E
+        - 1
+    defeasibly: *id001

@@ -1,0 +1,57 @@
+source: souffle/evaluation/x9
+tags:
+- evaluation
+- souffle
+tests:
+- name: souffle_x9_X
+  description: Harvested from Souffle testcase x9, asserting exported relation X.
+  tags:
+  - basic
+  - evaluation
+  - souffle
+  program:
+    facts: &id001
+      X:
+      - - a
+        - b
+      - - b
+        - d
+      - - a
+        - c
+      - - c
+        - e
+    rules: &id002
+    - Y(a,c) :- Y(a,b), Y(b,c).
+  expect:
+    X:
+    - - a
+      - b
+    - - b
+      - d
+    - - a
+      - c
+    - - c
+      - e
+- name: souffle_x9_Y
+  description: Harvested from Souffle testcase x9, asserting exported relation Y.
+  tags:
+  - evaluation
+  - recursion
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    Y:
+    - - a
+      - b
+    - - b
+      - d
+    - - a
+      - c
+    - - c
+      - e
+    - - a
+      - d
+    - - a
+      - e

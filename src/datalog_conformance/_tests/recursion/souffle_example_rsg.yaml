@@ -1,0 +1,143 @@
+source: souffle/example/rsg
+tags:
+- example
+- souffle
+tests:
+- name: souffle_rsg_RSG
+  description: Harvested from Souffle testcase rsg, asserting exported relation RSG.
+  tags:
+  - example
+  - recursion
+  - souffle
+  program:
+    facts: &id001
+      UP:
+      - - a
+        - e
+      - - a
+        - f
+      - - f
+        - m
+      - - g
+        - n
+      - - h
+        - n
+      - - i
+        - o
+      - - j
+        - o
+      FLAT:
+      - - g
+        - f
+      - - m
+        - n
+      - - m
+        - o
+      - - p
+        - m
+      DOWN:
+      - - l
+        - f
+      - - m
+        - f
+      - - g
+        - b
+      - - h
+        - c
+      - - i
+        - d
+      - - p
+        - k
+    rules: &id002
+    - RSG(x,y) :- UP(x, a), RSG(b, a), DOWN(b, y).
+  expect:
+    RSG:
+    - - g
+      - f
+    - - m
+      - n
+    - - m
+      - o
+    - - p
+      - m
+    - - a
+      - b
+    - - f
+      - k
+    - - h
+      - f
+    - - i
+      - f
+    - - j
+      - f
+    - - a
+      - c
+    - - a
+      - d
+- name: souffle_rsg_FLAT
+  description: Harvested from Souffle testcase rsg, asserting exported relation FLAT.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    FLAT:
+    - - g
+      - f
+    - - m
+      - n
+    - - m
+      - o
+    - - p
+      - m
+- name: souffle_rsg_UP
+  description: Harvested from Souffle testcase rsg, asserting exported relation UP.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    UP:
+    - - a
+      - e
+    - - a
+      - f
+    - - f
+      - m
+    - - g
+      - n
+    - - h
+      - n
+    - - i
+      - o
+    - - j
+      - o
+- name: souffle_rsg_DOWN
+  description: Harvested from Souffle testcase rsg, asserting exported relation DOWN.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    DOWN:
+    - - l
+      - f
+    - - m
+      - f
+    - - g
+      - b
+    - - h
+      - c
+    - - i
+      - d
+    - - p
+      - k

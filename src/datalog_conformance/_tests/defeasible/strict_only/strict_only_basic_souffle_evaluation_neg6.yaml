@@ -1,0 +1,67 @@
+source: derived/strict-only/basic/souffle_evaluation_neg6.yaml
+tags:
+- defeasible
+- strict-only
+- evaluation
+- souffle
+tests:
+- name: strict_only_souffle_neg6_b
+  description: Strict-only defeasible form of souffle_neg6_b.
+  source: souffle/evaluation/neg6
+  tags:
+  - basic
+  - defeasible
+  - evaluation
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      a: &id002
+      - - 1
+        - 2
+        - 2
+      - - 1
+        - 2
+        - 3
+      - - 2
+        - 1
+        - 1
+      - - 3
+        - 1
+        - 1
+      - - 4
+        - 2
+        - 3
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      b:
+      - - 3
+      - - 4
+    defeasibly: *id001
+- name: strict_only_souffle_neg6_c
+  description: Strict-only defeasible form of souffle_neg6_c.
+  source: souffle/evaluation/neg6
+  tags:
+  - basic
+  - defeasible
+  - evaluation
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      a: *id002
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id003
+      c:
+      - - 2
+      - - 3
+      - - 4
+    defeasibly: *id003

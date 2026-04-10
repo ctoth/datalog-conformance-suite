@@ -1,0 +1,57 @@
+source: souffle/example/tree
+tags:
+- example
+- souffle
+tests:
+- name: souffle_tree_S
+  description: Harvested from Souffle testcase tree, asserting exported relation S.
+  tags:
+  - basic
+  - example
+  - souffle
+  program:
+    facts: &id001
+      R:
+      - - 1
+        - a
+        - 2
+      - - 2
+        - b
+        - 3
+      - - 3
+        - a
+        - 4
+      - - 4
+        - a
+        - 5
+      - - 5
+        - a
+        - 6
+    rules: &id002
+    - T (x1, x4) :- R(x1, _, x2), R(x2, _, x3), T(x3, x4).
+    - T (x1, x3) :- R(x1, a, x2), R(x2, a, x3).
+  expect:
+    S:
+    - - 3
+      - 6
+    - - 1
+      - 6
+- name: souffle_tree_T
+  description: Harvested from Souffle testcase tree, asserting exported relation T.
+  tags:
+  - example
+  - recursion
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    T:
+    - - 3
+      - 5
+    - - 4
+      - 6
+    - - 1
+      - 5
+    - - 2
+      - 6

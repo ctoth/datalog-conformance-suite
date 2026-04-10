@@ -1,0 +1,422 @@
+source: derived/strict-only/recursion/souffle_evaluation_rmut2.yaml
+tags:
+- defeasible
+- strict-only
+- evaluation
+- souffle
+tests:
+- name: strict_only_souffle_rmut2_X
+  description: Strict-only defeasible form of souffle_rmut2_X.
+  source: souffle/evaluation/rmut2
+  tags:
+  - basic
+  - defeasible
+  - evaluation
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      X: &id002
+      - - b
+      - - c
+      A: &id003
+      - - 1
+      B: &id004
+      - - 2
+      C: &id005
+      - - 3
+      D: &id006
+      - - 4
+    strict_rules:
+    - id: r1
+      head: A(x)
+      body:
+      - X(x)
+    - id: r2
+      head: B(x)
+      body:
+      - X(x)
+      - A(x)
+    - id: r3
+      head: C(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+    - id: r4
+      head: D(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+    - id: r5
+      head: A(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+      - D(x)
+    - id: r6
+      head: B(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+      - D(x)
+    - id: r7
+      head: C(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+      - D(x)
+    - id: r8
+      head: D(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+      - D(x)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      X:
+      - - a
+      - - b
+      - - c
+    defeasibly: *id001
+- name: strict_only_souffle_rmut2_A
+  description: Strict-only defeasible form of souffle_rmut2_A.
+  source: souffle/evaluation/rmut2
+  tags:
+  - defeasible
+  - evaluation
+  - recursion
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      X: *id002
+      A: *id003
+      B: *id004
+      C: *id005
+      D: *id006
+    strict_rules:
+    - id: r1
+      head: A(x)
+      body:
+      - X(x)
+    - id: r2
+      head: B(x)
+      body:
+      - X(x)
+      - A(x)
+    - id: r3
+      head: C(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+    - id: r4
+      head: D(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+    - id: r5
+      head: A(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+      - D(x)
+    - id: r6
+      head: B(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+      - D(x)
+    - id: r7
+      head: C(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+      - D(x)
+    - id: r8
+      head: D(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+      - D(x)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id007
+      A:
+      - - a
+      - - b
+      - - c
+      - - 1
+    defeasibly: *id007
+- name: strict_only_souffle_rmut2_B
+  description: Strict-only defeasible form of souffle_rmut2_B.
+  source: souffle/evaluation/rmut2
+  tags:
+  - defeasible
+  - evaluation
+  - recursion
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      X: *id002
+      A: *id003
+      B: *id004
+      C: *id005
+      D: *id006
+    strict_rules:
+    - id: r1
+      head: A(x)
+      body:
+      - X(x)
+    - id: r2
+      head: B(x)
+      body:
+      - X(x)
+      - A(x)
+    - id: r3
+      head: C(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+    - id: r4
+      head: D(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+    - id: r5
+      head: A(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+      - D(x)
+    - id: r6
+      head: B(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+      - D(x)
+    - id: r7
+      head: C(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+      - D(x)
+    - id: r8
+      head: D(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+      - D(x)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id008
+      B:
+      - - a
+      - - b
+      - - c
+      - - 2
+    defeasibly: *id008
+- name: strict_only_souffle_rmut2_C
+  description: Strict-only defeasible form of souffle_rmut2_C.
+  source: souffle/evaluation/rmut2
+  tags:
+  - defeasible
+  - evaluation
+  - recursion
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      X: *id002
+      A: *id003
+      B: *id004
+      C: *id005
+      D: *id006
+    strict_rules:
+    - id: r1
+      head: A(x)
+      body:
+      - X(x)
+    - id: r2
+      head: B(x)
+      body:
+      - X(x)
+      - A(x)
+    - id: r3
+      head: C(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+    - id: r4
+      head: D(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+    - id: r5
+      head: A(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+      - D(x)
+    - id: r6
+      head: B(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+      - D(x)
+    - id: r7
+      head: C(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+      - D(x)
+    - id: r8
+      head: D(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+      - D(x)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id009
+      C:
+      - - a
+      - - b
+      - - c
+      - - 3
+    defeasibly: *id009
+- name: strict_only_souffle_rmut2_D
+  description: Strict-only defeasible form of souffle_rmut2_D.
+  source: souffle/evaluation/rmut2
+  tags:
+  - defeasible
+  - evaluation
+  - recursion
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      X: *id002
+      A: *id003
+      B: *id004
+      C: *id005
+      D: *id006
+    strict_rules:
+    - id: r1
+      head: A(x)
+      body:
+      - X(x)
+    - id: r2
+      head: B(x)
+      body:
+      - X(x)
+      - A(x)
+    - id: r3
+      head: C(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+    - id: r4
+      head: D(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+    - id: r5
+      head: A(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+      - D(x)
+    - id: r6
+      head: B(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+      - D(x)
+    - id: r7
+      head: C(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+      - D(x)
+    - id: r8
+      head: D(x)
+      body:
+      - X(x)
+      - A(x)
+      - B(x)
+      - C(x)
+      - D(x)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id010
+      D:
+      - - a
+      - - b
+      - - c
+      - - 4
+    defeasibly: *id010

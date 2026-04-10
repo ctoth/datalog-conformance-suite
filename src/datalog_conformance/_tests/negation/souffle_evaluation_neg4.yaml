@@ -1,0 +1,65 @@
+source: souffle/evaluation/neg4
+tags:
+- evaluation
+- souffle
+tests:
+- name: souffle_neg4_X
+  description: Harvested from Souffle testcase neg4, asserting exported relation X.
+  tags:
+  - evaluation
+  - negation
+  - souffle
+  program:
+    facts: &id001
+      X:
+      - - a
+        - b
+      - - b
+        - c
+      - - c
+        - d
+    rules: &id002
+    - Y(a,c) :- X(a,b), Y(b,c).
+    - Z(a,b) :- not X("a","b"), Y(a,b).
+  expect:
+    X:
+    - - a
+      - b
+    - - b
+      - c
+    - - c
+      - d
+- name: souffle_neg4_Y
+  description: Harvested from Souffle testcase neg4, asserting exported relation Y.
+  tags:
+  - evaluation
+  - recursion
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    Y:
+    - - a
+      - b
+    - - b
+      - c
+    - - c
+      - d
+    - - a
+      - c
+    - - b
+      - d
+    - - a
+      - d
+- name: souffle_neg4_Z
+  description: Harvested from Souffle testcase neg4, asserting exported relation Z.
+  tags:
+  - evaluation
+  - negation
+  - souffle
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    Z: []

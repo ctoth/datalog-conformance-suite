@@ -1,0 +1,92 @@
+source: derived/strict-only/recursion/souffle_evaluation_eqrel_reachable.yaml
+tags:
+- defeasible
+- strict-only
+- evaluation
+- souffle
+tests:
+- name: strict_only_souffle_eqrel_reachable_reachable
+  description: Strict-only defeasible form of souffle_eqrel_reachable_reachable.
+  source: souffle/evaluation/eqrel_reachable
+  tags:
+  - defeasible
+  - evaluation
+  - recursion
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      edge:
+      - - A
+        - B
+      - - B
+        - A
+      - - C
+        - D
+      - - D
+        - C
+      - - D
+        - E
+      - - E
+        - F
+      - - G
+        - G
+    strict_rules:
+    - id: r1
+      head: nodes(x)
+      body:
+      - edge(_, x)
+    - id: r2
+      head: reachable(x, y)
+      body:
+      - reachable(x, z)
+      - edge(z, y)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      reachable:
+      - - A
+        - A
+      - - A
+        - B
+      - - B
+        - A
+      - - B
+        - B
+      - - C
+        - C
+      - - C
+        - D
+      - - C
+        - E
+      - - C
+        - F
+      - - D
+        - C
+      - - D
+        - D
+      - - D
+        - E
+      - - D
+        - F
+      - - E
+        - C
+      - - E
+        - D
+      - - E
+        - E
+      - - E
+        - F
+      - - F
+        - C
+      - - F
+        - D
+      - - F
+        - E
+      - - F
+        - F
+      - - G
+        - G
+    defeasibly: *id001

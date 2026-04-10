@@ -6,7 +6,6 @@ from typing import Any
 
 import yaml
 
-
 SOURCE_ROOT = Path(os.environ.get("TEMP", str(Path.home() / "AppData" / "Local" / "Temp")))
 SPINDLE_ROOT = SOURCE_ROOT / "datalog-harvest" / "spindle-racket"
 THEORY_ROOT = SPINDLE_ROOT / "src" / "test-theories"
@@ -116,7 +115,10 @@ def main() -> None:
                 _case_from_source(
                     TEST_ROOT / "medical-treatment.dfl",
                     name="spindle_racket_medical_treatment",
-                    description="A contraindication defeats the first treatment and enables the fallback.",
+                    description=(
+                        "A contraindication defeats the first treatment and enables "
+                        "the fallback."
+                    ),
                     tags=["basic", "superiority", "safety"],
                     expect={
                         "definitely": {"hasConditionX": [[]], "allergicToA": [[]]},
@@ -140,9 +142,13 @@ def main() -> None:
                 _inline_case(
                     name="spindle_racket_fact_vs_strict_rule_conflict",
                     description=(
-                        "A fact and a conflicting strict-rule conclusion are both definitely provable."
+                        "A fact and a conflicting strict-rule conclusion are both "
+                        "definitely provable."
                     ),
-                    source="spindle-racket/tests/spindle-tests.rkt::Fact conflicting with strict rule conclusion",
+                    source=(
+                        "spindle-racket/tests/spindle-tests.rkt::"
+                        "Fact conflicting with strict rule conclusion"
+                    ),
                     tags=["basic", "inconsistency", "strict"],
                     theory={
                         "facts": {"p": [[]], "q": [[]]},
@@ -178,7 +184,10 @@ def main() -> None:
                 _inline_case(
                     name="spindle_racket_mixed_strict_defeasible_conflict",
                     description="A strict rule for c blocks a competing defeasible rule for ~c.",
-                    source="spindle-racket/tests/spindle-tests.rkt::Interaction between strict and defeasible rules",
+                    source=(
+                        "spindle-racket/tests/spindle-tests.rkt::"
+                        "Interaction between strict and defeasible rules"
+                    ),
                     tags=["basic", "strict", "conflicts"],
                     theory={
                         "facts": {"a": [[]], "b": [[]]},
@@ -200,7 +209,10 @@ def main() -> None:
                 _inline_case(
                     name="spindle_racket_defeater_negative_conclusions",
                     description="A defeater blocks q and still does not prove ~q.",
-                    source="spindle-racket/tests/spindle-tests.rkt::Defeater produces non-provability conclusions",
+                    source=(
+                        "spindle-racket/tests/spindle-tests.rkt::"
+                        "Defeater produces non-provability conclusions"
+                    ),
                     tags=["basic", "defeater"],
                     theory={
                         "facts": {"p": [[]]},
@@ -222,7 +234,10 @@ def main() -> None:
                 _inline_case(
                     name="spindle_racket_simple_fact",
                     description="A simple fact is definitely provable.",
-                    source="spindle-racket/tests/spindle-tests.rkt::Simple fact should be definitely provable",
+                    source=(
+                        "spindle-racket/tests/spindle-tests.rkt::"
+                        "Simple fact should be definitely provable"
+                    ),
                     tags=["basic", "facts"],
                     theory={
                         "facts": {"p": [[]]},
@@ -236,7 +251,10 @@ def main() -> None:
                 _inline_case(
                     name="spindle_racket_negated_fact",
                     description="A negated fact is definitely provable.",
-                    source="spindle-racket/tests/spindle-tests.rkt::Negated fact should be definitely provable",
+                    source=(
+                        "spindle-racket/tests/spindle-tests.rkt::"
+                        "Negated fact should be definitely provable"
+                    ),
                     tags=["basic", "facts", "negation"],
                     theory={
                         "facts": {"~q": [[]]},
@@ -249,8 +267,14 @@ def main() -> None:
                 ),
                 _inline_case(
                     name="spindle_racket_strict_rule_with_fact",
-                    description="A strict rule with a satisfied antecedent derives its head definitely.",
-                    source="spindle-racket/tests/spindle-tests.rkt::Strict rule with satisfied antecedent",
+                    description=(
+                        "A strict rule with a satisfied antecedent derives its head "
+                        "definitely."
+                    ),
+                    source=(
+                        "spindle-racket/tests/spindle-tests.rkt::"
+                        "Strict rule with satisfied antecedent"
+                    ),
                     tags=["basic", "strict"],
                     theory={
                         "facts": {"p": [[]]},
@@ -265,8 +289,14 @@ def main() -> None:
                 ),
                 _inline_case(
                     name="spindle_racket_defeasible_rule_with_fact",
-                    description="A defeasible rule with a satisfied antecedent derives its head defeasibly.",
-                    source="spindle-racket/tests/spindle-tests.rkt::Defeasible rule with satisfied antecedent",
+                    description=(
+                        "A defeasible rule with a satisfied antecedent derives its "
+                        "head defeasibly."
+                    ),
+                    source=(
+                        "spindle-racket/tests/spindle-tests.rkt::"
+                        "Defeasible rule with satisfied antecedent"
+                    ),
                     tags=["basic", "defeasible"],
                     theory={
                         "facts": {"p": [[]]},
@@ -286,8 +316,14 @@ def main() -> None:
         },
     )
 
-    print(f"Wrote {_count_cases(DEST_ROOT / 'spindle_racket_test_theories.yaml')} SPINdle theory cases")
-    print(f"Wrote {_count_cases(DEST_ROOT / 'spindle_racket_inline_tests.yaml')} SPINdle inline cases")
+    print(
+        f"Wrote {_count_cases(DEST_ROOT / 'spindle_racket_test_theories.yaml')} "
+        "SPINdle theory cases"
+    )
+    print(
+        f"Wrote {_count_cases(DEST_ROOT / 'spindle_racket_inline_tests.yaml')} "
+        "SPINdle inline cases"
+    )
 
 
 def _case_from_source(
@@ -299,7 +335,11 @@ def _case_from_source(
     expect: dict[str, Any],
 ) -> dict[str, Any]:
     parsed = _parse_dfl(path.read_text(encoding="utf-8"))
-    source_root = "spindle-racket/src/test-theories" if path.parent == THEORY_ROOT else "spindle-racket/tests"
+    source_root = (
+        "spindle-racket/src/test-theories"
+        if path.parent == THEORY_ROOT
+        else "spindle-racket/tests"
+    )
     return {
         "name": name,
         "description": description,

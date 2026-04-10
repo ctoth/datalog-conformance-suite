@@ -1,0 +1,229 @@
+source: derived/strict-only/recursion/souffle_example_small.yaml
+tags:
+- defeasible
+- strict-only
+- example
+- souffle
+tests:
+- name: strict_only_souffle_small_mother
+  description: Strict-only defeasible form of souffle_small_mother.
+  source: souffle/example/small
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      mother: &id002
+      - - claudette
+        - ann
+      - - jeannette
+        - bill
+      - - mireille
+        - john
+      father: &id003
+      - - john
+        - ann
+      - - john
+        - bill
+      - - jean-jacques
+        - alphonse
+      - - alphonse
+        - mireille
+      - - brad
+        - john
+    strict_rules:
+    - id: r1
+      head: parent(X,Y)
+      body:
+      - father(X,Y)
+    - id: r2
+      head: ancestor(X,Y)
+      body:
+      - parent(X,Y)
+    - id: r3
+      head: ancestor(X,Y)
+      body:
+      - parent(X,Z)
+      - ancestor(Z,Y)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id001
+      mother:
+      - - claudette
+        - ann
+      - - jeannette
+        - bill
+      - - mireille
+        - john
+    defeasibly: *id001
+- name: strict_only_souffle_small_father
+  description: Strict-only defeasible form of souffle_small_father.
+  source: souffle/example/small
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      mother: *id002
+      father: *id003
+    strict_rules:
+    - id: r1
+      head: parent(X,Y)
+      body:
+      - father(X,Y)
+    - id: r2
+      head: ancestor(X,Y)
+      body:
+      - parent(X,Y)
+    - id: r3
+      head: ancestor(X,Y)
+      body:
+      - parent(X,Z)
+      - ancestor(Z,Y)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id004
+      father:
+      - - john
+        - ann
+      - - john
+        - bill
+      - - jean-jacques
+        - alphonse
+      - - alphonse
+        - mireille
+      - - brad
+        - john
+    defeasibly: *id004
+- name: strict_only_souffle_small_parent
+  description: Strict-only defeasible form of souffle_small_parent.
+  source: souffle/example/small
+  tags:
+  - basic
+  - defeasible
+  - example
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      mother: *id002
+      father: *id003
+    strict_rules:
+    - id: r1
+      head: parent(X,Y)
+      body:
+      - father(X,Y)
+    - id: r2
+      head: ancestor(X,Y)
+      body:
+      - parent(X,Y)
+    - id: r3
+      head: ancestor(X,Y)
+      body:
+      - parent(X,Z)
+      - ancestor(Z,Y)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id005
+      parent:
+      - - claudette
+        - ann
+      - - jeannette
+        - bill
+      - - mireille
+        - john
+      - - john
+        - ann
+      - - john
+        - bill
+      - - jean-jacques
+        - alphonse
+      - - alphonse
+        - mireille
+      - - brad
+        - john
+    defeasibly: *id005
+- name: strict_only_souffle_small_ancestor
+  description: Strict-only defeasible form of souffle_small_ancestor.
+  source: souffle/example/small
+  tags:
+  - defeasible
+  - example
+  - recursion
+  - souffle
+  - strict-only
+  theory:
+    facts:
+      mother: *id002
+      father: *id003
+    strict_rules:
+    - id: r1
+      head: parent(X,Y)
+      body:
+      - father(X,Y)
+    - id: r2
+      head: ancestor(X,Y)
+      body:
+      - parent(X,Y)
+    - id: r3
+      head: ancestor(X,Y)
+      body:
+      - parent(X,Z)
+      - ancestor(Z,Y)
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely: &id006
+      ancestor:
+      - - claudette
+        - ann
+      - - jeannette
+        - bill
+      - - mireille
+        - john
+      - - john
+        - ann
+      - - john
+        - bill
+      - - jean-jacques
+        - alphonse
+      - - alphonse
+        - mireille
+      - - brad
+        - john
+      - - mireille
+        - ann
+      - - mireille
+        - bill
+      - - jean-jacques
+        - mireille
+      - - alphonse
+        - john
+      - - brad
+        - ann
+      - - brad
+        - bill
+      - - jean-jacques
+        - john
+      - - alphonse
+        - ann
+      - - alphonse
+        - bill
+      - - jean-jacques
+        - ann
+      - - jean-jacques
+        - bill
+    defeasibly: *id006

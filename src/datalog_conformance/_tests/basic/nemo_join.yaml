@@ -1,0 +1,120 @@
+source: nemo/testcases/basic/join.rls
+tags:
+- basic
+- joins
+- nemo
+tests:
+- name: nemo_join_J1
+  description: Harvested from Nemo testcase join, asserting exported relation J1.
+  tags:
+  - basic
+  - joins
+  - nemo
+  - j1
+  program:
+    facts: &id001
+      sourceA:
+      - - A
+        - B
+        - C
+      - - B
+        - B
+        - D
+      - - A
+        - E
+        - F
+      - - C
+        - D
+        - D
+      sourceB:
+      - - B
+        - B
+        - D
+      - - B
+        - D
+        - A
+      - - A
+        - C
+        - F
+      - - A
+        - G
+        - Q
+      - - Q
+        - Q
+        - A
+      - - C
+        - D
+        - D
+      sourceC:
+      - - Q
+        - Q
+        - A
+      - - Z
+        - Z
+        - Z
+      - - F
+        - E
+        - D
+      - - D
+        - B
+        - Q
+      - - D
+        - B
+        - Z
+      - - D
+        - B
+        - F
+    rules: &id002
+    - J1(X, Y, Z) :- sourceA(X, Z, Y), sourceB(X, Y, T).
+    - J2(X, Y, Z) :- sourceA(Z, Y, X), sourceC(X, Y, T).
+    - J3(X, Y, W) :- sourceA(T, Y, X), sourceB(T, Y, X), sourceC(X, Y, W).
+  expect:
+    J1:
+    - - A
+      - C
+      - B
+    - - B
+      - D
+      - B
+    - - C
+      - D
+      - D
+- name: nemo_join_J2
+  description: Harvested from Nemo testcase join, asserting exported relation J2.
+  tags:
+  - basic
+  - joins
+  - nemo
+  - j2
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    J2:
+    - - D
+      - B
+      - B
+    - - F
+      - E
+      - A
+- name: nemo_join_J3
+  description: Harvested from Nemo testcase join, asserting exported relation J3.
+  tags:
+  - basic
+  - joins
+  - nemo
+  - j3
+  program:
+    facts: *id001
+    rules: *id002
+  expect:
+    J3:
+    - - D
+      - B
+      - F
+    - - D
+      - B
+      - Q
+    - - D
+      - B
+      - Z
