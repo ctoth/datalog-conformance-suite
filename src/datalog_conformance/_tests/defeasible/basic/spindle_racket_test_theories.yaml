@@ -1,0 +1,341 @@
+source: spindle-racket/src/test-theories
+tags:
+- defeasible
+- spindle-racket
+tests:
+- name: spindle_racket_penguin_exception
+  description: Penguin non-flight defeats generic bird flight.
+  source: spindle-racket/src/test-theories/penguin.dfl
+  tags:
+  - basic
+  - superiority
+  - exceptions
+  theory:
+    facts:
+      tweety:
+      - []
+      penguin:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: bird
+      body:
+      - tweety
+    - id: r2
+      head: flies
+      body:
+      - bird
+    - id: r3
+      head: bird
+      body:
+      - penguin
+    - id: r4
+      head: ~flies
+      body:
+      - penguin
+    defeaters: []
+    superiority:
+    - - r4
+      - r2
+  expect:
+    definitely:
+      tweety:
+      - []
+      penguin:
+      - []
+    defeasibly:
+      bird:
+      - []
+      ~flies:
+      - []
+    not_defeasibly:
+      flies:
+      - []
+- name: spindle_racket_basic_conflict
+  description: Superiority resolves two conflicting defeasible rules.
+  source: spindle-racket/src/test-theories/basicConflict.dfl
+  tags:
+  - basic
+  - superiority
+  - conflicts
+  theory:
+    facts:
+      bird:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: flies
+      body:
+      - bird
+    - id: r2
+      head: ~flies
+      body:
+      - bird
+    defeaters: []
+    superiority:
+    - - r1
+      - r2
+  expect:
+    definitely:
+      bird:
+      - []
+    defeasibly:
+      flies:
+      - []
+    not_defeasibly:
+      ~flies:
+      - []
+- name: spindle_racket_defeater_blocks
+  description: A defeater blocks q without proving ~q.
+  source: spindle-racket/src/test-theories/defeater.dfl
+  tags:
+  - basic
+  - defeater
+  theory:
+    facts:
+      p:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: q
+      body:
+      - p
+    defeaters:
+    - id: r2
+      head: ~q
+      body:
+      - p
+    superiority: []
+  expect:
+    definitely:
+      p:
+      - []
+    not_defeasibly:
+      q:
+      - []
+      ~q:
+      - []
+- name: spindle_racket_chain_forward
+  description: Defeasible forward chaining derives all downstream literals.
+  source: spindle-racket/src/test-theories/chain.dfl
+  tags:
+  - basic
+  - chaining
+  theory:
+    facts:
+      start:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: step1
+      body:
+      - start
+    - id: r2
+      head: step2
+      body:
+      - step1
+    - id: r3
+      head: step3
+      body:
+      - step2
+    - id: r4
+      head: end
+      body:
+      - step3
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      start:
+      - []
+    defeasibly:
+      step1:
+      - []
+      step2:
+      - []
+      step3:
+      - []
+      end:
+      - []
+- name: spindle_racket_fact_conflict
+  description: Conflicting facts remain definitely provable in the inconsistent theory.
+  source: spindle-racket/src/test-theories/factConflict.dfl
+  tags:
+  - basic
+  - inconsistency
+  theory:
+    facts:
+      p:
+      - []
+      ~p:
+      - []
+    strict_rules: []
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      p:
+      - []
+      ~p:
+      - []
+- name: spindle_racket_strict_beats_defeasible
+  description: A strict rule for c blocks a competing defeasible rule for ~c.
+  source: spindle-racket/src/test-theories/sdlTestTheory.dfl
+  tags:
+  - basic
+  - strict-only
+  - superiority
+  theory:
+    facts:
+      a:
+      - []
+      b:
+      - []
+    strict_rules:
+    - id: r1
+      head: c
+      body:
+      - a
+      - b
+    defeasible_rules:
+    - id: r2
+      head: ~c
+      body:
+      - a
+      - b
+    defeaters: []
+    superiority:
+    - - r1
+      - r2
+  expect:
+    definitely:
+      a:
+      - []
+      b:
+      - []
+      c:
+      - []
+    not_defeasibly:
+      ~c:
+      - []
+- name: spindle_racket_birds_fly
+  description: A bird fact supports the default that birds fly.
+  source: spindle-racket/tests/birds-fly.dfl
+  tags:
+  - basic
+  - facts
+  theory:
+    facts:
+      bird:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: flies
+      body:
+      - bird
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      bird:
+      - []
+    defeasibly:
+      flies:
+      - []
+- name: spindle_racket_penguin_exception_test
+  description: A penguin exception blocks flight while still deriving swimming.
+  source: spindle-racket/tests/penguin-exception.dfl
+  tags:
+  - basic
+  - exceptions
+  - superiority
+  theory:
+    facts:
+      bird:
+      - []
+      penguin:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: flies
+      body:
+      - bird
+    - id: r2
+      head: swims
+      body:
+      - penguin
+    - id: r3
+      head: ~flies
+      body:
+      - penguin
+    defeaters: []
+    superiority:
+    - - r3
+      - r1
+  expect:
+    definitely:
+      bird:
+      - []
+      penguin:
+      - []
+    defeasibly:
+      swims:
+      - []
+      ~flies:
+      - []
+    not_defeasibly:
+      flies:
+      - []
+- name: spindle_racket_medical_treatment
+  description: A contraindication defeats the first treatment and enables the fallback.
+  source: spindle-racket/tests/medical-treatment.dfl
+  tags:
+  - basic
+  - superiority
+  - safety
+  theory:
+    facts:
+      hasConditionX:
+      - []
+      allergicToA:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: recommendTreatmentA
+      body:
+      - hasConditionX
+    - id: r2
+      head: ~recommendTreatmentA
+      body:
+      - allergicToA
+    - id: r3
+      head: recommendTreatmentB
+      body:
+      - hasConditionX
+      - ~recommendTreatmentA
+    defeaters: []
+    superiority:
+    - - r2
+      - r1
+  expect:
+    definitely:
+      hasConditionX:
+      - []
+      allergicToA:
+      - []
+    defeasibly:
+      ~recommendTreatmentA:
+      - []
+      recommendTreatmentB:
+      - []
+    not_defeasibly:
+      recommendTreatmentA:
+      - []
