@@ -1,0 +1,376 @@
+source: spindle-racket/tests/query/integration-test.rkt
+tags:
+- defeasible
+- spindle-racket
+tests:
+- name: spindle_racket_query_bird_flies
+  description: A bird fact supports the default that birds fly.
+  source: "spindle-racket/tests/query/integration-test.rkt::E2E-1: Create theory with facts -> run reasoning -> query literal -> success"
+  tags:
+  - basic
+  - facts
+  - defeasible
+  theory:
+    facts:
+      bird:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: flies
+      body:
+      - bird
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      bird:
+      - []
+    defeasibly:
+      flies:
+      - []
+- name: spindle_racket_query_penguin_superiority
+  description: A penguin exception defeats the generic bird-flight rule.
+  source: "spindle-racket/tests/query/integration-test.rkt::E2E-4: Conflict resolution with superiority"
+  tags:
+  - basic
+  - superiority
+  - exceptions
+  theory:
+    facts:
+      bird:
+      - []
+      penguin:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: flies
+      body:
+      - bird
+    - id: r2
+      head: ~flies
+      body:
+      - penguin
+    defeaters: []
+    superiority:
+    - - r2
+      - r1
+  expect:
+    definitely:
+      bird:
+      - []
+      penguin:
+      - []
+    defeasibly:
+      ~flies:
+      - []
+    not_defeasibly:
+      flies:
+      - []
+- name: spindle_racket_query_chain_derivation
+  description: Defeasible forward chaining derives all downstream literals.
+  source: "spindle-racket/tests/query/integration-test.rkt::E2E-5: Chain derivation through multiple rules"
+  tags:
+  - basic
+  - chaining
+  theory:
+    facts:
+      a:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: b
+      body:
+      - a
+    - id: r2
+      head: c
+      body:
+      - b
+    - id: r3
+      head: d
+      body:
+      - c
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      a:
+      - []
+    defeasibly:
+      b:
+      - []
+      c:
+      - []
+      d:
+      - []
+- name: spindle_racket_query_defeater_blocks_conclusion
+  description: A defeater blocks q without proving ~q.
+  source: "spindle-racket/tests/query/integration-test.rkt::E2E-6: Defeater blocks conclusion"
+  tags:
+  - basic
+  - defeater
+  theory:
+    facts:
+      bird:
+      - []
+      broken_wing:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: flies
+      body:
+      - bird
+    defeaters:
+    - id: d1
+      head: ~flies
+      body:
+      - broken_wing
+    superiority: []
+  expect:
+    definitely:
+      bird:
+      - []
+      broken_wing:
+      - []
+    not_defeasibly:
+      flies:
+      - []
+      ~flies:
+      - []
+- name: spindle_racket_query_strict_conclusion
+  description: A strict rule derives mortal definitely.
+  source: "spindle-racket/tests/query/integration-test.rkt::E2E-7: Strict rule derivation is definite"
+  tags:
+  - basic
+  - strict
+  theory:
+    facts:
+      human:
+      - []
+    strict_rules:
+    - id: r1
+      head: mortal
+      body:
+      - human
+    defeasible_rules: []
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      human:
+      - []
+      mortal:
+      - []
+- name: spindle_racket_query_missing_premise_failure
+  description: A missing tests_pass premise leaves ready_review unprovable.
+  source: "spindle-racket/tests/query/integration-test.rkt::WI-1: Query fails without required premise"
+  tags:
+  - basic
+  - chaining
+  - missing-premise
+  theory:
+    facts:
+      code_complete:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: ready_review
+      body:
+      - tests_pass
+      - code_complete
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      code_complete:
+      - []
+    not_defeasibly:
+      ready_review:
+      - []
+- name: spindle_racket_query_nested_chain
+  description: A nested chain reaches the final literal.
+  source: "spindle-racket/tests/query/integration-test.rkt::EDGE-8: Complex nested derivation"
+  tags:
+  - basic
+  - chaining
+  theory:
+    facts:
+      L1:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: L2
+      body:
+      - L1
+    - id: r2
+      head: L3
+      body:
+      - L2
+    - id: r3
+      head: L4
+      body:
+      - L3
+    - id: r4
+      head: L5
+      body:
+      - L4
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      L1:
+      - []
+    defeasibly:
+      L2:
+      - []
+      L3:
+      - []
+      L4:
+      - []
+      L5:
+      - []
+- name: spindle_racket_query_long_chain
+  description: A long chain still derives the terminal literal.
+  source: "spindle-racket/tests/query/integration-test.rkt::PERF-2: Theory with 20 rules"
+  tags:
+  - basic
+  - chaining
+  - scale
+  theory:
+    facts:
+      L0:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r0
+      head: L1
+      body:
+      - L0
+    - id: r1
+      head: L2
+      body:
+      - L1
+    - id: r2
+      head: L3
+      body:
+      - L2
+    - id: r3
+      head: L4
+      body:
+      - L3
+    - id: r4
+      head: L5
+      body:
+      - L4
+    - id: r5
+      head: L6
+      body:
+      - L5
+    - id: r6
+      head: L7
+      body:
+      - L6
+    - id: r7
+      head: L8
+      body:
+      - L7
+    - id: r8
+      head: L9
+      body:
+      - L8
+    - id: r9
+      head: L10
+      body:
+      - L9
+    - id: r10
+      head: L11
+      body:
+      - L10
+    - id: r11
+      head: L12
+      body:
+      - L11
+    - id: r12
+      head: L13
+      body:
+      - L12
+    - id: r13
+      head: L14
+      body:
+      - L13
+    - id: r14
+      head: L15
+      body:
+      - L14
+    - id: r15
+      head: L16
+      body:
+      - L15
+    - id: r16
+      head: L17
+      body:
+      - L16
+    - id: r17
+      head: L18
+      body:
+      - L17
+    - id: r18
+      head: L19
+      body:
+      - L18
+    - id: r19
+      head: L20
+      body:
+      - L19
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      L0:
+      - []
+    defeasibly:
+      L1:
+      - []
+      L2:
+      - []
+      L3:
+      - []
+      L4:
+      - []
+      L5:
+      - []
+      L6:
+      - []
+      L7:
+      - []
+      L8:
+      - []
+      L9:
+      - []
+      L10:
+      - []
+      L11:
+      - []
+      L12:
+      - []
+      L13:
+      - []
+      L14:
+      - []
+      L15:
+      - []
+      L16:
+      - []
+      L17:
+      - []
+      L18:
+      - []
+      L19:
+      - []
+      L20:
+      - []
