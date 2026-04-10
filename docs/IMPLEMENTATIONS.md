@@ -57,7 +57,7 @@ target with adapters or cross-checks.
 - spindle-rust: `https://github.com/anuna-research/spindle-rust`
 - Fit: strong longer-term defeasible confirmation targets, especially for ambiguity blocking vs
   propagating semantics and superiority handling.
-- Repo state in this project: a first twenty-two-case translated slice now exists from
+- Repo state in this project: a first twenty-seven-case translated slice now exists from
   `spindle-racket/src/test-theories` and `tests/spindle-tests.rkt`, and
   `scripts/harvest_spindle.py` regenerates the `src/test-theories` portion.
 - Local environment: Java is installed, Rust is installed, Racket is not installed.

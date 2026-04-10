@@ -53,7 +53,7 @@ uv run pytest tests --datalog-evaluator=mypackage.MyEvaluator --datalog-tags=def
 ## Current Corpus
 
 - Core Datalog cases: 282
-- Defeasible cases: 316
+- Defeasible cases: 318
 - Property tests: 15
 
 Current notable sources:

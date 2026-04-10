@@ -336,3 +336,92 @@ tests:
       - []
       d:
       - []
+- name: spindle_racket_simplified_penguin
+  description: A penguin exception defeats the generic bird-flight default.
+  source: spindle-racket/tests/spindle-tests.rkt::Simplified penguin scenario
+  tags:
+  - basic
+  - superiority
+  - exceptions
+  theory:
+    facts:
+      tweety:
+      - []
+      penguin:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: bird
+      body:
+      - tweety
+    - id: r2
+      head: flies
+      body:
+      - bird
+    - id: r3
+      head: ~flies
+      body:
+      - penguin
+    defeaters: []
+    superiority:
+    - - r3
+      - r2
+    conflicts:
+    - - flies
+      - ~flies
+  expect:
+    definitely:
+      tweety:
+      - []
+      penguin:
+      - []
+    defeasibly:
+      bird:
+      - []
+      ~flies:
+      - []
+    not_defeasibly:
+      flies:
+      - []
+- name: spindle_racket_superiority_chain
+  description: A superior independent rule still derives its conclusion in a superiority chain.
+  source: spindle-racket/tests/spindle-tests.rkt::Chain of superiority relations
+  tags:
+  - basic
+  - superiority
+  - chaining
+  theory:
+    facts:
+      p:
+      - []
+    strict_rules: []
+    defeasible_rules:
+    - id: r1
+      head: q
+      body:
+      - p
+    - id: r2
+      head: ~q
+      body:
+      - p
+    - id: r3
+      head: r
+      body:
+      - p
+    defeaters: []
+    superiority:
+    - - r1
+      - r2
+    - - r3
+      - r1
+    conflicts:
+    - - q
+      - ~q
+  expect:
+    definitely:
+      p:
+      - []
+    defeasibly:
+      r:
+      - []
