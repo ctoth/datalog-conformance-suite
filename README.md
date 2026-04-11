@@ -54,7 +54,7 @@ uv run pytest tests --datalog-evaluator=mypackage.MyEvaluator --datalog-tags=def
 ## Current Corpus
 
 - Core Datalog YAML cases: 111
-- Defeasible YAML cases: 176
+- Defeasible YAML cases: 178
 - KLM property YAML cases: 0
 - Generated property and meta-tests remain under `tests/`
 
@@ -70,6 +70,8 @@ Current notable sources:
 - spindle-racket query integration tests
 - Derived strict-only defeasible lifts from the core corpus
 - Maher 2021 Examples 2-3, authored from local page images
+- Antoniou 2007 ambiguity-policy examples, authored from local notes and checked against a local
+  paper-reference evaluator for the reduced propositional fragment
 - Bozzato 2020 Example 1, Goldszmidt and Pearl 1992 Example 1, and Morris 2020 Example 5,
   adapted from local paper notes and checked against the supported DePYsible surface
 

@@ -1,0 +1,93 @@
+source: paper/antoniou-2007-p13-p14-c5-c8-notes-adapted
+tags:
+- defeasible
+- ambiguity
+- paper
+- antoniou2007
+- notes-adapted
+verification:
+  implementation: local_antoniou_reference
+  kind: reduced
+tests:
+- name: antoniou_ambiguous_attacker_blocks_only_in_propagating
+  description: >
+    Adapted from the ambiguity-blocking and ambiguity-propagating clauses recorded in local
+    Antoniou 2007 notes. The attacker to p depends on a, and a is itself ambiguous.
+    Blocking leaves p defeasibly provable because the attacker body is not defeasibly established.
+    Propagating leaves both sides undecided because merely supported ambiguity is enough to overrule.
+  tags: [root-conflict, policy-difference]
+  theory:
+    facts: {}
+    strict_rules: []
+    defeasible_rules:
+      - id: r1
+        head: "p"
+        body: []
+      - id: r2
+        head: "a"
+        body: []
+      - id: r3
+        head: "~a"
+        body: []
+      - id: r4
+        head: "~p"
+        body: ["a"]
+    defeaters: []
+    superiority: []
+  expect_per_policy:
+    blocking:
+      defeasibly:
+        p: [[]]
+      undecided:
+        a: [[]]
+        "~a": [[]]
+        "~p": [[]]
+    propagating:
+      undecided:
+        p: [[]]
+        "~p": [[]]
+        a: [[]]
+        "~a": [[]]
+- name: antoniou_ambiguity_propagates_to_downstream_rule
+  description: >
+    Adapted from the same Antoniou 2007 ambiguity clauses. Once the root conclusion p becomes
+    undecided under propagating semantics, the downstream conclusion q also becomes undecided.
+    Under blocking semantics p survives, so q is defeasibly provable.
+  tags: [downstream-propagation, policy-difference]
+  theory:
+    facts: {}
+    strict_rules: []
+    defeasible_rules:
+      - id: r1
+        head: "p"
+        body: []
+      - id: r2
+        head: "a"
+        body: []
+      - id: r3
+        head: "~a"
+        body: []
+      - id: r4
+        head: "~p"
+        body: ["a"]
+      - id: r5
+        head: "q"
+        body: ["p"]
+    defeaters: []
+    superiority: []
+  expect_per_policy:
+    blocking:
+      defeasibly:
+        p: [[]]
+        q: [[]]
+      undecided:
+        a: [[]]
+        "~a": [[]]
+        "~p": [[]]
+    propagating:
+      undecided:
+        p: [[]]
+        "~p": [[]]
+        a: [[]]
+        "~a": [[]]
+        q: [[]]

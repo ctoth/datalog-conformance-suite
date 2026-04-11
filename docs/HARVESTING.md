@@ -6,7 +6,7 @@ This file records where the bundled YAML suites came from, what translation choi
 ## Current Corpus Summary
 
 - Core Datalog YAML cases currently in `basic/`, `recursion/`, `negation/`, and `errors/`: 111
-- Defeasible YAML cases currently in `defeasible/`: 176
+- Defeasible YAML cases currently in `defeasible/`: 178
 - KLM property YAML cases currently in the bundled corpus: 0
 - Generated property tests and implementation checks remain under `tests/`
 
@@ -163,6 +163,10 @@ against a live implementation.
   - `src/datalog_conformance/_tests/defeasible/basic/morris_example5_birds.yaml`
   - source: Morris 2020 Example 5, adapted from local `notes.md` and retained only after
     DePYsible-backed checking of the supported fragment
+  - `src/datalog_conformance/_tests/defeasible/ambiguity/antoniou_basic_ambiguity.yaml`
+  - source: Antoniou 2007 ambiguity-blocking and ambiguity-propagating clauses on pp.13-14, adapted
+    from local `notes.md`
+  - verification: reduced local paper-reference evaluator in `tests/test_ambiguity_corpus.py`
 - Additional paper sources present locally:
   - `Maher_2021_DefeasibleReasoningDatalog`
   - `Antoniou_2007_DefeasibleReasoningSemanticWeb`
