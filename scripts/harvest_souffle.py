@@ -42,6 +42,10 @@ FORBIDDEN_TOKENS = (
     " max ",
 )
 
+ARITHMETIC_RE = re.compile(r"\b(?:[A-Za-z_][A-Za-z0-9_]*|\d+)\s*[+\-*/]\s*(?:[A-Za-z_][A-Za-z0-9_]*|\d+)\b")
+FORBIDDEN_WORD_RE = re.compile(r"\b(count|sum|mean|min|max)\b")
+FORBIDDEN_CALL_RE = re.compile(r"\b(choice-domain|match|contains|substr|cat|range)\s*\(")
+
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Harvest portable Souffle tests into YAML.")
@@ -119,10 +123,15 @@ def convert_directory(directory: Path, source_root: Path) -> dict[str, Any]:
     outputs: list[str] = []
     inline_facts: dict[str, list[list[str | int]]] = defaultdict(list)
     rules: list[str] = []
+    retained_rule_heads: set[str] = set()
+    dropped_relations: set[str] = set()
 
     for statement in statements:
         if is_unsupported_statement(statement):
-            raise UnsupportedSouffleCase(statement)
+            relation = statement_relation(statement)
+            if relation is not None:
+                dropped_relations.add(relation)
+            continue
         if statement.startswith((".type", "type ")):
             continue
         match = DECL_RE.match(statement)
@@ -138,6 +147,9 @@ def convert_directory(directory: Path, source_root: Path) -> dict[str, Any]:
             outputs.append(match.group(1))
             continue
         if ":-" in statement:
+            head_match = HEAD_RE.match(statement)
+            if head_match is not None:
+                retained_rule_heads.add(head_match.group(1))
             rules.append(normalize_rule(statement))
             continue
         predicate, row = parse_fact_statement(statement)
@@ -153,6 +165,15 @@ def convert_directory(directory: Path, source_root: Path) -> dict[str, Any]:
     exports = load_output_relations(directory, outputs)
     if not exports:
         raise UnsupportedSouffleCase("missing relation outputs")
+    for rule in rules:
+        body = rule.split(":-", 1)[1] if ":-" in rule else ""
+        if any(atom in dropped_relations for atom in BODY_ATOM_RE.findall(body)):
+            raise UnsupportedSouffleCase("retained rule depends on dropped semantics")
+    for relation in outputs:
+        if relation in dropped_relations:
+            raise UnsupportedSouffleCase(f"exported relation {relation} depends on dropped semantics")
+        if relation not in facts and relation not in retained_rule_heads:
+            raise UnsupportedSouffleCase(f"exported relation {relation} has no retained derivation")
 
     tests: list[dict[str, Any]] = []
     suite_tags = {"souffle", relative_source(directory, source_root).split("/")[1]}
@@ -210,6 +231,7 @@ def parse_statements(dl_file: Path) -> list[str]:
 
 
 def is_unsupported_statement(statement: str) -> bool:
+    stripped = strip_strings(statement)
     compact = f" {statement} "
     if statement.startswith((".input", "input ", ".output", "output ", ".decl", "decl ")):
         return False
@@ -218,10 +240,36 @@ def is_unsupported_statement(statement: str) -> bool:
     for token in FORBIDDEN_TOKENS:
         if token in compact or token in statement:
             return True
+    if FORBIDDEN_WORD_RE.search(stripped) or FORBIDDEN_CALL_RE.search(stripped):
+        return True
+    if ":-" in statement and ARITHMETIC_RE.search(stripped):
+        return True
     blocked_ops = ("!=", "<=", ">=", " < ", " > ", " = ", " + ", " - ", " * ", " / ")
     if any(op in statement for op in blocked_ops):
         return True
     return False
+
+
+def strip_strings(statement: str) -> str:
+    result: list[str] = []
+    in_string = False
+    for char in statement:
+        if char == '"':
+            in_string = not in_string
+            continue
+        if not in_string:
+            result.append(char)
+    return "".join(result)
+
+
+def statement_relation(statement: str) -> str | None:
+    head_match = HEAD_RE.match(statement)
+    if head_match is not None:
+        return head_match.group(1)
+    fact_match = re.match(r"^([A-Za-z_][A-Za-z0-9_]*)\s*\(", statement)
+    if fact_match is not None:
+        return fact_match.group(1)
+    return None
 
 
 def normalize_rule(statement: str) -> str:
