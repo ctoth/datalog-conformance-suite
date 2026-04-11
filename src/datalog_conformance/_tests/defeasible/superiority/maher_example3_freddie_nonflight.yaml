@@ -28,12 +28,12 @@ theory:
     - [r2, r1]
 expect:
   definitely:
-    bird: [[freddie]]
+    bird: [[freddie], [tweety]]
     injured: [[freddie]]
     "~fly": [[freddie]]
   defeasibly:
-    bird: [[freddie]]
+    bird: [[freddie], [tweety]]
     injured: [[freddie]]
-    "~fly": [[freddie]]
+    "~fly": [[freddie], [tweety]]
   not_defeasibly:
-    fly: [[freddie]]
+    fly: [[freddie], [tweety]]
