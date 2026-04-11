@@ -1,0 +1,117 @@
+source: paper/morris-2020-pp152-157-example6-figures3to5-page-images
+tags:
+- defeasible
+- closure
+- klm
+- paper
+- morris2020
+- page-image-derived
+verification:
+  implementation: local_morris_closure_reference
+  kind: reduced
+tests:
+- name: morris_example6_students_movies_distinguishes_closures
+  description: >
+    Morris 2020 Example 6 with the student context. Figure 3 ranks the defaults so that
+    rational closure drops the entire top level once studenthood becomes exceptional, which
+    blocks the movie and adult conclusions. Figure 5 then refines the same base ranking for
+    lexicographic closure and restores the movie and adult conclusions while keeping the
+    more specific no-tax conclusion.
+  tags: [example6, closure-difference]
+  theory:
+    facts:
+      s: [[]]
+    strict_rules:
+      - id: c1
+        head: "p"
+        body: ["a"]
+      - id: c2
+        head: "p"
+        body: ["s"]
+    defeasible_rules:
+      - id: d1
+        head: "m"
+        body: ["p"]
+      - id: d2
+        head: "a"
+        body: ["p"]
+      - id: d3
+        head: "t"
+        body: ["p"]
+      - id: d4
+        head: "~t"
+        body: ["s"]
+    defeaters: []
+    superiority: []
+    conflicts: []
+  expect_per_policy:
+    rational_closure:
+      definitely:
+        s: [[]]
+        p: [[]]
+      defeasibly:
+        s: [[]]
+        p: [[]]
+        "~t": [[]]
+      not_defeasibly:
+        m: [[]]
+        a: [[]]
+    lexicographic_closure:
+      definitely:
+        s: [[]]
+        p: [[]]
+      defeasibly:
+        s: [[]]
+        p: [[]]
+        m: [[]]
+        a: [[]]
+        "~t": [[]]
+- name: morris_example6_people_defaults_stable_across_supported_closures
+  description: >
+    The same Example 6 knowledge base with the person context instead of the student context.
+    Both rational and lexicographic closure retain the rank-0 defaults here, so the movie,
+    adult, and tax conclusions remain aligned across the two supported closures.
+  tags: [example6, closure-stable]
+  theory:
+    facts:
+      p: [[]]
+    strict_rules:
+      - id: c1
+        head: "p"
+        body: ["a"]
+      - id: c2
+        head: "p"
+        body: ["s"]
+    defeasible_rules:
+      - id: d1
+        head: "m"
+        body: ["p"]
+      - id: d2
+        head: "a"
+        body: ["p"]
+      - id: d3
+        head: "t"
+        body: ["p"]
+      - id: d4
+        head: "~t"
+        body: ["s"]
+    defeaters: []
+    superiority: []
+    conflicts: []
+  expect_per_policy:
+    rational_closure:
+      definitely:
+        p: [[]]
+      defeasibly:
+        p: [[]]
+        m: [[]]
+        a: [[]]
+        t: [[]]
+    lexicographic_closure:
+      definitely:
+        p: [[]]
+      defeasibly:
+        p: [[]]
+        m: [[]]
+        a: [[]]
+        t: [[]]
