@@ -145,7 +145,7 @@ against a live implementation.
 
 ## Paper-Derived Cases
 
-- Local paper artifacts exist under `..\propstore\papers\...`
+- Local paper artifacts exist under `..\gunray\papers\...`
 - Paper-reading rule followed here:
   - I did not use `pdftotext` as the basis for rereading any paper
   - the first retained paper-derived case was authored from local page images in `pngs/`
@@ -164,8 +164,7 @@ against a live implementation.
   - source: Morris 2020 Example 5, adapted from local `notes.md` and retained only after
     DePYsible-backed checking of the supported fragment
   - `src/datalog_conformance/_tests/defeasible/ambiguity/antoniou_basic_ambiguity.yaml`
-  - source: Antoniou 2007 ambiguity-blocking and ambiguity-propagating clauses on pp.13-14, adapted
-    from local `notes.md`
+  - source: Antoniou 2007 section 3.5 on p.10, adapted from local page images
   - verification: reduced local paper-reference evaluator in `tests/test_ambiguity_corpus.py`
   - `src/datalog_conformance/_tests/defeasible/closure/morris_core_examples.yaml`
   - source: Morris 2020 Example 6 and Figures 3-5, from local page images corresponding to

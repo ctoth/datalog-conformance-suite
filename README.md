@@ -70,8 +70,8 @@ Current notable sources:
 - spindle-racket query integration tests
 - Derived strict-only defeasible lifts from the core corpus
 - Maher 2021 Examples 2-3, authored from local page images
-- Antoniou 2007 ambiguity-policy examples, authored from local notes and checked against a local
-  paper-reference evaluator for the reduced propositional fragment
+- Antoniou 2007 ambiguity-policy examples, authored from local page images and checked against a
+  local paper-reference evaluator for the reduced propositional fragment
 - Morris 2020 Example 6 closure cases, authored from local page images and checked against a local
   ranked-worlds closure reference for the reduced propositional fragment
 - Morris 2020 Appendix C.2 Or property cases, authored from local page images and checked against
