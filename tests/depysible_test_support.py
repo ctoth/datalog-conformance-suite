@@ -9,6 +9,7 @@ This module keeps the surface narrow:
 
 from __future__ import annotations
 
+import importlib
 import sys
 import tempfile
 from itertools import product
@@ -43,6 +44,20 @@ def depysible_source_available() -> bool:
     return _DEPYSIBLE_SOURCE_ROOT.exists()
 
 
+def depysible_runtime_available() -> bool:
+    """Return whether the local DePYsible checkout and its imports are usable."""
+
+    if not depysible_source_available():
+        return False
+    ensure_depysible_source_on_path()
+    try:
+        importlib.import_module("arpeggio")
+        importlib.import_module("colorama")
+    except ImportError:
+        return False
+    return True
+
+
 def ensure_depysible_source_on_path() -> Path:
     """Add the local DePYsible source tree to ``sys.path`` if it exists."""
 
@@ -68,11 +83,8 @@ def instantiate_depysible_adapter() -> DePYsibleAdapter:
     """Create the repository's DePYsible adapter after verifying the checkout."""
 
     require_depysible_source()
-    try:
-        from depysible.domain.definitions import Program as _Program  # noqa: F401
-        from depysible.domain.interpretation import Interpreter as _Interpreter  # noqa: F401
-    except ImportError as exc:
-        pytest.skip(f"DePYsible dependencies are unavailable: {exc}")
+    if not depysible_runtime_available():
+        pytest.skip("DePYsible dependencies are unavailable")
     return DePYsibleAdapter()
 
 
@@ -140,7 +152,7 @@ def _apply_rules_once(
         head, body = _parse_rule(rule_text)
         for substitution in _matching_substitutions(body, next_facts, domain):
             derived = _instantiate_atom(head, substitution)
-            next_facts.setdefault(derived.predicate, set()).add(derived.arguments)
+            next_facts.setdefault(derived[0], set()).add(derived[1])
     return next_facts
 
 
