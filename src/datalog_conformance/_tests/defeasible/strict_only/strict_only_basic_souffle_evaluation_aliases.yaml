@@ -6,7 +6,7 @@ tags:
 - souffle
 tests:
 - name: strict_only_souffle_aliases_p
-  description: Strict-only defeasible form of souffle_aliases_p.
+  description: Portable reduced strict-only form of souffle_aliases_p.
   source: souffle/evaluation/aliases
   tags:
   - basic
@@ -32,20 +32,10 @@ tests:
     superiority: []
   expect:
     definitely: &id001
-      p:
-      - - 1
-        - 1
-      - - 2
-        - 2
-      - - 3
-        - 3
-      - - 4
-        - 4
-      - - 5
-        - 5
+      p: []
     defeasibly: *id001
 - name: strict_only_souffle_aliases_r
-  description: Strict-only defeasible form of souffle_aliases_r.
+  description: Portable reduced strict-only form of souffle_aliases_r.
   source: souffle/evaluation/aliases
   tags:
   - basic
@@ -63,6 +53,5 @@ tests:
     superiority: []
   expect:
     definitely: &id004
-      r:
-      - - 2
+      r: []
     defeasibly: *id004

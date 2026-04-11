@@ -4,8 +4,8 @@ tags:
 - souffle
 tests:
 - name: souffle_count_sccs1_count_scc
-  description: Harvested from Souffle testcase count_sccs1, asserting exported relation
-    count_scc.
+  description: Portable reduced testcase from Souffle count_sccs1; protocol-visible
+    data does not derive count_scc.
   tags:
   - basic
   - evaluation
@@ -29,10 +29,4 @@ tests:
     - reaches(A, B) :- links(A, C), reaches(C, B).
     - mutually_reaching(A,A) :- nodes(A).
   expect:
-    count_scc:
-    - - A
-      - 2
-    - - C
-      - 2
-    - - E
-      - 1
+    count_scc: []

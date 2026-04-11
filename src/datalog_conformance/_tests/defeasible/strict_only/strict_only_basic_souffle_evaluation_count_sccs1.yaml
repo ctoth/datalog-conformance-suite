@@ -6,7 +6,7 @@ tags:
 - souffle
 tests:
 - name: strict_only_souffle_count_sccs1_count_scc
-  description: Strict-only defeasible form of souffle_count_sccs1_count_scc.
+  description: Portable reduced strict-only form of souffle_count_sccs1_count_scc.
   source: souffle/evaluation/count_sccs1
   tags:
   - basic
@@ -44,11 +44,5 @@ tests:
     superiority: []
   expect:
     definitely: &id001
-      count_scc:
-      - - A
-        - 2
-      - - C
-        - 2
-      - - E
-        - 1
+      count_scc: []
     defeasibly: *id001

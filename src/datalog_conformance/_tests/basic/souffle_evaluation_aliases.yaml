@@ -4,8 +4,8 @@ tags:
 - souffle
 tests:
 - name: souffle_aliases_p
-  description: Harvested from Souffle testcase aliases, asserting exported relation
-    p.
+  description: Portable reduced testcase from Souffle aliases; protocol-visible
+    data does not derive p.
   tags:
   - basic
   - evaluation
@@ -24,20 +24,10 @@ tests:
         - 2
     rules: &id002 []
   expect:
-    p:
-    - - 1
-      - 1
-    - - 2
-      - 2
-    - - 3
-      - 3
-    - - 4
-      - 4
-    - - 5
-      - 5
+    p: []
 - name: souffle_aliases_r
-  description: Harvested from Souffle testcase aliases, asserting exported relation
-    r.
+  description: Portable reduced testcase from Souffle aliases; protocol-visible
+    data does not derive r.
   tags:
   - basic
   - evaluation
@@ -46,5 +36,4 @@ tests:
     facts: *id001
     rules: *id002
   expect:
-    r:
-    - - 2
+    r: []

@@ -17,6 +17,8 @@ tests:
   theory:
     facts:
       R:
+      - - 1
+        - 2
       - - 2
         - 3
       - - 3

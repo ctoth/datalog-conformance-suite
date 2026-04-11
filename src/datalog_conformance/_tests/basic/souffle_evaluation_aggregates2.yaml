@@ -4,8 +4,8 @@ tags:
 - souffle
 tests:
 - name: souffle_aggregates2_C1
-  description: Harvested from Souffle testcase aggregates2, asserting exported relation
-    C1.
+  description: Portable reduced testcase from Souffle aggregates2; protocol-visible
+    data does not derive C1.
   tags:
   - basic
   - evaluation
@@ -90,28 +90,10 @@ tests:
         - 7
     rules: &id002 []
   expect:
-    C1:
-    - - 2
-      - 1
-    - - 3
-      - 1
-    - - 4
-      - 3
-    - - 5
-      - 4
-    - - 6
-      - 4
-    - - 7
-      - 4
-    - - 8
-      - 7
-    - - 9
-      - 8
-    - - 10
-      - 8
+    C1: []
 - name: souffle_aggregates2_C2
-  description: Harvested from Souffle testcase aggregates2, asserting exported relation
-    C2.
+  description: Portable reduced testcase from Souffle aggregates2; protocol-visible
+    data does not derive C2.
   tags:
   - basic
   - evaluation
@@ -120,37 +102,10 @@ tests:
     facts: *id001
     rules: *id002
   expect:
-    C2:
-    - - 2
-      - 1
-      - 0
-    - - 3
-      - 1
-      - 0
-    - - 4
-      - 3
-      - 1
-    - - 5
-      - 4
-      - 2
-    - - 6
-      - 4
-      - 2
-    - - 7
-      - 4
-      - 2
-    - - 8
-      - 7
-      - 3
-    - - 9
-      - 8
-      - 4
-    - - 10
-      - 8
-      - 4
+    C2: []
 - name: souffle_aggregates2_C3
-  description: Harvested from Souffle testcase aggregates2, asserting exported relation
-    C3.
+  description: Portable reduced testcase from Souffle aggregates2; protocol-visible
+    data does not derive C3.
   tags:
   - basic
   - evaluation
@@ -159,28 +114,10 @@ tests:
     facts: *id001
     rules: *id002
   expect:
-    C3:
-    - - 2
-      - 1
-    - - 3
-      - 1
-    - - 4
-      - 3
-    - - 5
-      - 4
-    - - 6
-      - 4
-    - - 7
-      - 4
-    - - 8
-      - 7
-    - - 9
-      - 8
-    - - 10
-      - 8
+    C3: []
 - name: souffle_aggregates2_C4
-  description: Harvested from Souffle testcase aggregates2, asserting exported relation
-    C4.
+  description: Portable reduced testcase from Souffle aggregates2; protocol-visible
+    data does not derive C4.
   tags:
   - basic
   - evaluation
@@ -189,22 +126,4 @@ tests:
     facts: *id001
     rules: *id002
   expect:
-    C4:
-    - - 2
-      - 1
-    - - 3
-      - 1
-    - - 4
-      - 3
-    - - 5
-      - 4
-    - - 6
-      - 4
-    - - 7
-      - 4
-    - - 8
-      - 7
-    - - 9
-      - 8
-    - - 10
-      - 8
+    C4: []

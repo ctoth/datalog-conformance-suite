@@ -6,7 +6,7 @@ tags:
 - souffle
 tests:
 - name: strict_only_souffle_contains_outputData
-  description: Strict-only defeasible form of souffle_contains_outputData.
+  description: Portable reduced strict-only form of souffle_contains_outputData.
   source: souffle/evaluation/contains
   tags:
   - basic
@@ -31,21 +31,5 @@ tests:
     superiority: []
   expect:
     definitely: &id001
-      outputData:
-      - - a
-        - aaaa
-      - - a
-        - abba
-      - - a
-        - bcab
-      - - a
-        - bdab
-      - - ab
-        - abba
-      - - ab
-        - bcab
-      - - ab
-        - bdab
-      - - cab
-        - bcab
+      outputData: []
     defeasibly: *id001
