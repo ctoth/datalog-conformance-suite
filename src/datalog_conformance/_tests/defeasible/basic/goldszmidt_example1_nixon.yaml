@@ -1,0 +1,115 @@
+source: paper/goldszmidt-1992-example-1-notes-adapted
+tags:
+- defeasible
+- basic
+- paper
+- goldszmidt1992
+- notes-adapted
+- depysible-supported
+tests:
+- name: goldszmidt_example1_nixonian_nixon
+  description: >
+    Adapted from Goldszmidt and Pearl 1992 Example 1 as recorded in local notes. Nixon is
+    explicitly Nixonian.
+  tags: [nixon, nixonian]
+  theory:
+    facts:
+      nixonian: [[nixon]]
+      quaker: [[nixon]]
+    strict_rules: []
+    defeasible_rules:
+      - id: r1
+        head: "republican(X)"
+        body: ["nixonian(X)"]
+      - id: r2
+        head: "pacifist(X)"
+        body: ["quaker(X)"]
+      - id: r3
+        head: "~pacifist(X)"
+        body: ["republican(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      nixonian: [[nixon]]
+    defeasibly:
+      nixonian: [[nixon]]
+- name: goldszmidt_example1_quaker_nixon
+  description: >
+    Adapted from Goldszmidt and Pearl 1992 Example 1 as recorded in local notes. Nixon is
+    explicitly a Quaker.
+  tags: [nixon, quaker]
+  theory:
+    facts:
+      nixonian: [[nixon]]
+      quaker: [[nixon]]
+    strict_rules: []
+    defeasible_rules:
+      - id: r1
+        head: "republican(X)"
+        body: ["nixonian(X)"]
+      - id: r2
+        head: "pacifist(X)"
+        body: ["quaker(X)"]
+      - id: r3
+        head: "~pacifist(X)"
+        body: ["republican(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      quaker: [[nixon]]
+    defeasibly:
+      quaker: [[nixon]]
+- name: goldszmidt_example1_republican_nixon
+  description: >
+    Adapted from Goldszmidt and Pearl 1992 Example 1 as recorded in local notes. Nixon is
+    defeasibly Republican in this rendering.
+  tags: [nixon, republican]
+  theory:
+    facts:
+      nixonian: [[nixon]]
+      quaker: [[nixon]]
+    strict_rules: []
+    defeasible_rules:
+      - id: r1
+        head: "republican(X)"
+        body: ["nixonian(X)"]
+      - id: r2
+        head: "pacifist(X)"
+        body: ["quaker(X)"]
+      - id: r3
+        head: "~pacifist(X)"
+        body: ["republican(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    defeasibly:
+      republican: [[nixon]]
+- name: goldszmidt_example1_pacifist_conflict
+  description: >
+    Adapted from Goldszmidt and Pearl 1992 Example 1 as recorded in local notes. The pacifist
+    query is unresolved in the supported blocking implementation because the opposing defaults
+    remain in conflict.
+  tags: [nixon, pacifist, conflict]
+  theory:
+    facts:
+      nixonian: [[nixon]]
+      quaker: [[nixon]]
+    strict_rules: []
+    defeasible_rules:
+      - id: r1
+        head: "republican(X)"
+        body: ["nixonian(X)"]
+      - id: r2
+        head: "pacifist(X)"
+        body: ["quaker(X)"]
+      - id: r3
+        head: "~pacifist(X)"
+        body: ["republican(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    undecided:
+      pacifist: [[nixon]]
+      "~pacifist": [[nixon]]

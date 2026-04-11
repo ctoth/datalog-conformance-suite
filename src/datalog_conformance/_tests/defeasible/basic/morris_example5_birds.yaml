@@ -1,0 +1,70 @@
+source: paper/morris-2020-example-5-notes-adapted
+tags:
+- defeasible
+- basic
+- paper
+- morris2020
+- notes-adapted
+- depysible-supported
+tests:
+- name: morris_example5_bird_population
+  description: >
+    Adapted from Morris 2020 Example 5 as recorded in local notes. Both Tweety and Chirpy are
+    explicit birds in this rendering.
+  tags: [bird, tweety, chirpy]
+  theory:
+    facts:
+      bird: [[tweety], [chirpy]]
+      "~fly": [[tweety]]
+    strict_rules: []
+    defeasible_rules:
+      - id: r1
+        head: "fly(X)"
+        body: ["bird(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      bird: [[chirpy], [tweety]]
+    defeasibly:
+      bird: [[chirpy], [tweety]]
+- name: morris_example5_tweety_explicit_nonflight
+  description: >
+    Adapted from Morris 2020 Example 5 as recorded in local notes. Tweety is explicitly
+    non-flying.
+  tags: [tweety, nonflight, fact]
+  theory:
+    facts:
+      bird: [[tweety], [chirpy]]
+      "~fly": [[tweety]]
+    strict_rules: []
+    defeasible_rules:
+      - id: r1
+        head: "fly(X)"
+        body: ["bird(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      "~fly": [[tweety]]
+    defeasibly:
+      "~fly": [[tweety]]
+- name: morris_example5_tweety_blocked_default
+  description: >
+    Adapted from Morris 2020 Example 5 as recorded in local notes. Tweety's explicit non-flight
+    blocks the default flight conclusion under DePYsible's blocking behavior.
+  tags: [tweety, flight, blocked]
+  theory:
+    facts:
+      bird: [[tweety], [chirpy]]
+      "~fly": [[tweety]]
+    strict_rules: []
+    defeasible_rules:
+      - id: r1
+        head: "fly(X)"
+        body: ["bird(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    not_defeasibly:
+      fly: [[tweety]]

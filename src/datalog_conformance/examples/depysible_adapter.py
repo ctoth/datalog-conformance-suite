@@ -11,10 +11,15 @@ It rejects explicit defeaters, superiority, and policy variants that were not ve
 
 from __future__ import annotations
 
+import sys
+import tempfile
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 from datalog_conformance.schema import DefeasibleModel, DefeasibleTheory, Policy, Scalar
+
+_DEPYSIBLE_SOURCE_ROOT = Path(tempfile.gettempdir()) / "depysible" / "src" / "main" / "python"
 
 
 @dataclass(slots=True)
@@ -22,6 +27,7 @@ class DePYsibleAdapter:
     """Bridge the conformance protocol to a locally importable DePYsible checkout."""
 
     def evaluate(self, theory: DefeasibleTheory, policy: Policy) -> DefeasibleModel:
+        _ensure_depysible_source_on_path()
         if policy is not Policy.BLOCKING:
             raise ValueError(
                 "DePYsible adapter only supports inferred blocking-style policy, "
@@ -65,6 +71,12 @@ class DePYsibleAdapter:
                 sections["undecided"].setdefault(predicate, set()).add(row)
 
         return DefeasibleModel(sections={key: value for key, value in sections.items() if value})
+
+
+def _ensure_depysible_source_on_path() -> None:
+    source_root = str(_DEPYSIBLE_SOURCE_ROOT)
+    if source_root not in sys.path:
+        sys.path.insert(0, source_root)
 
 
 def _render_program(theory: DefeasibleTheory) -> str:

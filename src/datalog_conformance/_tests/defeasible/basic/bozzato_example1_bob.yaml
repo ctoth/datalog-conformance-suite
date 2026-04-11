@@ -1,0 +1,109 @@
+source: paper/bozzato-2020-example-1-notes-adapted
+tags:
+- defeasible
+- basic
+- paper
+- bozzato2020
+- notes-adapted
+- depysible-supported
+tests:
+- name: bozzato_example1_phd_member_bob
+  description: >
+    Adapted from Bozzato 2020 Example 1 as recorded in local notes. Bob is explicitly a PhD
+    member.
+  tags: [bob, phd]
+  theory:
+    facts:
+      phd_member: [[bob]]
+    strict_rules:
+      - id: r1
+        head: "dept_member(X)"
+        body: ["phd_member(X)"]
+    defeasible_rules:
+      - id: r2
+        head: "teach_course(X)"
+        body: ["dept_member(X)"]
+      - id: r3
+        head: "~teach_course(X)"
+        body: ["phd_member(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      phd_member: [[bob]]
+    defeasibly:
+      phd_member: [[bob]]
+- name: bozzato_example1_dept_member_bob
+  description: >
+    Adapted from Bozzato 2020 Example 1 as recorded in local notes. PhD membership strictly
+    implies department membership in this rendering.
+  tags: [bob, department]
+  theory:
+    facts:
+      phd_member: [[bob]]
+    strict_rules:
+      - id: r1
+        head: "dept_member(X)"
+        body: ["phd_member(X)"]
+    defeasible_rules:
+      - id: r2
+        head: "teach_course(X)"
+        body: ["dept_member(X)"]
+      - id: r3
+        head: "~teach_course(X)"
+        body: ["phd_member(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    definitely:
+      dept_member: [[bob]]
+    defeasibly:
+      dept_member: [[bob]]
+- name: bozzato_example1_bob_exception
+  description: >
+    Adapted from Bozzato 2020 Example 1 as recorded in local notes. Bob is treated as an
+    exception to the teaching default in the supported blocking surface.
+  tags: [bob, teaching, exception]
+  theory:
+    facts:
+      phd_member: [[bob]]
+    strict_rules:
+      - id: r1
+        head: "dept_member(X)"
+        body: ["phd_member(X)"]
+    defeasible_rules:
+      - id: r2
+        head: "teach_course(X)"
+        body: ["dept_member(X)"]
+      - id: r3
+        head: "~teach_course(X)"
+        body: ["phd_member(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    defeasibly:
+      "~teach_course": [[bob]]
+- name: bozzato_example1_bob_not_positive_teaching
+  description: >
+    Adapted from Bozzato 2020 Example 1 as recorded in local notes. The positive teaching query
+    is not defeasibly supported for Bob in the supported implementation.
+  tags: [bob, teaching, blocked]
+  theory:
+    facts:
+      phd_member: [[bob]]
+    strict_rules:
+      - id: r1
+        head: "dept_member(X)"
+        body: ["phd_member(X)"]
+    defeasible_rules:
+      - id: r2
+        head: "teach_course(X)"
+        body: ["dept_member(X)"]
+      - id: r3
+        head: "~teach_course(X)"
+        body: ["phd_member(X)"]
+    defeaters: []
+    superiority: []
+  expect:
+    not_defeasibly:
+      teach_course: [[bob]]

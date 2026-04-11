@@ -6,12 +6,16 @@ This file records where the bundled YAML suites came from, what translation choi
 ## Current Corpus Summary
 
 - Core Datalog YAML cases currently in `basic/`, `recursion/`, `negation/`, and `errors/`: 111
-- Defeasible YAML cases currently in `defeasible/`: 165
+- Defeasible YAML cases currently in `defeasible/`: 176
 - KLM property YAML cases currently in the bundled corpus: 0
 - Generated property tests and implementation checks remain under `tests/`
 
 The current defeasible corpus is still dominated by strict-only derived lifts from the core corpus,
 plus a smaller set of genuinely defeasible examples.
+
+Some recent defeasible additions are note-adapted paper examples that were only kept when the
+notes were concrete enough to encode a supported fragment and the resulting theories reproduced
+against a live implementation.
 
 ## Runner-Surface Audit
 
@@ -123,8 +127,12 @@ plus a smaller set of genuinely defeasible examples.
     converted cases against the real implementation
   - generated Hypothesis tests now exercise the supported fragment against the live implementation
     through `tests/test_depysible_generated.py`
+  - note-adapted paper examples were checked against the same adapter before retention
 - Current output area:
   - `src/datalog_conformance/_tests/defeasible/basic/depysible_birds.yaml`
+  - `src/datalog_conformance/_tests/defeasible/basic/bozzato_example1_bob.yaml`
+  - `src/datalog_conformance/_tests/defeasible/basic/goldszmidt_example1_nixon.yaml`
+  - `src/datalog_conformance/_tests/defeasible/basic/morris_example5_birds.yaml`
 - Current limitations of the example adapter:
   - no defeaters
   - no superiority
@@ -146,6 +154,15 @@ plus a smaller set of genuinely defeasible examples.
   - source: Maher 2021 Example 2, from local page images corresponding to pp.7-8
   - `src/datalog_conformance/_tests/defeasible/superiority/maher_example3_freddie_nonflight.yaml`
   - source: Maher 2021 Example 3, from local page images corresponding to pp.8-9
+  - `src/datalog_conformance/_tests/defeasible/basic/bozzato_example1_bob.yaml`
+  - source: Bozzato 2020 Example 1, adapted from local `notes.md` and retained only after
+    DePYsible-backed checking of the supported fragment
+  - `src/datalog_conformance/_tests/defeasible/basic/goldszmidt_example1_nixon.yaml`
+  - source: Goldszmidt and Pearl 1992 Example 1, adapted from local `notes.md` and retained only
+    after DePYsible-backed checking of the supported fragment
+  - `src/datalog_conformance/_tests/defeasible/basic/morris_example5_birds.yaml`
+  - source: Morris 2020 Example 5, adapted from local `notes.md` and retained only after
+    DePYsible-backed checking of the supported fragment
 - Additional paper sources present locally:
   - `Maher_2021_DefeasibleReasoningDatalog`
   - `Antoniou_2007_DefeasibleReasoningSemanticWeb`
