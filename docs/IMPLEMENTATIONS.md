@@ -46,7 +46,8 @@ target with adapters or cross-checks.
   protocol we want to test against.
 - Repo state in this project: a thin example adapter now exists at
   `datalog_conformance.examples.depysible_adapter`, and fourteen DePYsible-derived defeasible cases
-  were confirmed against it.
+  were confirmed against it. The repo also now includes generated Hypothesis checks against the
+  live DePYsible implementation for its supported fragment.
 
 ### SPINdle Family
 

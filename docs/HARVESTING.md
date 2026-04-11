@@ -7,7 +7,7 @@ This file records where the bundled YAML suites came from, what translation choi
 
 - Core Datalog cases currently in `basic/`, `recursion/`, `negation/`, and `errors/`: 282
 - Defeasible cases currently in `defeasible/`: 333
-- Property tests in `tests/test_properties.py`: 15
+- Property tests and generated implementation checks: 18
 
 The current defeasible corpus is dominated by strict-only derived lifts from the core corpus, plus
  a small set of genuinely defeasible examples.
@@ -95,6 +95,8 @@ The current defeasible corpus is dominated by strict-only derived lifts from the
   - the upstream test suite passed locally with `PYTHONPATH=src/main/python`
   - a live adapter in `src/datalog_conformance/examples/depysible_adapter.py` confirmed the first
     converted cases against the real implementation
+  - generated Hypothesis tests now exercise the supported fragment against the live implementation
+    through `tests/test_depysible_generated.py`
 - Current output area:
   - `src/datalog_conformance/_tests/defeasible/basic/depysible_birds.yaml`
 - Current limitations of the example adapter:
@@ -102,6 +104,10 @@ The current defeasible corpus is dominated by strict-only derived lifts from the
   - no superiority
   - no explicit conflict sets
   - blocking-only policy
+- Generated-testing support:
+  - `src/datalog_conformance/depysible_strategies.py`
+  - `tests/depysible_test_support.py`
+  - `tests/test_depysible_generated.py`
 
 ## Paper-Derived Cases
 

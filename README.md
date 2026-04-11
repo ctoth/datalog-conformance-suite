@@ -12,7 +12,8 @@ The package ships YAML suites plus a pytest plugin. An evaluator under test is s
 - Defeasible suites for strict-only equivalence, mixed theories, superiority,
   DePYsible-derived cases, and a first SPINdle-family slice from `spindle-racket`.
 - Hypothesis property tests backed by a small internal reference evaluator for the positive and
-  conflict-free fragments.
+  conflict-free fragments, plus live DePYsible-backed generated tests for the supported
+  defeasible fragment.
 - Harvest scripts for Souffle, Nemo, Crepe, and a starter SPINdle-family slice.
 - Source and license notes in [docs/HARVESTING.md](docs/HARVESTING.md).
 
@@ -54,7 +55,7 @@ uv run pytest tests --datalog-evaluator=mypackage.MyEvaluator --datalog-tags=def
 
 - Core Datalog cases: 282
 - Defeasible cases: 333
-- Property tests: 15
+- Property tests: 18
 
 Current notable sources:
 
@@ -77,6 +78,7 @@ Current repo verification commands:
 
 ```powershell
 uv run pytest tests/
+uv run --with arpeggio --with colorama pytest tests/test_depysible_generated.py
 uv run --extra dev ruff check .
 uv run --extra dev pyright
 ```
@@ -89,10 +91,12 @@ uv run --extra dev pyright
 - `src/datalog_conformance/runner.py`: bridge from YAML cases to evaluator methods.
 - `src/datalog_conformance/strategies.py`: Hypothesis generators for generated programs and
   conflict-free defeasible theories.
+- `src/datalog_conformance/depysible_strategies.py`: Hypothesis generators for live
+  DePYsible-backed defeasible testing.
 - `src/datalog_conformance/_tests/`: bundled YAML suites.
 - `src/datalog_conformance/examples/depysible_adapter.py`: live example adapter for DePYsible.
 - `scripts/`: source harvesters and helper scripts.
-- `tests/`: meta-tests and property tests for the suite itself.
+- `tests/`: meta-tests, property tests, and actual-implementation generated checks.
 
 ## License
 

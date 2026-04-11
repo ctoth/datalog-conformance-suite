@@ -1,9 +1,13 @@
 from __future__ import annotations
 
 import pytest
-
 from hypothesis import given, settings
 
+from datalog_conformance.depysible_strategies import (
+    GeneratedDePYsibleTheory,
+    depysible_theories,
+)
+from datalog_conformance.schema import DefeasibleTheory, Rule
 from tests.depysible_test_support import (
     depysible_runtime_available,
     depysible_source_available,
@@ -22,12 +26,6 @@ if not depysible_runtime_available():
         "DePYsible dependencies are unavailable in the local checkout",
         allow_module_level=True,
     )
-
-from datalog_conformance.depysible_strategies import (
-    GeneratedDePYsibleTheory,
-    depysible_theories,
-)
-from datalog_conformance.schema import DefeasibleTheory, Rule
 
 _GEN_SETTINGS = settings(deadline=None, max_examples=80)
 

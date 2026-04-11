@@ -42,7 +42,10 @@ FORBIDDEN_TOKENS = (
     " max ",
 )
 
-ARITHMETIC_RE = re.compile(r"\b(?:[A-Za-z_][A-Za-z0-9_]*|\d+)\s*[+\-*/]\s*(?:[A-Za-z_][A-Za-z0-9_]*|\d+)\b")
+ARITHMETIC_RE = re.compile(
+    r"\b(?:[A-Za-z_][A-Za-z0-9_]*|\d+)\s*[+\-*/]\s*"
+    r"(?:[A-Za-z_][A-Za-z0-9_]*|\d+)\b"
+)
 FORBIDDEN_WORD_RE = re.compile(r"\b(count|sum|mean|min|max)\b")
 FORBIDDEN_CALL_RE = re.compile(r"\b(choice-domain|match|contains|substr|cat|range)\s*\(")
 
@@ -171,7 +174,9 @@ def convert_directory(directory: Path, source_root: Path) -> dict[str, Any]:
             raise UnsupportedSouffleCase("retained rule depends on dropped semantics")
     for relation in outputs:
         if relation in dropped_relations:
-            raise UnsupportedSouffleCase(f"exported relation {relation} depends on dropped semantics")
+            raise UnsupportedSouffleCase(
+                f"exported relation {relation} depends on dropped semantics"
+            )
         if relation not in facts and relation not in retained_rule_heads:
             raise UnsupportedSouffleCase(f"exported relation {relation} has no retained derivation")
 
