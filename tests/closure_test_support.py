@@ -1,13 +1,19 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from itertools import product
+from itertools import combinations, product
 from pathlib import Path
-from typing import cast
+from typing import Callable, cast
 
 import yaml
 
-from datalog_conformance.schema import DefeasibleModel, DefeasibleTheory, Policy, Rule, TestCase
+from datalog_conformance.schema import (
+    DefeasibleModel,
+    DefeasibleTheory,
+    Policy,
+    Rule,
+    TestCase,
+)
 
 World = frozenset[str]
 
@@ -18,6 +24,14 @@ class RankedDefaults:
     worlds: tuple[World, ...]
     finite_ranks: tuple[tuple[Rule, ...], ...]
     infinite_rank: tuple[Rule, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class Formula:
+    kind: str
+    literal: str | None = None
+    left: "Formula | None" = None
+    right: "Formula | None" = None
 
 
 class PropositionalClosureEvaluator:
@@ -52,6 +66,41 @@ class PropositionalClosureEvaluator:
         if not_defeasible:
             sections["not_defeasibly"] = _atoms_to_section(not_defeasible)
         return DefeasibleModel(sections=sections)
+
+    def satisfies_klm_property(
+        self,
+        theory: DefeasibleTheory,
+        property_name: str,
+        policy: Policy,
+    ) -> bool:
+        if property_name != "Or":
+            raise ValueError(f"Unsupported KLM property for reduced reference: {property_name}")
+
+        if policy not in {
+            Policy.RATIONAL_CLOSURE,
+            Policy.LEXICOGRAPHIC_CLOSURE,
+            Policy.RELEVANT_CLOSURE,
+        }:
+            raise ValueError(f"Unsupported closure policy for reduced reference: {policy.value}")
+
+        _ensure_propositional(theory)
+        ranked = _ranked_defaults(theory)
+        literals = sorted(_literal_universe(theory))
+
+        for left_literal in literals:
+            left = _literal_formula(left_literal)
+            for right_literal in literals:
+                right = _literal_formula(right_literal)
+                disjunction = _or_formula(left, right)
+                for consequent_literal in literals:
+                    consequent = _literal_formula(consequent_literal)
+                    if not _formula_entails(ranked, theory, left, consequent, policy):
+                        continue
+                    if not _formula_entails(ranked, theory, right, consequent, policy):
+                        continue
+                    if not _formula_entails(ranked, theory, disjunction, consequent, policy):
+                        return False
+        return True
 
 
 def load_suite_cases(relative_path: Path) -> list[TestCase]:
@@ -196,31 +245,185 @@ def _closure_entails(
     query: str,
     policy: Policy,
 ) -> bool:
+    antecedent = _conjunction_formula(sorted(facts))
+    consequent = _literal_formula(query)
+    return _formula_entails(ranked, theory, antecedent, consequent, policy)
+
+
+def _formula_entails(
+    ranked: RankedDefaults,
+    theory: DefeasibleTheory,
+    antecedent: Formula,
+    consequent: Formula,
+    policy: Policy,
+) -> bool:
+    if policy is Policy.RATIONAL_CLOSURE:
+        return _ranked_formula_entails(
+            ranked,
+            theory,
+            antecedent,
+            consequent,
+            score=_rational_score,
+        )
+    if policy is Policy.LEXICOGRAPHIC_CLOSURE:
+        return _ranked_formula_entails(
+            ranked,
+            theory,
+            antecedent,
+            consequent,
+            score=_lexicographic_score,
+        )
+    if policy is Policy.RELEVANT_CLOSURE:
+        return _relevant_formula_entails(ranked, theory, antecedent, consequent)
+    raise ValueError(f"Unsupported closure policy for reduced reference: {policy.value}")
+
+
+def _ranked_formula_entails(
+    ranked: RankedDefaults,
+    theory: DefeasibleTheory,
+    antecedent: Formula,
+    consequent: Formula,
+    *,
+    score: Callable[[RankedDefaults, World], int | tuple[int, ...]],
+) -> bool:
     context_worlds = [
         world
         for world in ranked.worlds
-        if _world_satisfies_literals(world, facts)
-        and _world_satisfies_rules(world, theory.strict_rules)
+        if _formula_holds(world, antecedent) and _world_satisfies_rules(world, theory.strict_rules)
     ]
     if not context_worlds:
         return False
 
-    if policy is Policy.RATIONAL_CLOSURE:
-        best_score = min(_rational_score(ranked, world) for world in context_worlds)
-        preferred = [
-            world
-            for world in context_worlds
-            if _rational_score(ranked, world) == best_score
-        ]
-    else:
-        best_score = min(_lexicographic_score(ranked, world) for world in context_worlds)
-        preferred = [
-            world
-            for world in context_worlds
-            if _lexicographic_score(ranked, world) == best_score
+    best_score = min(score(ranked, world) for world in context_worlds)
+    preferred = [world for world in context_worlds if score(ranked, world) == best_score]
+    return all(_formula_holds(world, consequent) for world in preferred)
+
+
+def _relevant_formula_entails(
+    ranked: RankedDefaults,
+    theory: DefeasibleTheory,
+    antecedent: Formula,
+    consequent: Formula,
+) -> bool:
+    relevant_ids = _minimal_relevant_rule_ids(ranked, theory, antecedent)
+    active_defaults = list(theory.defeasible_rules)
+
+    for level in ranked.finite_ranks:
+        if not _is_exceptional(ranked.worlds, theory.strict_rules, active_defaults, antecedent):
+            break
+        active_defaults = [
+            rule
+            for rule in active_defaults
+            if rule.id not in relevant_ids or rule not in level
         ]
 
-    return all(_literal_holds(world, query) for world in preferred)
+    return _classically_entails(
+        ranked.worlds,
+        theory.strict_rules,
+        active_defaults,
+        antecedent,
+        consequent,
+    )
+
+
+def _minimal_relevant_rule_ids(
+    ranked: RankedDefaults,
+    theory: DefeasibleTheory,
+    antecedent: Formula,
+) -> set[str]:
+    defaults = list(theory.defeasible_rules)
+    justifications: list[tuple[Rule, ...]] = []
+
+    for size in range(1, len(defaults) + 1):
+        for subset in combinations(defaults, size):
+            subset_ids = {rule.id for rule in subset}
+            if any(
+                {rule.id for rule in existing}.issubset(subset_ids)
+                for existing in justifications
+            ):
+                continue
+            if not _is_exceptional(ranked.worlds, theory.strict_rules, list(subset), antecedent):
+                continue
+            justifications.append(subset)
+
+    relevant_ids: set[str] = set()
+    for justification in justifications:
+        min_rank = min(_rule_rank(ranked, rule) for rule in justification)
+        relevant_ids.update(
+            rule.id
+            for rule in justification
+            if _rule_rank(ranked, rule) == min_rank
+        )
+    return relevant_ids
+
+
+def _rule_rank(ranked: RankedDefaults, target: Rule) -> int:
+    for index, level in enumerate(ranked.finite_ranks):
+        if any(rule.id == target.id for rule in level):
+            return index
+    return len(ranked.finite_ranks)
+
+
+def _is_exceptional(
+    worlds: tuple[World, ...],
+    strict_rules: list[Rule],
+    defaults: list[Rule],
+    antecedent: Formula,
+) -> bool:
+    return not any(
+        _formula_holds(world, antecedent)
+        and _world_satisfies_rules(world, [*strict_rules, *defaults])
+        for world in worlds
+    )
+
+
+def _classically_entails(
+    worlds: tuple[World, ...],
+    strict_rules: list[Rule],
+    defaults: list[Rule],
+    antecedent: Formula,
+    consequent: Formula,
+) -> bool:
+    rules = [*strict_rules, *defaults]
+    return all(
+        not _formula_holds(world, antecedent) or _formula_holds(world, consequent)
+        for world in worlds
+        if _world_satisfies_rules(world, rules)
+    )
+
+
+def _literal_formula(literal: str) -> Formula:
+    return Formula(kind="literal", literal=literal)
+
+
+def _conjunction_formula(literals: list[str]) -> Formula:
+    if not literals:
+        return Formula(kind="true")
+    formula = _literal_formula(literals[0])
+    for literal in literals[1:]:
+        formula = Formula(kind="and", left=formula, right=_literal_formula(literal))
+    return formula
+
+
+def _or_formula(left: Formula, right: Formula) -> Formula:
+    return Formula(kind="or", left=left, right=right)
+
+
+def _formula_holds(world: World, formula: Formula) -> bool:
+    if formula.kind == "true":
+        return True
+    if formula.kind == "literal":
+        assert formula.literal is not None
+        return _literal_holds(world, formula.literal)
+    if formula.kind == "and":
+        assert formula.left is not None
+        assert formula.right is not None
+        return _formula_holds(world, formula.left) and _formula_holds(world, formula.right)
+    if formula.kind == "or":
+        assert formula.left is not None
+        assert formula.right is not None
+        return _formula_holds(world, formula.left) or _formula_holds(world, formula.right)
+    raise ValueError(f"Unsupported reduced formula kind: {formula.kind}")
 
 
 def _rational_score(ranked: RankedDefaults, world: World) -> int:

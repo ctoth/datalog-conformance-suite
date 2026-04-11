@@ -7,7 +7,15 @@ import yaml
 
 from datalog_conformance.plugin import get_tests_dir
 from datalog_conformance.runner import YamlTestRunner
-from datalog_conformance.schema import DefeasibleModel, DefeasibleTheory, Policy, Rule, TestCase
+from datalog_conformance.schema import (
+    DefeasibleModel,
+    DefeasibleTheory,
+    Policy,
+    Rule,
+)
+from datalog_conformance.schema import (
+    TestCase as SuiteCase,
+)
 
 _AMBIGUITY_FILE = Path("defeasible") / "ambiguity" / "antoniou_basic_ambiguity.yaml"
 
@@ -225,7 +233,7 @@ def _complement(atom: str) -> str:
     return f"~{atom}"
 
 
-def _load_suite_cases(raw: dict[object, object]) -> list[TestCase]:
+def _load_suite_cases(raw: dict[object, object]) -> list[SuiteCase]:
     raw_base_tags = raw.get("tags", [])
     base_tags = list(cast(list[object], raw_base_tags)) if isinstance(raw_base_tags, list) else []
     base_source = raw.get("source")
@@ -234,7 +242,7 @@ def _load_suite_cases(raw: dict[object, object]) -> list[TestCase]:
     assert isinstance(entries_obj, list)
     entries = cast(list[object], entries_obj)
 
-    cases: list[TestCase] = []
+    cases: list[SuiteCase] = []
     for entry in entries:
         assert isinstance(entry, dict)
         merged = dict(cast(dict[object, object], entry))
@@ -247,5 +255,5 @@ def _load_suite_cases(raw: dict[object, object]) -> list[TestCase]:
             assert isinstance(local_tags_obj, list)
             local_tags = cast(list[object], local_tags_obj)
             merged["tags"] = [*base_tags, *local_tags]
-        cases.append(TestCase.from_dict(merged))
+        cases.append(SuiteCase.from_dict(merged))
     return cases

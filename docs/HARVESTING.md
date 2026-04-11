@@ -7,7 +7,7 @@ This file records where the bundled YAML suites came from, what translation choi
 
 - Core Datalog YAML cases currently in `basic/`, `recursion/`, `negation/`, and `errors/`: 111
 - Defeasible YAML cases currently in `defeasible/`: 180
-- KLM property YAML cases currently in the bundled corpus: 0
+- KLM property YAML cases currently in the bundled corpus: 1
 - Generated property tests and implementation checks remain under `tests/`
 
 The current defeasible corpus is still dominated by strict-only derived lifts from the core corpus,
@@ -172,6 +172,11 @@ against a live implementation.
     pp.152-157
   - verification: reduced local ranked-worlds closure evaluator in
     `tests/closure_test_support.py` and `tests/test_closure_corpus.py`
+  - `src/datalog_conformance/_tests/defeasible/klm/morris_relevant_counterexamples.yaml`
+  - source: Morris 2020 Appendix C.2 and Figures 6-7, from local page images corresponding to
+    pp.167-168
+  - verification: reduced local Or-property checker with rational, lexicographic, and minimal
+    relevant closure support in `tests/closure_test_support.py` and `tests/test_klm_corpus.py`
 - Additional paper sources present locally:
   - `Maher_2021_DefeasibleReasoningDatalog`
   - `Antoniou_2007_DefeasibleReasoningSemanticWeb`

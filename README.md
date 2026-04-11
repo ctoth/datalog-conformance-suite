@@ -55,7 +55,7 @@ uv run pytest tests --datalog-evaluator=mypackage.MyEvaluator --datalog-tags=def
 
 - Core Datalog YAML cases: 111
 - Defeasible YAML cases: 180
-- KLM property YAML cases: 0
+- KLM property YAML cases: 1
 - Generated property and meta-tests remain under `tests/`
 
 Current notable sources:
@@ -74,6 +74,8 @@ Current notable sources:
   paper-reference evaluator for the reduced propositional fragment
 - Morris 2020 Example 6 closure cases, authored from local page images and checked against a local
   ranked-worlds closure reference for the reduced propositional fragment
+- Morris 2020 Appendix C.2 Or property cases, authored from local page images and checked against
+  a local reduced closure-plus-relevance reference
 - Bozzato 2020 Example 1, Goldszmidt and Pearl 1992 Example 1, and Morris 2020 Example 5,
   adapted from local paper notes and checked against the supported DePYsible surface
 

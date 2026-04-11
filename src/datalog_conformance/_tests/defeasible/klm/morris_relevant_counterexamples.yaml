@@ -1,0 +1,74 @@
+name: morris_relevant_or_counterexamples
+description: >
+  Morris 2020 Appendix C.2 Or counterexample, plus a small positive Or theory. The first theory
+  is the paper's explicit relevant-closure failure: rational and lexicographic closure satisfy Or,
+  while relevant closure does not. The second theory keeps the same property executable on a
+  conflict-free fragment where all three closures satisfy Or.
+source: paper/morris-2020-pp167-168-appendix-c2-figures6to7-page-images
+tags:
+- defeasible
+- klm
+- or
+- paper
+- morris2020
+- page-image-derived
+verification:
+  implementation: local_morris_klm_reference
+  kind: reduced
+klm_property: Or
+theories:
+- theory:
+    facts: {}
+    strict_rules: []
+    defeasible_rules:
+      - id: r1
+        head: "b"
+        body: ["a"]
+      - id: r2
+        head: "c"
+        body: ["b"]
+      - id: r3
+        head: "~c"
+        body: ["a"]
+      - id: r4
+        head: "d"
+        body: ["a"]
+      - id: r5
+        head: "d"
+        body: ["g"]
+      - id: r6
+        head: "e"
+        body: ["d"]
+      - id: r7
+        head: "h"
+        body: ["g"]
+      - id: r8
+        head: "~e"
+        body: ["h"]
+      - id: r9
+        head: "e"
+        body: ["g"]
+    defeaters: []
+    superiority: []
+    conflicts: []
+  satisfies:
+    rational_closure: true
+    lexicographic_closure: true
+    relevant_closure: false
+- theory:
+    facts: {}
+    strict_rules: []
+    defeasible_rules:
+      - id: p1
+        head: "e"
+        body: ["a"]
+      - id: p2
+        head: "e"
+        body: ["g"]
+    defeaters: []
+    superiority: []
+    conflicts: []
+  satisfies:
+    rational_closure: true
+    lexicographic_closure: true
+    relevant_closure: true
