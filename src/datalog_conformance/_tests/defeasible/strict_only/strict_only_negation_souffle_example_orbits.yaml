@@ -5,13 +5,13 @@ tags:
 - example
 - souffle
 tests:
-- name: strict_only_souffle_orbits_star
-  description: Strict-only defeasible form of souffle_orbits_star.
+- name: strict_only_souffle_orbits_orbits
+  description: Strict-only defeasible form of souffle_orbits_orbits.
   source: souffle/example/orbits
   tags:
   - defeasible
   - example
-  - negation
+  - recursion
   - souffle
   - strict-only
   theory:
@@ -49,49 +49,6 @@ tests:
     superiority: []
   expect:
     definitely: &id001
-      star:
-      - - sun
-    defeasibly: *id001
-- name: strict_only_souffle_orbits_orbits
-  description: Strict-only defeasible form of souffle_orbits_orbits.
-  source: souffle/example/orbits
-  tags:
-  - defeasible
-  - example
-  - recursion
-  - souffle
-  - strict-only
-  theory:
-    facts:
-      orbits: *id002
-    strict_rules:
-    - id: r1
-      head: orbits(X,Y)
-      body:
-      - orbits(X,Z)
-      - orbits(Z,Y)
-    - id: r2
-      head: satellite(X,Y)
-      body:
-      - orbits(X,Y)
-      - not intermediate(X,Y)
-      - not star(Y)
-    - id: r3
-      head: planet(X)
-      body:
-      - orbits(X,Y)
-      - star(Y)
-      - not intermediate(X,Y)
-    - id: r4
-      head: intermediate(X,Y)
-      body:
-      - orbits(X,Z)
-      - orbits(Z,Y)
-    defeasible_rules: []
-    defeaters: []
-    superiority: []
-  expect:
-    definitely: &id003
       orbits:
       - - earth
         - sun
@@ -99,50 +56,7 @@ tests:
         - earth
       - - moon
         - sun
-    defeasibly: *id003
-- name: strict_only_souffle_orbits_planet
-  description: Strict-only defeasible form of souffle_orbits_planet.
-  source: souffle/example/orbits
-  tags:
-  - defeasible
-  - example
-  - negation
-  - souffle
-  - strict-only
-  theory:
-    facts:
-      orbits: *id002
-    strict_rules:
-    - id: r1
-      head: orbits(X,Y)
-      body:
-      - orbits(X,Z)
-      - orbits(Z,Y)
-    - id: r2
-      head: satellite(X,Y)
-      body:
-      - orbits(X,Y)
-      - not intermediate(X,Y)
-      - not star(Y)
-    - id: r3
-      head: planet(X)
-      body:
-      - orbits(X,Y)
-      - star(Y)
-      - not intermediate(X,Y)
-    - id: r4
-      head: intermediate(X,Y)
-      body:
-      - orbits(X,Z)
-      - orbits(Z,Y)
-    defeasible_rules: []
-    defeaters: []
-    superiority: []
-  expect:
-    definitely: &id004
-      planet:
-      - - earth
-    defeasibly: *id004
+    defeasibly: *id001
 - name: strict_only_souffle_orbits_intermediate
   description: Strict-only defeasible form of souffle_orbits_intermediate.
   source: souffle/example/orbits
@@ -182,52 +96,8 @@ tests:
     defeaters: []
     superiority: []
   expect:
-    definitely: &id005
+    definitely: &id003
       intermediate:
       - - moon
         - sun
-    defeasibly: *id005
-- name: strict_only_souffle_orbits_satellite
-  description: Strict-only defeasible form of souffle_orbits_satellite.
-  source: souffle/example/orbits
-  tags:
-  - defeasible
-  - example
-  - negation
-  - souffle
-  - strict-only
-  theory:
-    facts:
-      orbits: *id002
-    strict_rules:
-    - id: r1
-      head: orbits(X,Y)
-      body:
-      - orbits(X,Z)
-      - orbits(Z,Y)
-    - id: r2
-      head: satellite(X,Y)
-      body:
-      - orbits(X,Y)
-      - not intermediate(X,Y)
-      - not star(Y)
-    - id: r3
-      head: planet(X)
-      body:
-      - orbits(X,Y)
-      - star(Y)
-      - not intermediate(X,Y)
-    - id: r4
-      head: intermediate(X,Y)
-      body:
-      - orbits(X,Z)
-      - orbits(Z,Y)
-    defeasible_rules: []
-    defeaters: []
-    superiority: []
-  expect:
-    definitely: &id006
-      satellite:
-      - - moon
-        - earth
-    defeasibly: *id006
+    defeasibly: *id003

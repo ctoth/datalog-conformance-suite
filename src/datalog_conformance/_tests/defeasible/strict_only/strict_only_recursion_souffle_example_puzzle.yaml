@@ -130,95 +130,6 @@ tests:
         - n
         - s
     defeasibly: *id001
-- name: strict_only_souffle_puzzle_state
-  description: Strict-only defeasible form of souffle_puzzle_state.
-  source: souffle/example/puzzle
-  tags:
-  - defeasible
-  - example
-  - recursion
-  - souffle
-  - strict-only
-  theory:
-    facts:
-      opp: *id002
-      safe: *id003
-    strict_rules:
-    - id: r1
-      head: state(X,X,U,V)
-      body:
-      - safe(X,X,U,V)
-      - opp(X,X1)
-      - state(X1,X1,U,V)
-    - id: r2
-      head: state(X,Y,X,V)
-      body:
-      - safe(X,Y,X,V)
-      - opp(X,X1)
-      - state(X1,Y,X1,V)
-    - id: r3
-      head: state(X,Y,U,X)
-      body:
-      - safe(X,Y,U,X)
-      - opp(X,X1)
-      - state(X1,Y,U,X1)
-    - id: r4
-      head: state(X,Y,U,V)
-      body:
-      - safe(X,Y,U,V)
-      - opp(X,X1)
-      - state(X1,Y,U,V)
-    - id: r5
-      head: safe(X,X,X1,X)
-      body:
-      - opp(X,X1)
-    defeasible_rules: []
-    defeaters: []
-    superiority: []
-  expect:
-    definitely: &id004
-      state:
-      - - n
-        - n
-        - n
-        - n
-      - - s
-        - n
-        - s
-        - n
-      - - n
-        - n
-        - s
-        - n
-      - - s
-        - s
-        - s
-        - n
-      - - s
-        - n
-        - s
-        - s
-      - - n
-        - s
-        - n
-        - n
-      - - n
-        - n
-        - n
-        - s
-      - - s
-        - s
-        - n
-        - s
-      - - n
-        - s
-        - n
-        - s
-      - - s
-        - s
-        - s
-        - s
-    defeasibly: *id004
 - name: strict_only_souffle_puzzle_opp
   description: Strict-only defeasible form of souffle_puzzle_opp.
   source: souffle/example/puzzle
@@ -265,10 +176,10 @@ tests:
     defeaters: []
     superiority: []
   expect:
-    definitely: &id005
+    definitely: &id004
       opp:
       - - n
         - s
       - - s
         - n
-    defeasibly: *id005
+    defeasibly: *id004

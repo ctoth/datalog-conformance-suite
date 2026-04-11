@@ -53,9 +53,10 @@ uv run pytest tests --datalog-evaluator=mypackage.MyEvaluator --datalog-tags=def
 
 ## Current Corpus
 
-- Core Datalog cases: 282
-- Defeasible cases: 333
-- Property tests: 18
+- Core Datalog YAML cases: 89
+- Defeasible YAML cases: 143
+- KLM property YAML cases: 0
+- Generated property and meta-tests remain under `tests/`
 
 Current notable sources:
 
@@ -77,11 +78,16 @@ See [docs/IMPLEMENTATIONS.md](docs/IMPLEMENTATIONS.md) for concrete runtimes to 
 Current repo verification commands:
 
 ```powershell
+uv run scripts/audit_program_surface.py
+uv run scripts/verify_core_with_nemo.py
 uv run pytest tests/
 uv run --with arpeggio --with colorama pytest tests/test_depysible_generated.py
 uv run --extra dev ruff check .
 uv run --extra dev pyright
 ```
+
+`uv run scripts/verify_core_with_nemo.py` now writes each run to its own timestamped report
+directory under `reports/verify_core_with_nemo/`.
 
 ## Layout
 

@@ -5,8 +5,8 @@ tags:
 - example
 - souffle
 tests:
-- name: strict_only_souffle_prime_count_second
-  description: Strict-only defeasible form of souffle_prime_count_second.
+- name: strict_only_souffle_prime_count_third
+  description: Strict-only defeasible form of souffle_prime_count_third.
   source: souffle/example/prime
   tags:
   - defeasible
@@ -16,9 +16,9 @@ tests:
   - strict-only
   theory:
     facts:
-      count_third: &id002
+      count_third:
       - - 3
-      succ: &id003
+      succ:
       - - 0
         - 1
       - - 1
@@ -85,55 +85,6 @@ tests:
     superiority: []
   expect:
     definitely: &id001
-      count_second:
-      - - 3
-      - - 5
-      - - 7
-      - - 9
-      - - 11
-      - - 13
-      - - 15
-      - - 17
-      - - 19
-      - - 21
-    defeasibly: *id001
-- name: strict_only_souffle_prime_count_third
-  description: Strict-only defeasible form of souffle_prime_count_third.
-  source: souffle/example/prime
-  tags:
-  - defeasible
-  - example
-  - recursion
-  - souffle
-  - strict-only
-  theory:
-    facts:
-      count_third: *id002
-      succ: *id003
-    strict_rules:
-    - id: r1
-      head: count_second(n)
-      body:
-      - succ(pn, n)
-      - succ(ppn, pn)
-      - count_second(ppn)
-    - id: r2
-      head: count_third(n)
-      body:
-      - succ(pn, n)
-      - succ(ppn, pn)
-      - succ(pppn, ppn)
-      - count_third(pppn)
-    - id: r3
-      head: count_all(x)
-      body:
-      - count_second(x)
-      - count_third(x)
-    defeasible_rules: []
-    defeaters: []
-    superiority: []
-  expect:
-    definitely: &id004
       count_third:
       - - 3
       - - 6
@@ -142,47 +93,4 @@ tests:
       - - 15
       - - 18
       - - 21
-    defeasibly: *id004
-- name: strict_only_souffle_prime_count_all
-  description: Strict-only defeasible form of souffle_prime_count_all.
-  source: souffle/example/prime
-  tags:
-  - basic
-  - defeasible
-  - example
-  - souffle
-  - strict-only
-  theory:
-    facts:
-      count_third: *id002
-      succ: *id003
-    strict_rules:
-    - id: r1
-      head: count_second(n)
-      body:
-      - succ(pn, n)
-      - succ(ppn, pn)
-      - count_second(ppn)
-    - id: r2
-      head: count_third(n)
-      body:
-      - succ(pn, n)
-      - succ(ppn, pn)
-      - succ(pppn, ppn)
-      - count_third(pppn)
-    - id: r3
-      head: count_all(x)
-      body:
-      - count_second(x)
-      - count_third(x)
-    defeasible_rules: []
-    defeaters: []
-    superiority: []
-  expect:
-    definitely: &id005
-      count_all:
-      - - 3
-      - - 9
-      - - 15
-      - - 21
-    defeasibly: *id005
+    defeasibly: *id001

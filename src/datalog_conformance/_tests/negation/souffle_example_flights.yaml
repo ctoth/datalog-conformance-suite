@@ -3,15 +3,15 @@ tags:
 - example
 - souffle
 tests:
-- name: souffle_flights_QAflies
+- name: souffle_flights_VAflies
   description: Harvested from Souffle testcase flights, asserting exported relation
-    QAflies.
+    VAflies.
   tags:
   - example
   - recursion
   - souffle
   program:
-    facts: &id001
+    facts:
       flight:
       - - QA
         - AU
@@ -40,33 +40,11 @@ tests:
       - - VA
         - DEN
         - ZA
-    rules: &id002
+    rules:
     - QAflies(X,Y) :- flight("QA",X,Z), QAflies(Z,Y).
     - VAflies(X,Y) :- flight("VA",X,Y).
     - VAflies(X,Y) :- flight("VA",X,Z), VAflies(Z,Y).
     - QAonly(X,Y) :- QAflies(X,Y), not VAflies(X,Y).
-  expect:
-    QAflies:
-    - - AU
-      - CHI
-    - - AU
-      - JPN
-    - - JPN
-      - DEN
-    - - JPN
-      - CHI
-    - - AU
-      - DEN
-- name: souffle_flights_VAflies
-  description: Harvested from Souffle testcase flights, asserting exported relation
-    VAflies.
-  tags:
-  - example
-  - recursion
-  - souffle
-  program:
-    facts: *id001
-    rules: *id002
   expect:
     VAflies:
     - - AU
@@ -77,21 +55,6 @@ tests:
       - DEN
     - - DEN
       - ZA
-- name: souffle_flights_QAonly
-  description: Harvested from Souffle testcase flights, asserting exported relation
-    QAonly.
-  tags:
-  - example
-  - negation
-  - souffle
-  program:
-    facts: *id001
-    rules: *id002
-  expect:
-    QAonly:
-    - - AU
-      - JPN
-    - - JPN
-      - CHI
-    - - AU
-      - DEN
+verification:
+  implementation: nmo
+  kind: direct

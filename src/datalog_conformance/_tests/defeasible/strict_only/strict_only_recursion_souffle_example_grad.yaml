@@ -5,8 +5,8 @@ tags:
 - example
 - souffle
 tests:
-- name: strict_only_souffle_grad_student
-  description: Strict-only defeasible form of souffle_grad_student.
+- name: strict_only_souffle_grad_course
+  description: Strict-only defeasible form of souffle_grad_course.
   source: souffle/example/grad
   tags:
   - basic
@@ -59,49 +59,11 @@ tests:
     superiority: []
   expect:
     definitely: &id001
-      student:
-      - - adam
-      - - bob
-      - - pete
-      - - scott
-      - - tony
-    defeasibly: *id001
-- name: strict_only_souffle_grad_course
-  description: Strict-only defeasible form of souffle_grad_course.
-  source: souffle/example/grad
-  tags:
-  - basic
-  - defeasible
-  - example
-  - souffle
-  - strict-only
-  theory:
-    facts:
-      student: *id002
-      course: *id003
-      take: *id004
-      pre: *id005
-    strict_rules:
-    - id: r1
-      head: pre(Pre,Post)
-      body:
-      - pre(Pre,X)
-      - pre(X,Post)
-    - id: r2
-      head: grad(S)
-      body:
-      - take(S,"his")
-      - take(S,"eng")
-    defeasible_rules: []
-    defeaters: []
-    superiority: []
-  expect:
-    definitely: &id006
       course:
       - - eng
       - - his
       - - lp
-    defeasibly: *id006
+    defeasibly: *id001
 - name: strict_only_souffle_grad_pre
   description: Strict-only defeasible form of souffle_grad_pre.
   source: souffle/example/grad
@@ -132,7 +94,7 @@ tests:
     defeaters: []
     superiority: []
   expect:
-    definitely: &id007
+    definitely: &id006
       pre:
       - - eng
         - lp
@@ -140,7 +102,7 @@ tests:
         - eng
       - - hist
         - lp
-    defeasibly: *id007
+    defeasibly: *id006
 - name: strict_only_souffle_grad_take
   description: Strict-only defeasible form of souffle_grad_take.
   source: souffle/example/grad
@@ -171,7 +133,7 @@ tests:
     defeaters: []
     superiority: []
   expect:
-    definitely: &id008
+    definitely: &id007
       take:
       - - adam
         - eng
@@ -185,7 +147,7 @@ tests:
         - lp
       - - tony
         - his
-    defeasibly: *id008
+    defeasibly: *id007
 - name: strict_only_souffle_grad_grad
   description: Strict-only defeasible form of souffle_grad_grad.
   source: souffle/example/grad
@@ -216,7 +178,7 @@ tests:
     defeaters: []
     superiority: []
   expect:
-    definitely: &id009
+    definitely: &id008
       grad:
       - - pete
-    defeasibly: *id009
+    defeasibly: *id008

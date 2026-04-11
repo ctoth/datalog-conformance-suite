@@ -20,3 +20,6 @@ tests:
     N:
     - - 0
     - - 1
+verification:
+  implementation: nmo
+  kind: direct

@@ -122,3 +122,6 @@ tests:
       - C
     - - F
       - A
+verification:
+  implementation: nmo
+  kind: direct

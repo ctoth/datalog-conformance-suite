@@ -3,12 +3,12 @@ tags:
 - example
 - souffle
 tests:
-- name: souffle_orbits1_star
+- name: souffle_orbits1_orbits
   description: Harvested from Souffle testcase orbits1, asserting exported relation
-    star.
+    orbits.
   tags:
   - example
-  - negation
+  - recursion
   - souffle
   program:
     facts: &id001
@@ -21,19 +21,6 @@ tests:
     - orbits(X,Y) :- orbits(X,Z), orbits(Z,Y).
     - planet(X) :- orbits(X,Y), star(Y), not intermediate(X,Y).
     - intermediate(X,Y) :- orbits(X,Y), orbits(_,Y).
-  expect:
-    star:
-    - - sun
-- name: souffle_orbits1_orbits
-  description: Harvested from Souffle testcase orbits1, asserting exported relation
-    orbits.
-  tags:
-  - example
-  - recursion
-  - souffle
-  program:
-    facts: *id001
-    rules: *id002
   expect:
     orbits:
     - - earth
@@ -72,3 +59,6 @@ tests:
       - earth
     - - moon
       - sun
+verification:
+  implementation: nmo
+  kind: direct

@@ -1,10 +1,23 @@
 name: facts_only
 description: Ground facts are returned unchanged.
 source: manual/scaffold
-tags: [basic, facts]
+tags:
+- basic
+- facts
 program:
   facts:
-    edge: [[a, b], [b, c]]
+    edge:
+    - - a
+      - b
+    - - b
+      - c
   rules: []
 expect:
-  edge: [[a, b], [b, c]]
+  edge:
+  - - a
+    - b
+  - - b
+    - c
+verification:
+  implementation: nmo
+  kind: direct

@@ -5,8 +5,8 @@ tags:
 - evaluation
 - souffle
 tests:
-- name: strict_only_souffle_relop_a
-  description: Strict-only defeasible form of souffle_relop_a.
+- name: strict_only_souffle_relop_b
+  description: Strict-only defeasible form of souffle_relop_b.
   source: souffle/evaluation/relop
   tags:
   - basic
@@ -50,50 +50,11 @@ tests:
     superiority: []
   expect:
     definitely: &id001
-      a:
-      - - a1
-      - - a2
-      - - a3
-    defeasibly: *id001
-- name: strict_only_souffle_relop_b
-  description: Strict-only defeasible form of souffle_relop_b.
-  source: souffle/evaluation/relop
-  tags:
-  - basic
-  - defeasible
-  - evaluation
-  - souffle
-  - strict-only
-  theory:
-    facts:
-      a: *id002
-      b: *id003
-      c: *id004
-    strict_rules:
-    - id: r1
-      head: projection(X)
-      body:
-      - c(X,_)
-    - id: r2
-      head: cartesian(X,Y)
-      body:
-      - a(X)
-      - b(Y)
-    - id: r3
-      head: inner_join(X)
-      body:
-      - a(X)
-      - b(X)
-    defeasible_rules: []
-    defeaters: []
-    superiority: []
-  expect:
-    definitely: &id005
       b:
       - - b1
       - - b2
       - - a1
-    defeasibly: *id005
+    defeasibly: *id001
 - name: strict_only_souffle_relop_c
   description: Strict-only defeasible form of souffle_relop_c.
   source: souffle/evaluation/relop
@@ -127,7 +88,7 @@ tests:
     defeaters: []
     superiority: []
   expect:
-    definitely: &id006
+    definitely: &id005
       c:
       - - a1
         - b2
@@ -135,7 +96,7 @@ tests:
         - a1
       - - a2
         - b2
-    defeasibly: *id006
+    defeasibly: *id005
 - name: strict_only_souffle_relop_projection
   description: Strict-only defeasible form of souffle_relop_projection.
   source: souffle/evaluation/relop
@@ -169,99 +130,8 @@ tests:
     defeaters: []
     superiority: []
   expect:
-    definitely: &id007
+    definitely: &id006
       projection:
       - - a1
       - - a2
-    defeasibly: *id007
-- name: strict_only_souffle_relop_cartesian
-  description: Strict-only defeasible form of souffle_relop_cartesian.
-  source: souffle/evaluation/relop
-  tags:
-  - basic
-  - defeasible
-  - evaluation
-  - souffle
-  - strict-only
-  theory:
-    facts:
-      a: *id002
-      b: *id003
-      c: *id004
-    strict_rules:
-    - id: r1
-      head: projection(X)
-      body:
-      - c(X,_)
-    - id: r2
-      head: cartesian(X,Y)
-      body:
-      - a(X)
-      - b(Y)
-    - id: r3
-      head: inner_join(X)
-      body:
-      - a(X)
-      - b(X)
-    defeasible_rules: []
-    defeaters: []
-    superiority: []
-  expect:
-    definitely: &id008
-      cartesian:
-      - - a1
-        - b1
-      - - a1
-        - b2
-      - - a1
-        - a1
-      - - a2
-        - b1
-      - - a2
-        - b2
-      - - a2
-        - a1
-      - - a3
-        - b1
-      - - a3
-        - b2
-      - - a3
-        - a1
-    defeasibly: *id008
-- name: strict_only_souffle_relop_inner_join
-  description: Strict-only defeasible form of souffle_relop_inner_join.
-  source: souffle/evaluation/relop
-  tags:
-  - basic
-  - defeasible
-  - evaluation
-  - souffle
-  - strict-only
-  theory:
-    facts:
-      a: *id002
-      b: *id003
-      c: *id004
-    strict_rules:
-    - id: r1
-      head: projection(X)
-      body:
-      - c(X,_)
-    - id: r2
-      head: cartesian(X,Y)
-      body:
-      - a(X)
-      - b(Y)
-    - id: r3
-      head: inner_join(X)
-      body:
-      - a(X)
-      - b(X)
-    defeasible_rules: []
-    defeaters: []
-    superiority: []
-  expect:
-    definitely: &id009
-      inner_join:
-      - - a1
-    defeasibly: *id009
+    defeasibly: *id006

@@ -5,8 +5,8 @@ tags:
 - evaluation
 - souffle
 tests:
-- name: strict_only_souffle_mrtc_p
-  description: Strict-only defeasible form of souffle_mrtc_p.
+- name: strict_only_souffle_mrtc_q
+  description: Strict-only defeasible form of souffle_mrtc_q.
   source: souffle/evaluation/mrtc
   tags:
   - basic
@@ -80,182 +80,12 @@ tests:
     superiority: []
   expect:
     definitely: &id001
-      p:
-      - - a
-        - b
-      - - c
-        - d
-    defeasibly: *id001
-- name: strict_only_souffle_mrtc_q
-  description: Strict-only defeasible form of souffle_mrtc_q.
-  source: souffle/evaluation/mrtc
-  tags:
-  - basic
-  - defeasible
-  - evaluation
-  - souffle
-  - strict-only
-  theory:
-    facts:
-      p: *id002
-      q: *id003
-      p1: *id004
-      q1: *id005
-    strict_rules:
-    - id: r1
-      head: pqs(X,Y)
-      body:
-      - p(X,Y)
-    - id: r2
-      head: pqs(X,Y)
-      body:
-      - q(X,Y)
-    - id: r3
-      head: pqs(X,Y)
-      body:
-      - pqs(X,Z)
-      - p(Z,Y)
-    - id: r4
-      head: pqs(X,Y)
-      body:
-      - pqs(X,Z)
-      - q(Z,Y)
-    - id: r5
-      head: pqs(X,Y)
-      body:
-      - pqs1(X,Y)
-    - id: r6
-      head: pqs1(X,Y)
-      body:
-      - p1(X,Y)
-    - id: r7
-      head: pqs1(X,Y)
-      body:
-      - q1(X,Y)
-    - id: r8
-      head: pqs1(X,Y)
-      body:
-      - pqs1(X,Z)
-      - p1(Z,Y)
-    - id: r9
-      head: pqs1(X,Y)
-      body:
-      - pqs1(X,Z)
-      - q1(Z,Y)
-    defeasible_rules: []
-    defeaters: []
-    superiority: []
-  expect:
-    definitely: &id006
       q:
       - - b
         - c
       - - d
         - e
-    defeasibly: *id006
-- name: strict_only_souffle_mrtc_pqs
-  description: Strict-only defeasible form of souffle_mrtc_pqs.
-  source: souffle/evaluation/mrtc
-  tags:
-  - defeasible
-  - evaluation
-  - recursion
-  - souffle
-  - strict-only
-  theory:
-    facts:
-      p: *id002
-      q: *id003
-      p1: *id004
-      q1: *id005
-    strict_rules:
-    - id: r1
-      head: pqs(X,Y)
-      body:
-      - p(X,Y)
-    - id: r2
-      head: pqs(X,Y)
-      body:
-      - q(X,Y)
-    - id: r3
-      head: pqs(X,Y)
-      body:
-      - pqs(X,Z)
-      - p(Z,Y)
-    - id: r4
-      head: pqs(X,Y)
-      body:
-      - pqs(X,Z)
-      - q(Z,Y)
-    - id: r5
-      head: pqs(X,Y)
-      body:
-      - pqs1(X,Y)
-    - id: r6
-      head: pqs1(X,Y)
-      body:
-      - p1(X,Y)
-    - id: r7
-      head: pqs1(X,Y)
-      body:
-      - q1(X,Y)
-    - id: r8
-      head: pqs1(X,Y)
-      body:
-      - pqs1(X,Z)
-      - p1(Z,Y)
-    - id: r9
-      head: pqs1(X,Y)
-      body:
-      - pqs1(X,Z)
-      - q1(Z,Y)
-    defeasible_rules: []
-    defeaters: []
-    superiority: []
-  expect:
-    definitely: &id007
-      pqs:
-      - - a
-        - b
-      - - c
-        - d
-      - - b
-        - c
-      - - d
-        - e
-      - - a1
-        - b1
-      - - c1
-        - d1
-      - - b1
-        - c1
-      - - d1
-        - e1
-      - - b1
-        - d1
-      - - a1
-        - c1
-      - - c1
-        - e1
-      - - a1
-        - d1
-      - - b1
-        - e1
-      - - a1
-        - e1
-      - - b
-        - d
-      - - a
-        - c
-      - - c
-        - e
-      - - a
-        - d
-      - - b
-        - e
-      - - a
-        - e
-    defeasibly: *id007
+    defeasibly: *id001
 - name: strict_only_souffle_mrtc_p1
   description: Strict-only defeasible form of souffle_mrtc_p1.
   source: souffle/evaluation/mrtc
@@ -316,13 +146,13 @@ tests:
     defeaters: []
     superiority: []
   expect:
-    definitely: &id008
+    definitely: &id006
       p1:
       - - a1
         - b1
       - - c1
         - d1
-    defeasibly: *id008
+    defeasibly: *id006
 - name: strict_only_souffle_mrtc_q1
   description: Strict-only defeasible form of souffle_mrtc_q1.
   source: souffle/evaluation/mrtc
@@ -383,13 +213,13 @@ tests:
     defeaters: []
     superiority: []
   expect:
-    definitely: &id009
+    definitely: &id007
       q1:
       - - b1
         - c1
       - - d1
         - e1
-    defeasibly: *id009
+    defeasibly: *id007
 - name: strict_only_souffle_mrtc_pqs1
   description: Strict-only defeasible form of souffle_mrtc_pqs1.
   source: souffle/evaluation/mrtc
@@ -450,7 +280,7 @@ tests:
     defeaters: []
     superiority: []
   expect:
-    definitely: &id010
+    definitely: &id008
       pqs1:
       - - a1
         - b1
@@ -472,4 +302,4 @@ tests:
         - e1
       - - a1
         - e1
-    defeasibly: *id010
+    defeasibly: *id008

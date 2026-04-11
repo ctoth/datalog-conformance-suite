@@ -13272,3 +13272,6 @@ tests:
       - 9
     - - 15
       - 10
+verification:
+  implementation: nmo
+  kind: direct

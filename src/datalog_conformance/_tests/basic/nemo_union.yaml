@@ -147,3 +147,6 @@ tests:
     - - Z
       - Z
       - Z
+verification:
+  implementation: nmo
+  kind: direct

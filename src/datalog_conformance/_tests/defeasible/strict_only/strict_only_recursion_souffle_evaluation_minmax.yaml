@@ -5,8 +5,8 @@ tags:
 - evaluation
 - souffle
 tests:
-- name: strict_only_souffle_minmax_equal
-  description: Strict-only defeasible form of souffle_minmax_equal.
+- name: strict_only_souffle_minmax_minimum
+  description: Strict-only defeasible form of souffle_minmax_minimum.
   source: souffle/evaluation/minmax
   tags:
   - defeasible
@@ -113,121 +113,6 @@ tests:
     superiority: []
   expect:
     definitely: &id001
-      equal:
-      - - 0
-        - 0
-        - 0
-      - - 1
-        - 1
-        - 0
-      - - 2
-        - 2
-        - 0
-      - - 3
-        - 3
-        - 0
-      - - 4
-        - 4
-        - 0
-      - - 5
-        - 5
-        - 0
-      - - 6
-        - 6
-        - 0
-      - - 7
-        - 7
-        - 0
-      - - 8
-        - 8
-        - 0
-      - - 9
-        - 9
-        - 0
-      - - 10
-        - 10
-        - 0
-      - - 11
-        - 11
-        - 0
-      - - 12
-        - 12
-        - 0
-      - - 13
-        - 13
-        - 0
-      - - 14
-        - 14
-        - 0
-      - - 15
-        - 15
-        - 0
-      - - 16
-        - 16
-        - 0
-      - - 17
-        - 17
-        - 0
-      - - 18
-        - 18
-        - 0
-      - - 19
-        - 19
-        - 0
-      - - 20
-        - 20
-        - 0
-    defeasibly: *id001
-- name: strict_only_souffle_minmax_minimum
-  description: Strict-only defeasible form of souffle_minmax_minimum.
-  source: souffle/evaluation/minmax
-  tags:
-  - defeasible
-  - evaluation
-  - recursion
-  - souffle
-  - strict-only
-  theory:
-    facts:
-      minimum: *id002
-      maximum: *id003
-      succ: *id004
-    strict_rules:
-    - id: r1
-      head: equal(m, n, r)
-      body:
-      - succ(pm, m)
-      - succ(pn, n)
-      - equal(pm, pn, r)
-    - id: r2
-      head: minimum(m, n, r)
-      body:
-      - succ(pm, m)
-      - succ(pn, n)
-      - minimum(pm, pn, r)
-    - id: r3
-      head: maximum(m, n, r)
-      body:
-      - succ(pm, m)
-      - succ(pn, n)
-      - maximum(pm, pn, r)
-    - id: r4
-      head: Is_min_max_eq(r)
-      body:
-      - equal("6", "6", r)
-    - id: r5
-      head: Is_min_max_eq(r)
-      body:
-      - minimum("6", "6", r)
-    - id: r6
-      head: Is_min_max_eq(r)
-      body:
-      - maximum("6", "6", r)
-    defeasible_rules: []
-    defeaters: []
-    superiority: []
-  expect:
-    definitely: &id005
       minimum:
       - - 1
         - 0
@@ -400,7 +285,7 @@ tests:
       - - 20
         - 19
         - 1
-    defeasibly: *id005
+    defeasibly: *id001
 - name: strict_only_souffle_minmax_maximum
   description: Strict-only defeasible form of souffle_minmax_maximum.
   source: souffle/evaluation/minmax
@@ -450,7 +335,7 @@ tests:
     defeaters: []
     superiority: []
   expect:
-    definitely: &id006
+    definitely: &id005
       maximum:
       - - 0
         - 1
@@ -623,57 +508,4 @@ tests:
       - - 19
         - 20
         - 2
-    defeasibly: *id006
-- name: strict_only_souffle_minmax_Is_min_max_eq
-  description: Strict-only defeasible form of souffle_minmax_Is_min_max_eq.
-  source: souffle/evaluation/minmax
-  tags:
-  - basic
-  - defeasible
-  - evaluation
-  - souffle
-  - strict-only
-  theory:
-    facts:
-      minimum: *id002
-      maximum: *id003
-      succ: *id004
-    strict_rules:
-    - id: r1
-      head: equal(m, n, r)
-      body:
-      - succ(pm, m)
-      - succ(pn, n)
-      - equal(pm, pn, r)
-    - id: r2
-      head: minimum(m, n, r)
-      body:
-      - succ(pm, m)
-      - succ(pn, n)
-      - minimum(pm, pn, r)
-    - id: r3
-      head: maximum(m, n, r)
-      body:
-      - succ(pm, m)
-      - succ(pn, n)
-      - maximum(pm, pn, r)
-    - id: r4
-      head: Is_min_max_eq(r)
-      body:
-      - equal("6", "6", r)
-    - id: r5
-      head: Is_min_max_eq(r)
-      body:
-      - minimum("6", "6", r)
-    - id: r6
-      head: Is_min_max_eq(r)
-      body:
-      - maximum("6", "6", r)
-    defeasible_rules: []
-    defeaters: []
-    superiority: []
-  expect:
-    definitely: &id007
-      Is_min_max_eq:
-      - - 0
-    defeasibly: *id007
+    defeasibly: *id005

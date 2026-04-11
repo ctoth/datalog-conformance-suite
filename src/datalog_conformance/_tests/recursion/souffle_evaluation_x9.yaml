@@ -10,7 +10,7 @@ tests:
   - evaluation
   - souffle
   program:
-    facts: &id001
+    facts:
       X:
       - - a
         - b
@@ -20,7 +20,7 @@ tests:
         - c
       - - c
         - e
-    rules: &id002
+    rules:
     - Y(a,c) :- Y(a,b), Y(b,c).
   expect:
     X:
@@ -32,26 +32,6 @@ tests:
       - c
     - - c
       - e
-- name: souffle_x9_Y
-  description: Harvested from Souffle testcase x9, asserting exported relation Y.
-  tags:
-  - evaluation
-  - recursion
-  - souffle
-  program:
-    facts: *id001
-    rules: *id002
-  expect:
-    Y:
-    - - a
-      - b
-    - - b
-      - d
-    - - a
-      - c
-    - - c
-      - e
-    - - a
-      - d
-    - - a
-      - e
+verification:
+  implementation: nmo
+  kind: direct

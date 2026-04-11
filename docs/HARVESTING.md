@@ -5,12 +5,36 @@ This file records where the bundled YAML suites came from, what translation choi
 
 ## Current Corpus Summary
 
-- Core Datalog cases currently in `basic/`, `recursion/`, `negation/`, and `errors/`: 282
-- Defeasible cases currently in `defeasible/`: 333
-- Property tests and generated implementation checks: 18
+- Core Datalog YAML cases currently in `basic/`, `recursion/`, `negation/`, and `errors/`: 89
+- Defeasible YAML cases currently in `defeasible/`: 143
+- KLM property YAML cases currently in the bundled corpus: 0
+- Generated property tests and implementation checks remain under `tests/`
 
-The current defeasible corpus is dominated by strict-only derived lifts from the core corpus, plus
- a small set of genuinely defeasible examples.
+The current defeasible corpus is still dominated by strict-only derived lifts from the core corpus,
+plus a smaller set of genuinely defeasible examples.
+
+## Runner-Surface Audit
+
+- Command: `uv run scripts/audit_program_surface.py`
+- Purpose: fail when a retained program case expects rows that are not justified by the
+  runner-visible `program` surface.
+- Current enforced classes:
+  - non-empty expected predicates absent from both visible facts and visible rule heads
+  - facts-only program cases whose expected rows are not already present in the input facts
+- Current cleanup applied:
+  - 73 invalid core program cases were removed from the bundled YAML corpus
+  - 73 corresponding strict-only derived defeasible cases were removed in lockstep
+
+## Actual Runtime Verification
+
+- Command: `uv run scripts/verify_core_with_nemo.py`
+- Runtime used for the retained core corpus: `nmo`
+- Report layout: one timestamped directory per run under `reports/verify_core_with_nemo/`
+- Current cleanup applied from concrete `nmo` runs:
+  - 120 additional core program cases were removed after failing direct runtime verification
+  - 120 corresponding strict-only derived defeasible cases were removed in lockstep
+  - retained core YAML files in `basic/`, `negation/`, and `recursion/` are stamped with
+    `verification: {implementation: nmo, kind: direct}`
 
 ## Souffle
 

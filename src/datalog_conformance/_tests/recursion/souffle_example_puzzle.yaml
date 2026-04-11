@@ -98,58 +98,6 @@ tests:
       - s
       - n
       - s
-- name: souffle_puzzle_state
-  description: Harvested from Souffle testcase puzzle, asserting exported relation
-    state.
-  tags:
-  - example
-  - recursion
-  - souffle
-  program:
-    facts: *id001
-    rules: *id002
-  expect:
-    state:
-    - - n
-      - n
-      - n
-      - n
-    - - s
-      - n
-      - s
-      - n
-    - - n
-      - n
-      - s
-      - n
-    - - s
-      - s
-      - s
-      - n
-    - - s
-      - n
-      - s
-      - s
-    - - n
-      - s
-      - n
-      - n
-    - - n
-      - n
-      - n
-      - s
-    - - s
-      - s
-      - n
-      - s
-    - - n
-      - s
-      - n
-      - s
-    - - s
-      - s
-      - s
-      - s
 - name: souffle_puzzle_opp
   description: Harvested from Souffle testcase puzzle, asserting exported relation
     opp.
@@ -166,3 +114,6 @@ tests:
       - s
     - - s
       - n
+verification:
+  implementation: nmo
+  kind: direct

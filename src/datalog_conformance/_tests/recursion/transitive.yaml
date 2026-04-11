@@ -1,12 +1,35 @@
 name: transitive_closure
 description: Transitive closure over a small edge relation.
 source: manual/scaffold
-tags: [recursion, basic]
+tags:
+- recursion
+- basic
 program:
   facts:
-    edge: [[a, b], [b, c], [c, d]]
+    edge:
+    - - a
+      - b
+    - - b
+      - c
+    - - c
+      - d
   rules:
-    - "path(X, Y) :- edge(X, Y)."
-    - "path(X, Y) :- edge(X, Z), path(Z, Y)."
+  - path(X, Y) :- edge(X, Y).
+  - path(X, Y) :- edge(X, Z), path(Z, Y).
 expect:
-  path: [[a, b], [a, c], [a, d], [b, c], [b, d], [c, d]]
+  path:
+  - - a
+    - b
+  - - a
+    - c
+  - - a
+    - d
+  - - b
+    - c
+  - - b
+    - d
+  - - c
+    - d
+verification:
+  implementation: nmo
+  kind: direct

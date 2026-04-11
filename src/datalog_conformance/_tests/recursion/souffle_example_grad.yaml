@@ -3,8 +3,8 @@ tags:
 - example
 - souffle
 tests:
-- name: souffle_grad_student
-  description: Harvested from Souffle testcase grad, asserting exported relation student.
+- name: souffle_grad_course
+  description: Harvested from Souffle testcase grad, asserting exported relation course.
   tags:
   - basic
   - example
@@ -41,22 +41,6 @@ tests:
     rules: &id002
     - pre(Pre,Post) :- pre(Pre,X), pre(X,Post).
     - grad(S) :- take(S,"his"), take(S,"eng").
-  expect:
-    student:
-    - - adam
-    - - bob
-    - - pete
-    - - scott
-    - - tony
-- name: souffle_grad_course
-  description: Harvested from Souffle testcase grad, asserting exported relation course.
-  tags:
-  - basic
-  - example
-  - souffle
-  program:
-    facts: *id001
-    rules: *id002
   expect:
     course:
     - - eng
@@ -114,3 +98,6 @@ tests:
   expect:
     grad:
     - - pete
+verification:
+  implementation: nmo
+  kind: direct

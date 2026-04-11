@@ -5,8 +5,8 @@ tags:
 - example
 - souffle
 tests:
-- name: strict_only_souffle_flights_QAflies
-  description: Strict-only defeasible form of souffle_flights_QAflies.
+- name: strict_only_souffle_flights_VAflies
+  description: Strict-only defeasible form of souffle_flights_VAflies.
   source: souffle/example/flights
   tags:
   - defeasible
@@ -16,7 +16,7 @@ tests:
   - strict-only
   theory:
     facts:
-      flight: &id002
+      flight:
       - - QA
         - AU
         - CHI
@@ -69,55 +69,6 @@ tests:
     superiority: []
   expect:
     definitely: &id001
-      QAflies:
-      - - AU
-        - CHI
-      - - AU
-        - JPN
-      - - JPN
-        - DEN
-      - - JPN
-        - CHI
-      - - AU
-        - DEN
-    defeasibly: *id001
-- name: strict_only_souffle_flights_VAflies
-  description: Strict-only defeasible form of souffle_flights_VAflies.
-  source: souffle/example/flights
-  tags:
-  - defeasible
-  - example
-  - recursion
-  - souffle
-  - strict-only
-  theory:
-    facts:
-      flight: *id002
-    strict_rules:
-    - id: r1
-      head: QAflies(X,Y)
-      body:
-      - flight("QA",X,Z)
-      - QAflies(Z,Y)
-    - id: r2
-      head: VAflies(X,Y)
-      body:
-      - flight("VA",X,Y)
-    - id: r3
-      head: VAflies(X,Y)
-      body:
-      - flight("VA",X,Z)
-      - VAflies(Z,Y)
-    - id: r4
-      head: QAonly(X,Y)
-      body:
-      - QAflies(X,Y)
-      - not VAflies(X,Y)
-    defeasible_rules: []
-    defeaters: []
-    superiority: []
-  expect:
-    definitely: &id003
       VAflies:
       - - AU
         - CHI
@@ -127,49 +78,4 @@ tests:
         - DEN
       - - DEN
         - ZA
-    defeasibly: *id003
-- name: strict_only_souffle_flights_QAonly
-  description: Strict-only defeasible form of souffle_flights_QAonly.
-  source: souffle/example/flights
-  tags:
-  - defeasible
-  - example
-  - negation
-  - souffle
-  - strict-only
-  theory:
-    facts:
-      flight: *id002
-    strict_rules:
-    - id: r1
-      head: QAflies(X,Y)
-      body:
-      - flight("QA",X,Z)
-      - QAflies(Z,Y)
-    - id: r2
-      head: VAflies(X,Y)
-      body:
-      - flight("VA",X,Y)
-    - id: r3
-      head: VAflies(X,Y)
-      body:
-      - flight("VA",X,Z)
-      - VAflies(Z,Y)
-    - id: r4
-      head: QAonly(X,Y)
-      body:
-      - QAflies(X,Y)
-      - not VAflies(X,Y)
-    defeasible_rules: []
-    defeaters: []
-    superiority: []
-  expect:
-    definitely: &id004
-      QAonly:
-      - - AU
-        - JPN
-      - - JPN
-        - CHI
-      - - AU
-        - DEN
-    defeasibly: *id004
+    defeasibly: *id001

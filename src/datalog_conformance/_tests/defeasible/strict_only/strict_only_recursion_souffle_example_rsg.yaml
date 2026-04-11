@@ -5,13 +5,13 @@ tags:
 - example
 - souffle
 tests:
-- name: strict_only_souffle_rsg_RSG
-  description: Strict-only defeasible form of souffle_rsg_RSG.
+- name: strict_only_souffle_rsg_FLAT
+  description: Strict-only defeasible form of souffle_rsg_FLAT.
   source: souffle/example/rsg
   tags:
+  - basic
   - defeasible
   - example
-  - recursion
   - souffle
   - strict-only
   theory:
@@ -65,56 +65,6 @@ tests:
     superiority: []
   expect:
     definitely: &id001
-      RSG:
-      - - g
-        - f
-      - - m
-        - n
-      - - m
-        - o
-      - - p
-        - m
-      - - a
-        - b
-      - - f
-        - k
-      - - h
-        - f
-      - - i
-        - f
-      - - j
-        - f
-      - - a
-        - c
-      - - a
-        - d
-    defeasibly: *id001
-- name: strict_only_souffle_rsg_FLAT
-  description: Strict-only defeasible form of souffle_rsg_FLAT.
-  source: souffle/example/rsg
-  tags:
-  - basic
-  - defeasible
-  - example
-  - souffle
-  - strict-only
-  theory:
-    facts:
-      UP: *id002
-      FLAT: *id003
-      DOWN: *id004
-    strict_rules:
-    - id: r1
-      head: RSG(x,y)
-      body:
-      - UP(x, a)
-      - RSG(b, a)
-      - DOWN(b, y)
-    defeasible_rules: []
-    defeaters: []
-    superiority: []
-  expect:
-    definitely: &id005
       FLAT:
       - - g
         - f
@@ -124,7 +74,7 @@ tests:
         - o
       - - p
         - m
-    defeasibly: *id005
+    defeasibly: *id001
 - name: strict_only_souffle_rsg_UP
   description: Strict-only defeasible form of souffle_rsg_UP.
   source: souffle/example/rsg
@@ -150,7 +100,7 @@ tests:
     defeaters: []
     superiority: []
   expect:
-    definitely: &id006
+    definitely: &id005
       UP:
       - - a
         - e
@@ -166,7 +116,7 @@ tests:
         - o
       - - j
         - o
-    defeasibly: *id006
+    defeasibly: *id005
 - name: strict_only_souffle_rsg_DOWN
   description: Strict-only defeasible form of souffle_rsg_DOWN.
   source: souffle/example/rsg
@@ -192,7 +142,7 @@ tests:
     defeaters: []
     superiority: []
   expect:
-    definitely: &id007
+    definitely: &id006
       DOWN:
       - - l
         - f
@@ -206,4 +156,4 @@ tests:
         - d
       - - p
         - k
-    defeasibly: *id007
+    defeasibly: *id006

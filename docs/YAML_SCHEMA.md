@@ -31,6 +31,9 @@ name: transitive_closure
 description: Two-rule transitive closure.
 source: manual/scaffold
 tags: [recursion, basic]
+verification:
+  implementation: nmo
+  kind: direct
 skip: null
 program:
   facts:
@@ -53,7 +56,14 @@ Required fields:
 
 Optional fields:
 
+- `verification`: mapping describing one concrete implementation confirmation
 - `skip`: string or null
+
+`verification`:
+
+- `implementation`: string naming the runtime used for confirmation
+- `kind`: either `direct` or `reduced`
+- suite-wrapper files may define `verification` once and let child tests inherit it
 
 `program.facts`:
 

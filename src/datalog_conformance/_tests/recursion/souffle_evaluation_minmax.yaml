@@ -3,9 +3,9 @@ tags:
 - evaluation
 - souffle
 tests:
-- name: souffle_minmax_equal
+- name: souffle_minmax_minimum
   description: Harvested from Souffle testcase minmax, asserting exported relation
-    equal.
+    minimum.
   tags:
   - evaluation
   - recursion
@@ -80,81 +80,6 @@ tests:
     - Is_min_max_eq(r) :- equal("6", "6", r).
     - Is_min_max_eq(r) :- minimum("6", "6", r).
     - Is_min_max_eq(r) :- maximum("6", "6", r).
-  expect:
-    equal:
-    - - 0
-      - 0
-      - 0
-    - - 1
-      - 1
-      - 0
-    - - 2
-      - 2
-      - 0
-    - - 3
-      - 3
-      - 0
-    - - 4
-      - 4
-      - 0
-    - - 5
-      - 5
-      - 0
-    - - 6
-      - 6
-      - 0
-    - - 7
-      - 7
-      - 0
-    - - 8
-      - 8
-      - 0
-    - - 9
-      - 9
-      - 0
-    - - 10
-      - 10
-      - 0
-    - - 11
-      - 11
-      - 0
-    - - 12
-      - 12
-      - 0
-    - - 13
-      - 13
-      - 0
-    - - 14
-      - 14
-      - 0
-    - - 15
-      - 15
-      - 0
-    - - 16
-      - 16
-      - 0
-    - - 17
-      - 17
-      - 0
-    - - 18
-      - 18
-      - 0
-    - - 19
-      - 19
-      - 0
-    - - 20
-      - 20
-      - 0
-- name: souffle_minmax_minimum
-  description: Harvested from Souffle testcase minmax, asserting exported relation
-    minimum.
-  tags:
-  - evaluation
-  - recursion
-  - souffle
-  program:
-    facts: *id001
-    rules: *id002
   expect:
     minimum:
     - - 1
@@ -511,16 +436,6 @@ tests:
     - - 19
       - 20
       - 2
-- name: souffle_minmax_Is_min_max_eq
-  description: Harvested from Souffle testcase minmax, asserting exported relation
-    Is_min_max_eq.
-  tags:
-  - basic
-  - evaluation
-  - souffle
-  program:
-    facts: *id001
-    rules: *id002
-  expect:
-    Is_min_max_eq:
-    - - 0
+verification:
+  implementation: nmo
+  kind: direct

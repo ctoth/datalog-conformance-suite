@@ -48,49 +48,6 @@ tests:
       - - c
         - d
     defeasibly: *id001
-- name: strict_only_souffle_neg2_Y
-  description: Strict-only defeasible form of souffle_neg2_Y.
-  source: souffle/evaluation/neg2
-  tags:
-  - defeasible
-  - evaluation
-  - recursion
-  - souffle
-  - strict-only
-  theory:
-    facts:
-      X: *id002
-    strict_rules:
-    - id: r1
-      head: Y(a,c)
-      body:
-      - X(a,b)
-      - Y(b,c)
-    - id: r2
-      head: Z(a,b)
-      body:
-      - not X(a,b)
-      - Y(a,b)
-      - X(a,b)
-    defeasible_rules: []
-    defeaters: []
-    superiority: []
-  expect:
-    definitely: &id003
-      Y:
-      - - a
-        - b
-      - - b
-        - c
-      - - c
-        - d
-      - - a
-        - c
-      - - b
-        - d
-      - - a
-        - d
-    defeasibly: *id003
 - name: strict_only_souffle_neg2_Z
   description: Strict-only defeasible form of souffle_neg2_Z.
   source: souffle/evaluation/neg2
@@ -119,6 +76,6 @@ tests:
     defeaters: []
     superiority: []
   expect:
-    definitely: &id004
+    definitely: &id003
       Z: []
-    defeasibly: *id004
+    defeasibly: *id003

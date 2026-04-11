@@ -42,6 +42,9 @@ def test_discover_yaml_tests_supports_multi_case_files(tmp_path: Path) -> None:
             [
                 "source: manual/suite",
                 "tags: [basic]",
+                "verification:",
+                "  implementation: nmo",
+                "  kind: direct",
                 "tests:",
                 "  - name: facts",
                 "    description: Facts only",
@@ -69,3 +72,6 @@ def test_discover_yaml_tests_supports_multi_case_files(tmp_path: Path) -> None:
 
     assert [case.name for _, case in discovered] == ["facts", "bad_rule"]
     assert all(case.source == "manual/suite" for _, case in discovered)
+    for _, case in discovered:
+        assert case.verification is not None
+        assert case.verification.implementation == "nmo"

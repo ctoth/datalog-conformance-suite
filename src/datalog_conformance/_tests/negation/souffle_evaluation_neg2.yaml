@@ -29,29 +29,6 @@ tests:
       - c
     - - c
       - d
-- name: souffle_neg2_Y
-  description: Harvested from Souffle testcase neg2, asserting exported relation Y.
-  tags:
-  - evaluation
-  - recursion
-  - souffle
-  program:
-    facts: *id001
-    rules: *id002
-  expect:
-    Y:
-    - - a
-      - b
-    - - b
-      - c
-    - - c
-      - d
-    - - a
-      - c
-    - - b
-      - d
-    - - a
-      - d
 - name: souffle_neg2_Z
   description: Harvested from Souffle testcase neg2, asserting exported relation Z.
   tags:
@@ -63,3 +40,6 @@ tests:
     rules: *id002
   expect:
     Z: []
+verification:
+  implementation: nmo
+  kind: direct

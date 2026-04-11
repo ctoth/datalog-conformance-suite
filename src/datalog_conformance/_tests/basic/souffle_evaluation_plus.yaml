@@ -31,3 +31,6 @@ tests:
     - - 3
       - 5
       - 8
+verification:
+  implementation: nmo
+  kind: direct

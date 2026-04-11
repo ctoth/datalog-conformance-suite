@@ -3,8 +3,8 @@ tags:
 - example
 - souffle
 tests:
-- name: souffle_ship_ship_to
-  description: Harvested from Souffle testcase ship, asserting exported relation ship_to.
+- name: souffle_ship_customer_city
+  description: Harvested from Souffle testcase ship, asserting exported relation customer_city.
   tags:
   - basic
   - example
@@ -45,27 +45,6 @@ tests:
       - - 5
         - horse
     rules: &id002 []
-  expect:
-    ship_to:
-    - - tea
-      - london
-    - - bread
-      - paris
-    - - flowers
-      - San Francisco
-    - - sausage
-      - munich
-    - - horse
-      - seoul
-- name: souffle_ship_customer_city
-  description: Harvested from Souffle testcase ship, asserting exported relation customer_city.
-  tags:
-  - basic
-  - example
-  - souffle
-  program:
-    facts: *id001
-    rules: *id002
   expect:
     customer_city:
     - - 1
@@ -120,3 +99,6 @@ tests:
       - sausage
     - - 5
       - horse
+verification:
+  implementation: nmo
+  kind: direct

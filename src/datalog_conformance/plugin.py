@@ -110,6 +110,7 @@ def _parse_requested_tags(raw: str | None) -> set[str]:
 def _load_multi_case_file(raw: dict[object, object], yaml_path: Path) -> list[TestCase]:
     base_tags = raw.get("tags", [])
     base_source = raw.get("source")
+    base_verification = raw.get("verification")
     test_entries = raw.get("tests")
     if not isinstance(test_entries, list):
         raise SchemaError(f"{yaml_path}: tests must be a list")
@@ -122,6 +123,8 @@ def _load_multi_case_file(raw: dict[object, object], yaml_path: Path) -> list[Te
         merged = dict(cast(dict[object, object], entry))
         if "source" not in merged and base_source is not None:
             merged["source"] = base_source
+        if "verification" not in merged and base_verification is not None:
+            merged["verification"] = base_verification
         if base_tags:
             inherited_tags = list(cast(list[object], base_tags))
             local_tags = list(cast(list[object], merged.get("tags", [])))

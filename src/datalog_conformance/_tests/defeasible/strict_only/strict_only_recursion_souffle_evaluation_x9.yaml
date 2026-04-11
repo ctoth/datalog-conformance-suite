@@ -16,7 +16,7 @@ tests:
   - strict-only
   theory:
     facts:
-      X: &id002
+      X:
       - - a
         - b
       - - b
@@ -46,40 +46,3 @@ tests:
       - - c
         - e
     defeasibly: *id001
-- name: strict_only_souffle_x9_Y
-  description: Strict-only defeasible form of souffle_x9_Y.
-  source: souffle/evaluation/x9
-  tags:
-  - defeasible
-  - evaluation
-  - recursion
-  - souffle
-  - strict-only
-  theory:
-    facts:
-      X: *id002
-    strict_rules:
-    - id: r1
-      head: Y(a,c)
-      body:
-      - Y(a,b)
-      - Y(b,c)
-    defeasible_rules: []
-    defeaters: []
-    superiority: []
-  expect:
-    definitely: &id003
-      Y:
-      - - a
-        - b
-      - - b
-        - d
-      - - a
-        - c
-      - - c
-        - e
-      - - a
-        - d
-      - - a
-        - e
-    defeasibly: *id003

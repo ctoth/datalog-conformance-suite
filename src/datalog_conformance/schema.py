@@ -56,6 +56,38 @@ class Policy(str, Enum):
             raise SchemaError(f"Unknown policy: {name}") from exc
 
 
+class VerificationKind(str, Enum):
+    """How the retained YAML relates to the verified implementation input."""
+
+    DIRECT = "direct"
+    REDUCED = "reduced"
+
+    @classmethod
+    def from_name(cls, name: str) -> "VerificationKind":
+        try:
+            return cls(name)
+        except ValueError as exc:
+            raise SchemaError(f"Unknown verification kind: {name}") from exc
+
+
+@dataclass(slots=True)
+class Verification:
+    """Concrete confirmation metadata for a retained case."""
+
+    implementation: str
+    kind: VerificationKind
+
+    @classmethod
+    def from_dict(cls, raw: Any) -> "Verification":
+        data = _ensure_mapping(raw, "verification")
+        return cls(
+            implementation=_require_string(data, "implementation", "verification"),
+            kind=VerificationKind.from_name(
+                _require_string(data, "kind", "verification")
+            ),
+        )
+
+
 @dataclass(slots=True)
 class Program:
     """Core Datalog program."""
@@ -162,6 +194,7 @@ class TestCase:
     description: str
     source: str
     tags: list[str]
+    verification: Verification | None = None
     skip: str | None = None
     program: Program | None = None
     theory: DefeasibleTheory | None = None
@@ -202,6 +235,11 @@ class TestCase:
             description=_require_string(data, "description", "test_case"),
             source=_require_string(data, "source", "test_case"),
             tags=_parse_string_list(data.get("tags", []), "tags"),
+            verification=(
+                Verification.from_dict(data["verification"])
+                if "verification" in data
+                else None
+            ),
             skip=_optional_string(data.get("skip"), "skip"),
             program=program,
             theory=theory,

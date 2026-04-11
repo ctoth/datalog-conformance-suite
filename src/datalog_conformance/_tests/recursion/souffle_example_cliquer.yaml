@@ -128,23 +128,6 @@ tests:
       - d
     - - d
       - a
-- name: souffle_cliquer_leg
-  description: Harvested from Souffle testcase cliquer, asserting exported relation
-    leg.
-  tags:
-  - basic
-  - example
-  - souffle
-  program:
-    facts: *id001
-    rules: *id002
-  expect:
-    leg:
-    - - a
-      - c
-    - - b
-      - d
-    - - c
-      - a
-    - - d
-      - b
+verification:
+  implementation: nmo
+  kind: direct

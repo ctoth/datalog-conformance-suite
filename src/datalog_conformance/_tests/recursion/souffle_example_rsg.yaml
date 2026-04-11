@@ -3,11 +3,11 @@ tags:
 - example
 - souffle
 tests:
-- name: souffle_rsg_RSG
-  description: Harvested from Souffle testcase rsg, asserting exported relation RSG.
+- name: souffle_rsg_FLAT
+  description: Harvested from Souffle testcase rsg, asserting exported relation FLAT.
   tags:
+  - basic
   - example
-  - recursion
   - souffle
   program:
     facts: &id001
@@ -50,39 +50,6 @@ tests:
         - k
     rules: &id002
     - RSG(x,y) :- UP(x, a), RSG(b, a), DOWN(b, y).
-  expect:
-    RSG:
-    - - g
-      - f
-    - - m
-      - n
-    - - m
-      - o
-    - - p
-      - m
-    - - a
-      - b
-    - - f
-      - k
-    - - h
-      - f
-    - - i
-      - f
-    - - j
-      - f
-    - - a
-      - c
-    - - a
-      - d
-- name: souffle_rsg_FLAT
-  description: Harvested from Souffle testcase rsg, asserting exported relation FLAT.
-  tags:
-  - basic
-  - example
-  - souffle
-  program:
-    facts: *id001
-    rules: *id002
   expect:
     FLAT:
     - - g
@@ -141,3 +108,6 @@ tests:
       - d
     - - p
       - k
+verification:
+  implementation: nmo
+  kind: direct

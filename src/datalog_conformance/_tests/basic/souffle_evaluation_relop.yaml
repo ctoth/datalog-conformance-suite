@@ -3,9 +3,9 @@ tags:
 - evaluation
 - souffle
 tests:
-- name: souffle_relop_a
+- name: souffle_relop_b
   description: Harvested from Souffle testcase relop, asserting exported relation
-    a.
+    b.
   tags:
   - basic
   - evaluation
@@ -30,21 +30,6 @@ tests:
     - projection(X) :- c(X,_).
     - cartesian(X,Y) :- a(X), b(Y).
     - inner_join(X) :- a(X), b(X).
-  expect:
-    a:
-    - - a1
-    - - a2
-    - - a3
-- name: souffle_relop_b
-  description: Harvested from Souffle testcase relop, asserting exported relation
-    b.
-  tags:
-  - basic
-  - evaluation
-  - souffle
-  program:
-    facts: *id001
-    rules: *id002
   expect:
     b:
     - - b1
@@ -82,46 +67,6 @@ tests:
     projection:
     - - a1
     - - a2
-- name: souffle_relop_cartesian
-  description: Harvested from Souffle testcase relop, asserting exported relation
-    cartesian.
-  tags:
-  - basic
-  - evaluation
-  - souffle
-  program:
-    facts: *id001
-    rules: *id002
-  expect:
-    cartesian:
-    - - a1
-      - b1
-    - - a1
-      - b2
-    - - a1
-      - a1
-    - - a2
-      - b1
-    - - a2
-      - b2
-    - - a2
-      - a1
-    - - a3
-      - b1
-    - - a3
-      - b2
-    - - a3
-      - a1
-- name: souffle_relop_inner_join
-  description: Harvested from Souffle testcase relop, asserting exported relation
-    inner_join.
-  tags:
-  - basic
-  - evaluation
-  - souffle
-  program:
-    facts: *id001
-    rules: *id002
-  expect:
-    inner_join:
-    - - a1
+verification:
+  implementation: nmo
+  kind: direct

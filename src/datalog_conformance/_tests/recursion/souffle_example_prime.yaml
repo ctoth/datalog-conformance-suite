@@ -3,15 +3,15 @@ tags:
 - example
 - souffle
 tests:
-- name: souffle_prime_count_second
+- name: souffle_prime_count_third
   description: Harvested from Souffle testcase prime, asserting exported relation
-    count_second.
+    count_third.
   tags:
   - example
   - recursion
   - souffle
   program:
-    facts: &id001
+    facts:
       count_third:
       - - 3
       succ:
@@ -57,32 +57,10 @@ tests:
         - 20
       - - 20
         - 21
-    rules: &id002
+    rules:
     - count_second(n) :- succ(pn, n), succ(ppn, pn), count_second(ppn).
     - count_third(n) :- succ(pn, n), succ(ppn, pn), succ(pppn, ppn), count_third(pppn).
     - count_all(x) :- count_second(x), count_third(x).
-  expect:
-    count_second:
-    - - 3
-    - - 5
-    - - 7
-    - - 9
-    - - 11
-    - - 13
-    - - 15
-    - - 17
-    - - 19
-    - - 21
-- name: souffle_prime_count_third
-  description: Harvested from Souffle testcase prime, asserting exported relation
-    count_third.
-  tags:
-  - example
-  - recursion
-  - souffle
-  program:
-    facts: *id001
-    rules: *id002
   expect:
     count_third:
     - - 3
@@ -92,19 +70,6 @@ tests:
     - - 15
     - - 18
     - - 21
-- name: souffle_prime_count_all
-  description: Harvested from Souffle testcase prime, asserting exported relation
-    count_all.
-  tags:
-  - basic
-  - example
-  - souffle
-  program:
-    facts: *id001
-    rules: *id002
-  expect:
-    count_all:
-    - - 3
-    - - 9
-    - - 15
-    - - 21
+verification:
+  implementation: nmo
+  kind: direct

@@ -3,9 +3,9 @@ tags:
 - example
 - souffle
 tests:
-- name: souffle_game2_move
+- name: souffle_game2_canMove
   description: Harvested from Souffle testcase game2, asserting exported relation
-    move.
+    canMove.
   tags:
   - example
   - negation
@@ -27,52 +27,6 @@ tests:
     - winning(X):- move(X,Y), not possible_winning(Y).
     - odd_move(X,Y) :- move(X,Y).
     - odd_move(X,Y) :- move(X,Z1), move(Z1,Z2), odd_move(Z2,Y).
-  expect:
-    move:
-    - - 1
-      - 2
-    - - 2
-      - 3
-    - - 3
-      - 4
-    - - 1
-      - 3
-    - - 1
-      - 5
-- name: souffle_game2_odd_move
-  description: Harvested from Souffle testcase game2, asserting exported relation
-    odd_move.
-  tags:
-  - example
-  - recursion
-  - souffle
-  program:
-    facts: *id001
-    rules: *id002
-  expect:
-    odd_move:
-    - - 1
-      - 2
-    - - 2
-      - 3
-    - - 3
-      - 4
-    - - 1
-      - 3
-    - - 1
-      - 5
-    - - 1
-      - 4
-- name: souffle_game2_canMove
-  description: Harvested from Souffle testcase game2, asserting exported relation
-    canMove.
-  tags:
-  - example
-  - negation
-  - souffle
-  program:
-    facts: *id001
-    rules: *id002
   expect:
     canMove:
     - - 1
@@ -106,3 +60,6 @@ tests:
     winning:
     - - 1
     - - 3
+verification:
+  implementation: nmo
+  kind: direct

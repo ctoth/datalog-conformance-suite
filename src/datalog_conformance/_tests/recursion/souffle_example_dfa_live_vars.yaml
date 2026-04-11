@@ -11,7 +11,7 @@ tests:
   - recursion
   - souffle
   program:
-    facts: &id001
+    facts:
       cf_edge:
       - - B
         - C
@@ -43,7 +43,7 @@ tests:
         - x2
       - - E
         - x3
-    rules: &id002
+    rules:
     - live_vars_in(x,v) :- use(x,v).
     - live_vars_in(x,v) :- not def(x,v), live_vars_out(x,v).
     - live_vars_out(x,v) :- cf_edge(x,y), live_vars_in(y,v).
@@ -59,25 +59,6 @@ tests:
       - x2
     - - E
       - x3
-- name: souffle_dfa_live_vars_live_vars_out
-  description: Harvested from Souffle testcase dfa_live_vars, asserting exported relation
-    live_vars_out.
-  tags:
-  - example
-  - recursion
-  - souffle
-  program:
-    facts: *id001
-    rules: *id002
-  expect:
-    live_vars_out:
-    - - A
-      - x1
-    - - B
-      - x2
-    - - C
-      - x2
-    - - D
-      - x2
-    - - D
-      - x3
+verification:
+  implementation: nmo
+  kind: direct

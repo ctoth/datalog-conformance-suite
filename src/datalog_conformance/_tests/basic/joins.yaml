@@ -1,12 +1,25 @@
 name: two_predicate_body
 description: A rule with a two-predicate body derives a join result.
 source: manual/scaffold
-tags: [basic, joins]
+tags:
+- basic
+- joins
 program:
   facts:
-    parent: [[ada, bob], [bob, cora]]
-    female: [[ada], [cora]]
+    parent:
+    - - ada
+      - bob
+    - - bob
+      - cora
+    female:
+    - - ada
+    - - cora
   rules:
-    - "grandmother(X, Z) :- parent(X, Y), parent(Y, Z), female(X)."
+  - grandmother(X, Z) :- parent(X, Y), parent(Y, Z), female(X).
 expect:
-  grandmother: [[ada, cora]]
+  grandmother:
+  - - ada
+    - cora
+verification:
+  implementation: nmo
+  kind: direct

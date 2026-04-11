@@ -3,14 +3,14 @@ tags:
 - example
 - souffle
 tests:
-- name: souffle_tree_S
-  description: Harvested from Souffle testcase tree, asserting exported relation S.
+- name: souffle_tree_T
+  description: Harvested from Souffle testcase tree, asserting exported relation T.
   tags:
-  - basic
   - example
+  - recursion
   - souffle
   program:
-    facts: &id001
+    facts:
       R:
       - - 1
         - a
@@ -27,24 +27,9 @@ tests:
       - - 5
         - a
         - 6
-    rules: &id002
+    rules:
     - T (x1, x4) :- R(x1, _, x2), R(x2, _, x3), T(x3, x4).
     - T (x1, x3) :- R(x1, a, x2), R(x2, a, x3).
-  expect:
-    S:
-    - - 3
-      - 6
-    - - 1
-      - 6
-- name: souffle_tree_T
-  description: Harvested from Souffle testcase tree, asserting exported relation T.
-  tags:
-  - example
-  - recursion
-  - souffle
-  program:
-    facts: *id001
-    rules: *id002
   expect:
     T:
     - - 3
@@ -55,3 +40,6 @@ tests:
       - 5
     - - 2
       - 6
+verification:
+  implementation: nmo
+  kind: direct
