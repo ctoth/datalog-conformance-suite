@@ -11,14 +11,18 @@ import time
 import traceback
 from dataclasses import dataclass
 from pathlib import Path
+from typing import cast
 
 from datalog_conformance.plugin import discover_yaml_tests
 from datalog_conformance.schema import FactTuple, Scalar, TestCase
 
-_DEFAULT_NMO = (
-    Path.home()
-    / "AppData/Local/Temp/datalog-harvest/nemo/target/x86_64-pc-windows-gnu/debug/nmo.exe"
+_DEFAULT_NMO_ROOT = (
+    Path.home() / "AppData/Local/Temp/datalog-harvest/nemo/target/x86_64-pc-windows-gnu"
 )
+_DEFAULT_NMO_CANDIDATES = [
+    _DEFAULT_NMO_ROOT / "release/nmo.exe",
+    _DEFAULT_NMO_ROOT / "debug/nmo.exe",
+]
 _ATOM_RE = re.compile(r"^\s*([A-Za-z_][A-Za-z0-9_]*)\s*\((.*)\)\s*$")
 _NUMERIC_RE = re.compile(r"-?\d+(?:\.\d+)?")
 _IDENTIFIER_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
@@ -47,6 +51,26 @@ class _RenderedProgram:
     expected_exports: dict[str, str]
 
 
+@dataclass(slots=True)
+class _CaseTarget:
+    index: int
+    yaml_path: Path
+    case: TestCase
+
+
+@dataclass(slots=True)
+class _ProgramBatch:
+    yaml_path: Path
+    program_key: str
+    targets: list[_CaseTarget]
+
+
+@dataclass(slots=True)
+class _BatchRun:
+    artifacts: _InvocationArtifacts
+    actual_rows_by_predicate: dict[str, set[FactTuple]]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Verify retained core program cases against nemo-cli."
@@ -54,7 +78,7 @@ def main() -> int:
     parser.add_argument(
         "--nmo",
         type=Path,
-        default=_DEFAULT_NMO,
+        default=_resolve_default_nmo(),
         help="Path to nmo.exe.",
     )
     parser.add_argument(
@@ -90,7 +114,7 @@ def main() -> int:
         "--case-timeout-seconds",
         type=int,
         default=120,
-        help="Per-case nemo-cli timeout.",
+        help="Per nemo-cli invocation timeout. Shared visible programs are grouped into one run.",
     )
     parser.add_argument(
         "--summary-path",
@@ -115,7 +139,13 @@ def main() -> int:
     failure_dir.mkdir(parents=True, exist_ok=True)
     summary_path.parent.mkdir(parents=True, exist_ok=True)
 
-    attempted = 0
+    selected_targets = _select_targets(
+        args.test_dir,
+        case_filter=args.case_filter,
+        limit=args.limit,
+    )
+    attempted = len(selected_targets)
+    program_batches = _group_program_batches(selected_targets)
     succeeded = 0
     failures: list[str] = []
     started_at = time.perf_counter()
@@ -125,50 +155,80 @@ def main() -> int:
             f"starting nemo verification: nmo={args.nmo} test_dir={args.test_dir} "
             f"limit={args.limit or 'all'} case_filter={args.case_filter or '<none>'} "
             f"case_timeout_seconds={args.case_timeout_seconds} "
+            f"selected_cases={attempted} grouped_batches={len(program_batches)} "
             f"log_path={log_path} summary_path={summary_path} "
             f"failure_dir={failure_dir}"
         ),
     )
     try:
-        for yaml_path, case in discover_yaml_tests(args.test_dir):
-            if case.program is None or case.expect is None:
-                continue
-            if args.case_filter and args.case_filter not in case.name:
-                continue
-            if args.limit and attempted >= args.limit:
-                break
-            attempted += 1
-            _log(log_path, f"[{attempted}] START {yaml_path.as_posix()}::{case.name}")
+        for batch_index, batch in enumerate(program_batches, start=1):
+            _log(
+                log_path,
+                (
+                    f"[batch {batch_index}/{len(program_batches)}] START "
+                    f"{batch.yaml_path.as_posix()} cases={len(batch.targets)} "
+                    f"case_ids={','.join(str(target.index) for target in batch.targets)}"
+                ),
+            )
             try:
-                _verify_case(
-                    case,
+                batch_run = _run_batch(
+                    batch,
                     args.nmo,
                     case_timeout_seconds=args.case_timeout_seconds,
                 )
-                succeeded += 1
-                _log(log_path, f"[{attempted}] OK {case.name}")
             except _CaseVerificationError as exc:
-                failure = f"{yaml_path.as_posix()}::{case.name}: {type(exc).__name__}: {exc}"
-                failures.append(failure)
-                _persist_failure_artifacts(
-                    failure_dir,
-                    yaml_path=yaml_path,
-                    case=case,
-                    failure=failure,
-                    artifacts=exc.artifacts,
-                )
-                _log(log_path, f"[{attempted}] FAIL {failure}")
+                for target in batch.targets:
+                    failure = (
+                        f"{target.yaml_path.as_posix()}::{target.case.name}: "
+                        f"{type(exc).__name__}: {exc}"
+                    )
+                    failures.append(failure)
+                    _persist_failure_artifacts(
+                        failure_dir,
+                        yaml_path=target.yaml_path,
+                        case=target.case,
+                        failure=failure,
+                        artifacts=exc.artifacts,
+                    )
+                    _log(log_path, f"[{target.index}] FAIL {failure}")
+                continue
             except Exception as exc:  # noqa: BLE001
-                failure = f"{yaml_path.as_posix()}::{case.name}: {type(exc).__name__}: {exc}"
-                failures.append(failure)
-                _persist_failure_artifacts(
-                    failure_dir,
-                    yaml_path=yaml_path,
-                    case=case,
-                    failure=failure,
-                    traceback_text=traceback.format_exc(),
+                traceback_text = traceback.format_exc()
+                for target in batch.targets:
+                    failure = (
+                        f"{target.yaml_path.as_posix()}::{target.case.name}: "
+                        f"{type(exc).__name__}: {exc}"
+                    )
+                    failures.append(failure)
+                    _persist_failure_artifacts(
+                        failure_dir,
+                        yaml_path=target.yaml_path,
+                        case=target.case,
+                        failure=failure,
+                        traceback_text=traceback_text,
+                    )
+                    _log(log_path, f"[{target.index}] FAIL {failure}")
+                continue
+
+            for target in batch.targets:
+                mismatch = _find_case_mismatch(target.case, batch_run.actual_rows_by_predicate)
+                if mismatch is not None:
+                    failure = f"{target.yaml_path.as_posix()}::{target.case.name}: {mismatch}"
+                    failures.append(failure)
+                    _persist_failure_artifacts(
+                        failure_dir,
+                        yaml_path=target.yaml_path,
+                        case=target.case,
+                        failure=failure,
+                        artifacts=batch_run.artifacts,
+                    )
+                    _log(log_path, f"[{target.index}] FAIL {failure}")
+                    continue
+                succeeded += 1
+                _log(
+                    log_path,
+                    f"[{target.index}] OK {target.yaml_path.as_posix()}::{target.case.name}",
                 )
-                _log(log_path, f"[{attempted}] FAIL {failure}")
     except Exception as exc:  # noqa: BLE001
         _log(log_path, f"FATAL {type(exc).__name__}: {exc}")
         _log(log_path, traceback.format_exc().rstrip())
@@ -189,6 +249,7 @@ def main() -> int:
         log_path=log_path,
         failure_dir=failure_dir,
         attempted=attempted,
+        batches_attempted=len(program_batches),
         succeeded=succeeded,
         failures=failures,
         elapsed_seconds=elapsed,
@@ -209,16 +270,71 @@ def main() -> int:
     return 0
 
 
-def _verify_case(
-    case: TestCase,
+def _resolve_default_nmo() -> Path:
+    for candidate in _DEFAULT_NMO_CANDIDATES:
+        if candidate.exists():
+            return candidate
+    return _DEFAULT_NMO_CANDIDATES[0]
+
+
+def _select_targets(
+    test_dir: Path,
+    *,
+    case_filter: str | None,
+    limit: int,
+) -> list[_CaseTarget]:
+    targets: list[_CaseTarget] = []
+    for yaml_path, case in discover_yaml_tests(test_dir):
+        if case.program is None or case.expect is None:
+            continue
+        if case_filter and case_filter not in case.name:
+            continue
+        targets.append(_CaseTarget(index=len(targets) + 1, yaml_path=yaml_path, case=case))
+        if limit and len(targets) >= limit:
+            break
+    return targets
+
+
+def _group_program_batches(targets: list[_CaseTarget]) -> list[_ProgramBatch]:
+    grouped: dict[str, _ProgramBatch] = {}
+    for target in targets:
+        assert target.case.program is not None
+        serialized_program = json.dumps(
+            {
+                "facts": target.case.program.facts,
+                "rules": target.case.program.rules,
+            },
+            sort_keys=True,
+        )
+        program_key = f"{target.yaml_path.as_posix()}::{serialized_program}"
+        batch = grouped.get(program_key)
+        if batch is None:
+            batch = _ProgramBatch(
+                yaml_path=target.yaml_path,
+                program_key=program_key,
+                targets=[],
+            )
+            grouped[program_key] = batch
+        batch.targets.append(target)
+    return list(grouped.values())
+
+
+def _run_batch(
+    batch: _ProgramBatch,
     nmo: Path,
     *,
     case_timeout_seconds: int,
-) -> None:
-    assert case.program is not None
-    assert case.expect is not None
-    expected_predicates = sorted(case.expect)
-    rendered = _render_program(case, expected_predicates)
+) -> _BatchRun:
+    first_case = batch.targets[0].case
+    assert first_case.program is not None
+    expected_predicates = sorted(
+        {
+            predicate
+            for target in batch.targets
+            for predicate in _case_expectations(target.case)
+        }
+    )
+    rendered = _render_program(first_case, expected_predicates)
     program_text = rendered.text
 
     with tempfile.TemporaryDirectory(prefix="nemo-verify-") as temp_dir:
@@ -250,7 +366,10 @@ def _verify_case(
             artifacts.stderr = _coerce_stream_text(exc.stderr)
             artifacts.exported_csvs = _collect_exported_csvs(output_dir)
             raise _CaseVerificationError(
-                f"nmo timed out after {case_timeout_seconds}s",
+                (
+                    f"nmo timed out after {case_timeout_seconds}s "
+                    f"for batch with {len(batch.targets)} case(s)"
+                ),
                 artifacts=artifacts,
             ) from exc
         artifacts.returncode = result.returncode
@@ -262,17 +381,37 @@ def _verify_case(
                 result.stderr.strip() or result.stdout.strip() or "nmo failed",
                 artifacts=artifacts,
             )
-
-        for predicate, expected_rows in case.expect.items():
-            actual_rows = _load_exported_rows(
-                output_dir / f"{rendered.expected_exports[predicate]}.csv"
-            )
-            if set(expected_rows) != actual_rows:
-                raise _CaseVerificationError(
-                    f"predicate {predicate!r}: expected {_sorted_fact_rows(set(expected_rows))!r}, "
-                    f"got {_sorted_fact_rows(actual_rows)!r}",
-                    artifacts=artifacts,
+        return _BatchRun(
+            artifacts=artifacts,
+            actual_rows_by_predicate={
+                predicate: _load_exported_rows(
+                    output_dir / f"{rendered.expected_exports[predicate]}.csv"
                 )
+                for predicate in expected_predicates
+            },
+        )
+
+
+def _find_case_mismatch(
+    case: TestCase,
+    actual_rows_by_predicate: dict[str, set[FactTuple]],
+) -> str | None:
+    assert case.program is not None
+    assert case.expect is not None
+    for predicate, expected_rows in _case_expectations(case).items():
+        actual_rows = actual_rows_by_predicate.get(predicate, set())
+        if set(expected_rows) != actual_rows:
+            return (
+                f"predicate {predicate!r}: expected {_sorted_fact_rows(set(expected_rows))!r}, "
+                f"got {_sorted_fact_rows(actual_rows)!r}"
+            )
+    return None
+
+
+def _case_expectations(case: TestCase) -> dict[str, list[FactTuple]]:
+    assert case.program is not None
+    assert case.expect is not None
+    return cast(dict[str, list[FactTuple]], case.expect)
 
 
 def _render_program(case: TestCase, expected_predicates: list[str]) -> _RenderedProgram:
@@ -605,7 +744,7 @@ def _persist_failure_artifacts(
     (base / "failure.txt").write_text(failure + "\n", encoding="utf-8")
     if traceback_text:
         (base / "traceback.txt").write_text(traceback_text, encoding="utf-8")
-    metadata = {
+    metadata: dict[str, object] = {
         "yaml_path": yaml_path.as_posix(),
         "case_name": case.name,
         "failure": failure,
@@ -652,18 +791,20 @@ def _write_summary(
     log_path: Path,
     failure_dir: Path,
     attempted: int,
+    batches_attempted: int,
     succeeded: int,
     failures: list[str],
     elapsed_seconds: float,
     case_filter: str | None,
     case_timeout_seconds: int,
 ) -> None:
-    summary = {
+    summary: dict[str, object] = {
         "nmo": nmo.as_posix(),
         "test_dir": test_dir.as_posix(),
         "log_path": log_path.as_posix(),
         "failure_dir": failure_dir.as_posix(),
         "attempted": attempted,
+        "batches_attempted": batches_attempted,
         "succeeded": succeeded,
         "failed": len(failures),
         "elapsed_seconds": elapsed_seconds,

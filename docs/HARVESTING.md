@@ -5,8 +5,8 @@ This file records where the bundled YAML suites came from, what translation choi
 
 ## Current Corpus Summary
 
-- Core Datalog YAML cases currently in `basic/`, `recursion/`, `negation/`, and `errors/`: 89
-- Defeasible YAML cases currently in `defeasible/`: 143
+- Core Datalog YAML cases currently in `basic/`, `recursion/`, `negation/`, and `errors/`: 111
+- Defeasible YAML cases currently in `defeasible/`: 165
 - KLM property YAML cases currently in the bundled corpus: 0
 - Generated property tests and implementation checks remain under `tests/`
 
@@ -30,9 +30,11 @@ plus a smaller set of genuinely defeasible examples.
 - Command: `uv run scripts/verify_core_with_nemo.py`
 - Runtime used for the retained core corpus: `nmo`
 - Report layout: one timestamped directory per run under `reports/verify_core_with_nemo/`
+- Execution mode: batch cases by shared visible program and prefer a release `nmo` binary when
+  one is available locally
 - Current cleanup applied from concrete `nmo` runs:
-  - 120 additional core program cases were removed after failing direct runtime verification
-  - 120 corresponding strict-only derived defeasible cases were removed in lockstep
+  - 98 additional core program cases remain removed after failing direct runtime verification
+  - 98 corresponding strict-only derived defeasible cases remain removed in lockstep
   - retained core YAML files in `basic/`, `negation/`, and `recursion/` are stamped with
     `verification: {implementation: nmo, kind: direct}`
 

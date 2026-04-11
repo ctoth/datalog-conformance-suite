@@ -53,8 +53,8 @@ uv run pytest tests --datalog-evaluator=mypackage.MyEvaluator --datalog-tags=def
 
 ## Current Corpus
 
-- Core Datalog YAML cases: 89
-- Defeasible YAML cases: 143
+- Core Datalog YAML cases: 111
+- Defeasible YAML cases: 165
 - KLM property YAML cases: 0
 - Generated property and meta-tests remain under `tests/`
 
@@ -87,7 +87,8 @@ uv run --extra dev pyright
 ```
 
 `uv run scripts/verify_core_with_nemo.py` now writes each run to its own timestamped report
-directory under `reports/verify_core_with_nemo/`.
+directory under `reports/verify_core_with_nemo/`, groups cases by shared visible program, and
+prefers a release `nmo` binary when one is available.
 
 ## Layout
 
