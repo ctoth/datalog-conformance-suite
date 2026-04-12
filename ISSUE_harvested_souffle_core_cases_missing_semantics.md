@@ -127,7 +127,7 @@ Given the current YAML, `count_scc` is not derivable.
 Example command:
 
 ```powershell
-uv run pytest tests/test_conformance.py --datalog-evaluator=gunray.adapter.GunrayEvaluator --datalog-tags=basic
+uv run --with-editable ..\gunray pytest tests/test_conformance.py --datalog-evaluator=gunray.conformance_adapter.GunrayConformanceEvaluator --datalog-tags=basic
 ```
 
 A large number of basic failures appear, but the cases above are already enough
