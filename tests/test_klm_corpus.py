@@ -4,10 +4,9 @@ from pathlib import Path
 
 import yaml
 
+from datalog_conformance.references.closure import PropositionalClosureEvaluator
 from datalog_conformance.runner import YamlTestRunner
 from datalog_conformance.schema import TestCase as SuiteCase
-
-from .closure_test_support import PropositionalClosureEvaluator
 
 _KLM_FILE = (
     Path(__file__).resolve().parents[1]

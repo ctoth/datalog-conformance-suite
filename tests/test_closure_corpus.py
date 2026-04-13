@@ -2,9 +2,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from datalog_conformance.references.closure import PropositionalClosureEvaluator
 from datalog_conformance.runner import YamlTestRunner
 
-from .closure_test_support import PropositionalClosureEvaluator, load_suite_cases
+from .closure_test_support import load_suite_cases
 
 _CLOSURE_FILE = Path("defeasible") / "closure" / "morris_core_examples.yaml"
 
