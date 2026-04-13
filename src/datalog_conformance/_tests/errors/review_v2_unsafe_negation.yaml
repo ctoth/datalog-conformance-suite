@@ -1,0 +1,18 @@
+name: unsafe_negation_variable_only_in_negative_literal
+description: Variables in negated literals must already be positively bound.
+source: manual/review_v2
+tags:
+- errors
+- safety
+- negation
+- review_v2
+verification:
+  implementation: gunray
+  kind: direct
+program:
+  facts:
+    person:
+    - - alice
+  rules:
+  - "ok(X) :- person(X), not banned(X, Y)."
+expect_error: SafetyViolationError
