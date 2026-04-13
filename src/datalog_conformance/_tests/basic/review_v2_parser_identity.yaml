@@ -1,0 +1,51 @@
+source: manual/review_v2
+tags:
+- basic
+- parser
+- review_v2
+tests:
+- name: quoted_string_facts_preserve_scalar_identity
+  description: Quoted string facts that look numeric or boolean stay strings.
+  source: manual/review_v2
+  tags:
+  - basic
+  - parser
+  - scalar_identity
+  - review_v2
+  verification:
+    implementation: gunray
+    kind: direct
+  program:
+    facts:
+      token:
+      - - "1"
+      - - "01"
+      - - "true"
+      - - "1.0"
+    rules: []
+  expect:
+    token:
+    - - "1"
+    - - "01"
+    - - "true"
+    - - "1.0"
+- name: subtraction_chains_are_left_associative
+  description: Top-level additive chains parse left-associatively.
+  source: manual/review_v2
+  tags:
+  - basic
+  - parser
+  - arithmetic
+  - review_v2
+  verification:
+    implementation: gunray
+    kind: direct
+  program:
+    facts:
+      seed:
+      - - x
+    rules:
+    - result(1-2-3) :- seed(x).
+  expect:
+    result:
+    - - -4
