@@ -13,6 +13,6 @@ Thumbs.db
 
 logs/
 out/
-reports/
+/reports/
 prompts/
 notes-*.md

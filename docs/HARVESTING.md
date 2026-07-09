@@ -75,6 +75,61 @@ against a live implementation.
   (`s3AnyX5`, `s3AnyZY`, `s3AnyXZ`, `s3AnyDiagX/Y/Z`) with identical semantics; the expected
   rows are unchanged and all fourteen cases verify against nemo, souffle, and clingo.
 
+## Generated DePYsible Defeasible Corpus
+
+- This is generated data verified against an external implementation, not an upstream corpus.
+- Generator: `scripts/generate_defeasible_corpus.py` (deterministic, seeded), with
+  `scripts/eval_depysible_batch.py` as its subprocess evaluator.
+- External implementation: DePYsible (`https://github.com/stefano-bragaglia/DePYsible`,
+  BSD-2-Clause), checked out under `%TEMP%\depysible`.
+- Fragment: facts, strict rules, and defeasible rules with strong negation — exactly the
+  surface the bundled adapter supports; no defeaters, superiority, or explicit conflicts
+  (the adapter rejects them), so priority-like effects are exercised through
+  strict-versus-defeasible layering.
+- Shapes: derivation chains with every strict/defeasible link pattern, ambiguity chains with
+  downstream propagation, strict-override layers, team-defeat premise teams, and seeded random
+  acyclic mixes.
+- Stability policy: DePYsible's answers can depend on the Python hash seed (set iteration order
+  steers its dialectical search), so every candidate theory is evaluated in subprocesses under
+  twenty `PYTHONHASHSEED` values and only theories whose sections agree across all runs are
+  retained; any near-boundary theory later caught flaky by replay is pinned in the generator's
+  explicit `KNOWN_UNSTABLE_THEORY_KEYS` blocklist.
+- Output area:
+  - `src/datalog_conformance/_tests/generated/defeasible_gen_*.yaml`
+- Replay verification:
+  `uv run --with arpeggio --with colorama pytest tests/test_generated_defeasible_corpus.py`
+  runs every generated case back through the live DePYsible adapter.
+
+## XSB wfs_tests
+
+- Upstream: SourceForge SVN repository `xsb/src`, directory `trunk/xsbtests/wfs_tests`
+  (`https://sourceforge.net/p/xsb/src/HEAD/tree/trunk/xsbtests/wfs_tests/`)
+- License note: LGPL v2 (GNU Library General Public License), `trunk/XSB/LICENSE`,
+  Copyright The Research Foundation of SUNY / ECRC
+- Local source path during harvesting: `%TEMP%\datalog-harvest\xsbtests\wfs_tests`
+  (fetched file-by-file with `?format=raw` on 2026-07-09)
+- Harvester: `scripts/harvest_xsb.py`
+- Oracle: each upstream program opens with a self-describing
+  `query(Name, Query, AllAtoms, TrueAtoms, UndefinedAtoms).` fact describing its
+  well-founded model.
+- Translation policy:
+  - keep only two-valued programs (`UndefinedAtoms == []`) on the plain stratified surface
+  - `tnot(A)` becomes `not A`; `:- table` directives and `fail`-rules are dropped
+  - zero-arity atoms are lifted to unary atoms over the marker constant `w`
+    (Souffle has no zero-arity relations)
+  - purely negative rule bodies get an always-true `guard_w(w)` positive guard prepended
+    (Nemo rejects rules without positive body literals)
+  - every candidate is cross-checked against the local reference evaluator before retention;
+    this rejected three programs (p19, p37, p42) whose `query/5` oracle lists only
+    query-relevant atoms rather than full predicate extensions
+- Output area:
+  - `src/datalog_conformance/_tests/negation/xsb_wfs_two_valued.yaml` (12 cases)
+- Verification: all 12 cases pass the four-engine agreement matrix (`verified_by_4: 12`) via
+  `uv run --extra oracles scripts/verify_core_multi_oracle.py --case-filter xsb_wfs`
+- Remaining upstream yield: ~26 genuinely three-valued WFS programs (future
+  `expect_per_policy` slice) and `neg_tests/` (~6-10 more stratified cases whose oracle is
+  the `_old` stdout transcript); see `docs/reports/harvest-scouting-2026-07-09.md`
+
 ## Souffle
 
 - Upstream: `https://github.com/souffle-lang/souffle`
