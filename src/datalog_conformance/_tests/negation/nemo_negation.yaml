@@ -137,12 +137,23 @@ tests:
     - filteredX(X, Y, Z) :- main(X, Y, Z), not s3(X, 5, X).
     - filteredY(X, Y, Z) :- main(X, Y, Z), not s3(4, Y, Y).
     - filteredZ(X, Y, Z) :- main(X, Y, Z), not s3(Z, Z, 7).
-    - projectedXY(X, Y) :- main(X, Y, Z), not s3(X, 5, P).
-    - projectedYZ(Y, Z) :- main(X, Y, Z), not s3(P, Z, Y).
-    - projectedXZ(X, Z) :- main(X, Y, Z), not s3(X, Z, P).
-    - projectedX(X, Y, Z) :- main(X, Y, Z), not s3(X, P, P).
-    - projectedY(X, Y, Z) :- main(X, Y, Z), not s3(P, P, Y).
-    - projectedZ(X, Y, Z) :- main(X, Y, Z), not s3(P, Z, P).
+# Upstream negation.rls uses Nemo-dialect existential variables under
+# negation (e.g. `not s3(X, 5, P)` with P otherwise unbound). Souffle and
+# clingo reject that as unsafe, so the existentials are hoisted into visible
+# auxiliary projections with identical semantics; expectations are unchanged
+# and confirmed against nemo, souffle, and clingo.
+    - s3AnyX5(A) :- s3(A, 5, _).
+    - s3AnyZY(B, C) :- s3(_, B, C).
+    - s3AnyXZ(A, B) :- s3(A, B, _).
+    - s3AnyDiagX(A) :- s3(A, P, P).
+    - s3AnyDiagY(C) :- s3(P, P, C).
+    - s3AnyDiagZ(B) :- s3(P, B, P).
+    - projectedXY(X, Y) :- main(X, Y, Z), not s3AnyX5(X).
+    - projectedYZ(Y, Z) :- main(X, Y, Z), not s3AnyZY(Z, Y).
+    - projectedXZ(X, Z) :- main(X, Y, Z), not s3AnyXZ(X, Z).
+    - projectedX(X, Y, Z) :- main(X, Y, Z), not s3AnyDiagX(X).
+    - projectedY(X, Y, Z) :- main(X, Y, Z), not s3AnyDiagY(Y).
+    - projectedZ(X, Y, Z) :- main(X, Y, Z), not s3AnyDiagZ(Z).
   expect:
     projectedZ:
     - - 2

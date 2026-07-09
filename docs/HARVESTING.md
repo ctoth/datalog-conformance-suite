@@ -42,6 +42,23 @@ against a live implementation.
   - retained core YAML files in `basic/`, `negation/`, and `recursion/` are stamped with
     `verification: {implementation: nmo, kind: direct}`
 
+## Multi-Oracle Runtime Verification
+
+- Command: `uv run --extra oracles scripts/verify_core_multi_oracle.py`
+- Runtimes: `nmo` (local build), `souffle` (native or WSL), `clingo` (Python package from the
+  `oracles` extra)
+- Report layout: timestamped directories under `reports/verify_core_multi_oracle/` containing
+  `matrix.json` (per case × per oracle outcome) and `summary.json` (per-oracle counts plus
+  `verified_by_N` agreement buckets)
+- 2026-07-09 full-corpus result: 1108 cases, zero cross-engine mismatches; 1069 cases verified by
+  all three engines, the remainder blocked only by engine timeouts or dialect limits recorded as
+  `error`/`unsupported` in the matrix
+- Dialect note: `negation/nemo_negation.yaml` originally used Nemo-dialect existential variables
+  under negation (`not s3(X, 5, P)` with `P` otherwise unbound), which Souffle and clingo reject
+  as unsafe. The existentials are now hoisted into visible auxiliary projections
+  (`s3AnyX5`, `s3AnyZY`, `s3AnyXZ`, `s3AnyDiagX/Y/Z`) with identical semantics; the expected
+  rows are unchanged and all fourteen cases verify against nemo, souffle, and clingo.
+
 ## Souffle
 
 - Upstream: `https://github.com/souffle-lang/souffle`
