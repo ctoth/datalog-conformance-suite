@@ -16,7 +16,11 @@ from hypothesis import HealthCheck, given, settings
 
 from datalog_conformance.protocol import DatalogEvaluator
 from datalog_conformance.schema import FactTuple, Model, Program
-from datalog_conformance.strategies import GeneratedProgram, positive_programs
+from datalog_conformance.strategies import (
+    GeneratedProgram,
+    positive_programs,
+    stratified_negation_programs,
+)
 
 _ORACLES: dict[str, DatalogEvaluator] = {}
 
@@ -70,6 +74,26 @@ def _program_predicates(program: Program) -> set[str]:
 @given(positive_programs())
 @_DIFFERENTIAL_SETTINGS
 def test_external_oracles_agree_on_positive_programs(
+    generated: GeneratedProgram,
+) -> None:
+    program = generated.program
+    predicates = _program_predicates(program)
+    models = {
+        name: _normalized(oracle.evaluate(program), predicates)
+        for name, oracle in _AVAILABLE.items()
+    }
+    names = sorted(models)
+    baseline_name = names[0]
+    baseline = models[baseline_name]
+    for other_name in names[1:]:
+        assert models[other_name] == baseline, (
+            f"{other_name} disagrees with {baseline_name} on {program!r}"
+        )
+
+
+@given(stratified_negation_programs())
+@_DIFFERENTIAL_SETTINGS
+def test_external_oracles_agree_on_stratified_negation_programs(
     generated: GeneratedProgram,
 ) -> None:
     program = generated.program

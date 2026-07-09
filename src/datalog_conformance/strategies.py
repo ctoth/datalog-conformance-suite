@@ -53,6 +53,18 @@ def positive_programs() -> st.SearchStrategy[GeneratedProgram]:
     return _generated_programs(include_rules=True)
 
 
+def stratified_negation_programs() -> st.SearchStrategy[GeneratedProgram]:
+    """Generate stratified programs whose rules may negate lower strata.
+
+    Negated body atoms only reference predicates from strictly lower strata
+    and every variable under negation is bound by a positive body atom, so
+    the generated programs stay inside the portable fragment every real
+    engine accepts (no existential negation, no cyclic negation).
+    """
+
+    return _generated_programs(include_rules=True, include_negation=True)
+
+
 def conflict_free_defeasible_theories() -> st.SearchStrategy[GeneratedDefeasibleTheory]:
     """Generate conflict-free theories where defeasible closure extends strict closure."""
 
@@ -70,6 +82,7 @@ def _generated_programs(
     draw: Any,
     *,
     include_rules: bool,
+    include_negation: bool = False,
 ) -> GeneratedProgram:
     signatures = draw(_predicate_signatures())
     constants = tuple(
@@ -86,7 +99,9 @@ def _generated_programs(
 
     rule_groups: list[tuple[str, ...]] = []
     if include_rules:
-        rule_groups = _draw_rule_groups(draw, signatures)
+        rule_groups = _draw_rule_groups(
+            draw, signatures, include_negation=include_negation
+        )
 
     rules = [rule for group in rule_groups for rule in group]
     program = Program(facts=cast(PredicateFacts, facts), rules=rules)
@@ -174,6 +189,8 @@ def _draw_facts(
 def _draw_rule_groups(
     draw: Any,
     signatures: tuple[PredicateSignature, ...],
+    *,
+    include_negation: bool = False,
 ) -> list[tuple[str, ...]]:
     stratum_count = draw(st.integers(min_value=1, max_value=len(signatures)))
     signature_strata = [
@@ -192,9 +209,19 @@ def _draw_rule_groups(
             for signature, signature_stratum in zip(signatures, signature_strata, strict=True)
             if signature_stratum <= stratum
         ]
+        lower_strata = [
+            signature
+            for signature, signature_stratum in zip(signatures, signature_strata, strict=True)
+            if signature_stratum < stratum
+        ]
         rule_count = draw(st.integers(min_value=0, max_value=3))
         rules = [
-            _draw_rule(draw, head_signatures, allowed_body)
+            _draw_rule(
+                draw,
+                head_signatures,
+                allowed_body,
+                negatable=lower_strata if include_negation else [],
+            )
             for _ in range(rule_count)
             if head_signatures
         ]
@@ -207,6 +234,8 @@ def _draw_rule(
     draw: Any,
     head_signatures: list[PredicateSignature],
     allowed_body: list[PredicateSignature],
+    *,
+    negatable: list[PredicateSignature] | None = None,
 ) -> str:
     head_signature = draw(st.sampled_from(head_signatures))
     body_size = draw(st.integers(min_value=1, max_value=3))
@@ -226,6 +255,22 @@ def _draw_rule(
         for argument in arguments:
             if argument not in body_vars:
                 body_vars.append(argument)
+
+    if negatable and draw(st.booleans()):
+        # Negate a strictly-lower-stratum predicate using only variables
+        # already bound by the positive body, keeping the rule safe for
+        # every engine.
+        negated_signature = draw(st.sampled_from(negatable))
+        negated_arguments = draw(
+            st.lists(
+                st.sampled_from(body_vars),
+                min_size=negated_signature.arity,
+                max_size=negated_signature.arity,
+            )
+        )
+        body_atoms.append(
+            f"not {_render_atom(negated_signature.name, negated_arguments)}"
+        )
 
     head_arguments = draw(
         st.lists(
