@@ -6,10 +6,9 @@ from pathlib import Path
 from typing import cast
 
 import pytest
-import yaml
 
 from .runner import YamlTestRunner
-from .schema import SchemaError, TestCase
+from .schema import SchemaError, TestCase, load_yaml_text
 
 
 def get_tests_dir() -> Path:
@@ -42,7 +41,7 @@ def discover_yaml_tests(test_dir: Path | None = None) -> list[tuple[Path, TestCa
 
     cases: list[tuple[Path, TestCase]] = []
     for yaml_file in sorted(root.rglob("*.yaml")):
-        raw = yaml.safe_load(yaml_file.read_text(encoding="utf-8"))
+        raw = load_yaml_text(yaml_file.read_text(encoding="utf-8"))
         if raw is None:
             continue
         if isinstance(raw, dict) and "tests" in raw:

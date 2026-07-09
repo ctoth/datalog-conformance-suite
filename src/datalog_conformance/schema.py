@@ -9,6 +9,18 @@ from typing import Any, TypeAlias, cast
 
 import yaml
 
+try:  # libyaml is ~10x faster and matters at corpus scale
+    from yaml import CSafeLoader as _SafeLoader
+except ImportError:  # pragma: no cover - depends on wheel build
+    from yaml import SafeLoader as _SafeLoader
+
+
+def load_yaml_text(text: str) -> Any:
+    """Parse YAML with the fastest available safe loader."""
+
+    return yaml.load(text, Loader=_SafeLoader)
+
+
 Scalar: TypeAlias = str | int | float | bool
 FactTuple: TypeAlias = tuple[Scalar, ...]
 PredicateFacts: TypeAlias = dict[str, list[FactTuple]]
@@ -288,7 +300,7 @@ class TestCase:
 def load_test_case(path: str | Path) -> TestCase:
     """Load a single YAML file into a validated test case."""
 
-    raw = yaml.safe_load(Path(path).read_text(encoding="utf-8"))
+    raw = load_yaml_text(Path(path).read_text(encoding="utf-8"))
     return TestCase.from_dict(raw)
 
 
