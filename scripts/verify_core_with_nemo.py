@@ -1,7 +1,13 @@
+"""Verify retained core program cases against nemo-cli.
+
+The Nemo translation and invocation live in ``datalog_conformance.oracles.nemo``;
+this script adds corpus discovery, per-program batching, live logging, failure
+artifact persistence, and a machine-readable summary.
+"""
+
 from __future__ import annotations
 
 import argparse
-import csv
 import json
 import re
 import shutil
@@ -13,25 +19,14 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import cast
 
-from datalog_conformance.plugin import discover_yaml_tests
-from datalog_conformance.schema import FactTuple, Scalar, TestCase
-
-_SOURCE_NMO_ROOT = Path.home() / "src/nemo/target"
-_HARVEST_NMO_ROOT = (
-    Path.home() / "AppData/Local/Temp/datalog-harvest/nemo/target/x86_64-pc-windows-gnu"
+from datalog_conformance.oracles.nemo import (
+    DEFAULT_NMO_CANDIDATES,
+    RenderedNemoProgram,
+    load_exported_rows,
+    render_program,
 )
-_DEFAULT_NMO_CANDIDATES = [
-    _SOURCE_NMO_ROOT / "x86_64-pc-windows-gnu/release/nmo.exe",
-    _SOURCE_NMO_ROOT / "x86_64-pc-windows-gnu/debug/nmo.exe",
-    _SOURCE_NMO_ROOT / "release/nmo",
-    _SOURCE_NMO_ROOT / "debug/nmo",
-    _HARVEST_NMO_ROOT / "release/nmo.exe",
-    _HARVEST_NMO_ROOT / "debug/nmo.exe",
-]
-_ATOM_RE = re.compile(r"^\s*([A-Za-z_][A-Za-z0-9_]*)\s*\((.*)\)\s*$")
-_NUMERIC_RE = re.compile(r"-?\d+(?:\.\d+)?")
-_IDENTIFIER_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
-_WORD_RE = re.compile(r"\b([A-Za-z_][A-Za-z0-9_]*)\b")
+from datalog_conformance.plugin import discover_yaml_tests
+from datalog_conformance.schema import FactTuple, TestCase
 
 
 @dataclass(slots=True)
@@ -48,12 +43,6 @@ class _CaseVerificationError(RuntimeError):
     def __init__(self, message: str, *, artifacts: _InvocationArtifacts) -> None:
         super().__init__(message)
         self.artifacts = artifacts
-
-
-@dataclass(slots=True)
-class _RenderedProgram:
-    text: str
-    expected_exports: dict[str, str]
 
 
 @dataclass(slots=True)
@@ -276,10 +265,10 @@ def main() -> int:
 
 
 def _resolve_default_nmo() -> Path:
-    for candidate in _DEFAULT_NMO_CANDIDATES:
+    for candidate in DEFAULT_NMO_CANDIDATES:
         if candidate.exists():
             return candidate
-    return _DEFAULT_NMO_CANDIDATES[0]
+    return DEFAULT_NMO_CANDIDATES[0]
 
 
 def _select_targets(
@@ -339,7 +328,7 @@ def _run_batch(
             for predicate in _case_expectations(target.case)
         }
     )
-    rendered = _render_program(first_case, expected_predicates)
+    rendered = render_program(first_case.program, expected_predicates)
     program_text = rendered.text
 
     with tempfile.TemporaryDirectory(prefix="nemo-verify-") as temp_dir:
@@ -389,8 +378,8 @@ def _run_batch(
         return _BatchRun(
             artifacts=artifacts,
             actual_rows_by_predicate={
-                predicate: _load_exported_rows(
-                    output_dir / f"{rendered.expected_exports[predicate]}.csv"
+                predicate: load_exported_rows(
+                    output_dir / f"{rendered.exports[predicate]}.csv"
                 )
                 for predicate in expected_predicates
             },
@@ -417,314 +406,6 @@ def _case_expectations(case: TestCase) -> dict[str, list[FactTuple]]:
     assert case.program is not None
     assert case.expect is not None
     return cast(dict[str, list[FactTuple]], case.expect)
-
-
-def _render_program(case: TestCase, expected_predicates: list[str]) -> _RenderedProgram:
-    assert case.program is not None
-    predicate_map = _build_predicate_map(case, expected_predicates)
-    lines: list[str] = []
-    for predicate, rows in case.program.facts.items():
-        translated_predicate = predicate_map[predicate]
-        for row in rows:
-            lines.append(
-                f"{translated_predicate}({', '.join(_render_fact_term(term) for term in row)}) ."
-            )
-    for rule in case.program.rules:
-        lines.extend(_translate_rule(rule, predicate_map))
-    for predicate in expected_predicates:
-        lines.append(f"@export {predicate_map[predicate]} :- csv {{}}.")
-    return _RenderedProgram(
-        text="\n".join(lines) + "\n",
-        expected_exports={predicate: predicate_map[predicate] for predicate in expected_predicates},
-    )
-
-
-def _translate_rule(rule_text: str, predicate_map: dict[str, str]) -> list[str]:
-    text = rule_text.strip().removesuffix(".")
-    if ":-" not in text:
-        context = _RuleContext()
-        return [f"{_translate_atom(text, context, predicate_map, is_head=True)} ."]
-    head_text, body_text = text.split(":-", 1)
-    translated_rules: list[str] = []
-    for body_alternative in _split_body_alternatives(body_text):
-        body_atoms = _split_atoms(body_alternative)
-        context = _RuleContext()
-        context.body_identifiers = _collect_body_identifiers(body_atoms)
-        body = ", ".join(
-            _translate_atom(atom, context, predicate_map) for atom in body_atoms
-        )
-        for head_atom in _split_atoms(head_text):
-            translated_rules.append(
-                f"{_translate_atom(head_atom, context, predicate_map, is_head=True)} :- {body} ."
-            )
-    return translated_rules
-
-
-def _translate_atom(
-    atom_text: str,
-    context: "_RuleContext",
-    predicate_map: dict[str, str],
-    *,
-    is_head: bool = False,
-) -> str:
-    text = atom_text.strip()
-    negated = False
-    if text.startswith("not "):
-        negated = True
-        text = text[4:].strip()
-    match = _ATOM_RE.match(text)
-    if match is None:
-        raise ValueError(f"Unsupported atom syntax for Nemo translation: {atom_text}")
-    predicate = match.group(1)
-    raw_args = match.group(2)
-    translated_terms: list[str] = []
-    for term in _split_terms(raw_args):
-        try:
-            translated_terms.append(
-                _translate_rule_term(term, context, is_head=is_head)
-            )
-        except ValueError as exc:
-            raise ValueError(
-                f"{exc} in atom {atom_text!r} with term {term!r}"
-            ) from exc
-    translated_args = ", ".join(translated_terms)
-    prefix = "~" if negated else ""
-    return f"{prefix}{predicate_map.get(predicate, predicate)}({translated_args})"
-
-
-def _render_fact_term(term: Scalar) -> str:
-    if isinstance(term, bool):
-        return "true" if term else "false"
-    if isinstance(term, (int, float)):
-        return str(term)
-    return _quote_string(term)
-
-
-def _translate_rule_term(term: str, context: "_RuleContext", *, is_head: bool = False) -> str:
-    stripped = term.strip()
-    if not stripped:
-        raise ValueError("Empty term")
-    if stripped.startswith('"') and stripped.endswith('"'):
-        return stripped
-    if _NUMERIC_RE.fullmatch(stripped):
-        return stripped
-    if stripped == "_":
-        return context.fresh_anonymous()
-    if _IDENTIFIER_RE.fullmatch(stripped):
-        if is_head and stripped not in context.body_identifiers:
-            return _quote_string(stripped)
-        if stripped.startswith("_"):
-            return f"?anon{stripped}"
-        return f"?{stripped}"
-    return _replace_words_outside_quotes(stripped, context, is_head=is_head)
-
-
-def _replace_words_outside_quotes(
-    text: str,
-    context: "_RuleContext",
-    *,
-    is_head: bool = False,
-) -> str:
-    result: list[str] = []
-    current: list[str] = []
-    in_quotes = False
-    for char in text:
-        if char == '"':
-            if current:
-                result.append(_prefix_words("".join(current), context, is_head=is_head))
-                current = []
-            in_quotes = not in_quotes
-            result.append(char)
-            continue
-        if in_quotes:
-            result.append(char)
-            continue
-        current.append(char)
-    if current:
-        result.append(_prefix_words("".join(current), context, is_head=is_head))
-    return "".join(result)
-
-
-def _prefix_words(fragment: str, context: "_RuleContext", *, is_head: bool = False) -> str:
-    def replace(match: re.Match[str]) -> str:
-        word = match.group(1)
-        if word == "_":
-            return context.fresh_anonymous()
-        if is_head and word not in context.body_identifiers:
-            return _quote_string(word)
-        if word.startswith("_"):
-            return f"?anon{word}"
-        return f"?{word}"
-
-    return _WORD_RE.sub(replace, fragment)
-
-
-def _split_atoms(body_text: str) -> list[str]:
-    atoms: list[str] = []
-    current: list[str] = []
-    depth = 0
-    in_quotes = False
-    for char in body_text:
-        if char == '"':
-            in_quotes = not in_quotes
-            current.append(char)
-            continue
-        if char == "," and depth == 0 and not in_quotes:
-            atom = "".join(current).strip()
-            if atom:
-                atoms.append(atom)
-            current = []
-            continue
-        if char == "(" and not in_quotes:
-            depth += 1
-        elif char == ")" and depth > 0 and not in_quotes:
-            depth -= 1
-        current.append(char)
-    atom = "".join(current).strip()
-    if atom:
-        atoms.append(atom)
-    return atoms
-
-
-def _split_body_alternatives(body_text: str) -> list[str]:
-    alternatives: list[str] = []
-    current: list[str] = []
-    depth = 0
-    in_quotes = False
-    for char in body_text:
-        if char == '"':
-            in_quotes = not in_quotes
-            current.append(char)
-            continue
-        if char == ";" and depth == 0 and not in_quotes:
-            alternative = "".join(current).strip()
-            if alternative:
-                alternatives.append(alternative)
-            current = []
-            continue
-        if char == "(" and not in_quotes:
-            depth += 1
-        elif char == ")" and depth > 0 and not in_quotes:
-            depth -= 1
-        current.append(char)
-    alternative = "".join(current).strip()
-    if alternative:
-        alternatives.append(alternative)
-    return alternatives
-
-
-def _split_terms(raw: str) -> list[str]:
-    terms: list[str] = []
-    current: list[str] = []
-    depth = 0
-    in_quotes = False
-    for char in raw:
-        if char == '"':
-            in_quotes = not in_quotes
-            current.append(char)
-            continue
-        if char == "," and depth == 0 and not in_quotes:
-            terms.append("".join(current).strip())
-            current = []
-            continue
-        if char == "(" and not in_quotes:
-            depth += 1
-        elif char == ")" and depth > 0 and not in_quotes:
-            depth -= 1
-        current.append(char)
-    terms.append("".join(current).strip())
-    return terms
-
-
-def _load_exported_rows(path: Path) -> set[FactTuple]:
-    if not path.exists():
-        return set()
-    rows: set[FactTuple] = set()
-    with path.open("r", encoding="utf-8", newline="") as handle:
-        reader = csv.reader(handle)
-        for row in reader:
-            if not row:
-                continue
-            rows.add(tuple(_parse_scalar(item) for item in row))
-    return rows
-
-
-def _parse_scalar(token: str) -> Scalar:
-    stripped = token.strip()
-    if stripped.startswith('"') and stripped.endswith('"'):
-        return stripped[1:-1].replace('\\"', '"').replace("\\\\", "\\")
-    if stripped == "true":
-        return True
-    if stripped == "false":
-        return False
-    if re.fullmatch(r"-?\d+", stripped):
-        return int(stripped)
-    if re.fullmatch(r"-?\d+\.\d+", stripped):
-        return float(stripped)
-    return stripped
-
-
-def _quote_string(value: str) -> str:
-    escaped = value.replace("\\", "\\\\").replace('"', '\\"')
-    return f'"{escaped}"'
-
-
-class _RuleContext:
-    def __init__(self) -> None:
-        self.anonymous_counter = 0
-        self.body_identifiers: set[str] = set()
-
-    def fresh_anonymous(self) -> str:
-        self.anonymous_counter += 1
-        return f"?anon_{self.anonymous_counter}"
-
-
-def _collect_body_identifiers(body_atoms: list[str]) -> set[str]:
-    identifiers: set[str] = set()
-    for atom in body_atoms:
-        match = _ATOM_RE.match(atom.strip().removeprefix("not ").strip())
-        if match is None:
-            continue
-        for term in _split_terms(match.group(2)):
-            stripped = term.strip()
-            if _IDENTIFIER_RE.fullmatch(stripped):
-                identifiers.add(stripped)
-    return identifiers
-
-
-def _build_predicate_map(case: TestCase, expected_predicates: list[str]) -> dict[str, str]:
-    assert case.program is not None
-    predicate_names = set(case.program.facts)
-    predicate_names.update(expected_predicates)
-    for rule in case.program.rules:
-        predicate_names.update(_collect_rule_predicates(rule))
-    predicate_map: dict[str, str] = {}
-    for index, predicate in enumerate(sorted(predicate_names), start=1):
-        sanitized = re.sub(r"[^A-Za-z0-9_]+", "_", predicate).strip("_") or "predicate"
-        translated = f"p_{index}_{sanitized}"
-        if translated[0].isdigit():
-            translated = f"p_{translated}"
-        predicate_map[predicate] = translated
-    return predicate_map
-
-
-def _collect_rule_predicates(rule_text: str) -> set[str]:
-    text = rule_text.strip().removesuffix(".")
-    atoms: list[str] = []
-    if ":-" not in text:
-        atoms.extend(_split_atoms(text))
-    else:
-        head_text, body_text = text.split(":-", 1)
-        atoms.extend(_split_atoms(head_text))
-        for body_alternative in _split_body_alternatives(body_text):
-            atoms.extend(_split_atoms(body_alternative))
-    predicates: set[str] = set()
-    for atom in atoms:
-        candidate = atom.strip().removeprefix("not ").strip()
-        match = _ATOM_RE.match(candidate)
-        if match is not None:
-            predicates.add(match.group(1))
-    return predicates
 
 
 def _persist_failure_artifacts(
@@ -831,10 +512,13 @@ def _sorted_fact_rows(rows: set[FactTuple]) -> list[FactTuple]:
 
 
 def _safe_render_program(case: TestCase) -> str:
+    assert case.program is not None
     try:
-        return _render_program(case, sorted(case.expect or {})).text
+        rendered: RenderedNemoProgram = render_program(
+            case.program, sorted(case.expect or {})
+        )
+        return rendered.text
     except Exception as exc:  # noqa: BLE001
-        assert case.program is not None
         fallback = [
             f"# failed to render translated program: {type(exc).__name__}: {exc}",
             "# raw facts",

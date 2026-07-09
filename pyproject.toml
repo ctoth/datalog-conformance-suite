@@ -16,6 +16,9 @@ dev = [
     "pyright>=1.1.0",
     "ruff>=0.11.0",
 ]
+oracles = [
+    "clingo>=5.8.0",
+]
 
 [project.entry-points.pytest11]
 datalog_conformance = "datalog_conformance.plugin"
