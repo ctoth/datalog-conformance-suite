@@ -51,9 +51,32 @@ Filter by tags:
 uv run pytest tests --datalog-evaluator=mypackage.MyEvaluator --datalog-tags=defeasible,basic
 ```
 
+## External Oracles
+
+The suite's verification claims rest on real, independent implementations, not on code in this
+repo. Three engines are integrated as first-class evaluators under
+`datalog_conformance.oracles`:
+
+- `NemoOracle` — [Nemo](https://github.com/knowsys/nemo) via a local `nmo` build
+- `SouffleOracle` — [Souffle](https://github.com/souffle-lang/souffle) natively or through WSL
+- `ClingoOracle` — [clingo](https://github.com/potassco/clingo) via the `oracles` extra
+  (`uv sync --extra oracles`)
+
+Each implements the evaluator protocol, so the entire bundled suite can run against a real
+engine directly:
+
+```powershell
+uv run pytest tests --datalog-evaluator=datalog_conformance.oracles.nemo.NemoOracle
+```
+
+`scripts/verify_core_multi_oracle.py` runs every core case against every available engine and
+writes a per-case agreement matrix. As of 2026-07-09 the full corpus shows zero cross-engine
+mismatches, with 1069 of 1108 cases confirmed by all three engines (the rest are engine
+timeouts or dialect limits, recorded honestly as `error`/`unsupported`).
+
 ## Current Corpus
 
-- Core Datalog YAML cases: 111
+- Core Datalog YAML cases: 1108 (including 1000 generated oracle cases)
 - Defeasible YAML cases: 180
 - KLM property YAML cases: 1
 - Generated property and meta-tests remain under `tests/`
@@ -88,15 +111,21 @@ Current repo verification commands:
 ```powershell
 uv run scripts/audit_program_surface.py
 uv run scripts/verify_core_with_nemo.py
+uv run --extra oracles scripts/verify_core_multi_oracle.py
 uv run pytest tests/
 uv run --with arpeggio --with colorama pytest tests/test_depysible_generated.py
 uv run --extra dev ruff check .
 uv run --extra dev pyright
 ```
 
-`uv run scripts/verify_core_with_nemo.py` now writes each run to its own timestamped report
+`uv run scripts/verify_core_with_nemo.py` writes each run to its own timestamped report
 directory under `reports/verify_core_with_nemo/`, groups cases by shared visible program, and
 prefers a release `nmo` binary when one is available.
+
+`scripts/verify_core_multi_oracle.py` does the same across Nemo, Souffle, and clingo at once
+and emits `matrix.json`/`summary.json` with per-oracle outcomes and `verified_by_N` agreement
+buckets. Differential property tests (`tests/test_oracle_differential.py`) additionally require
+all available engines to agree on Hypothesis-generated programs.
 
 ## Layout
 
@@ -104,6 +133,10 @@ prefers a release `nmo` binary when one is available.
 - `src/datalog_conformance/protocol.py`: evaluator protocols.
 - `src/datalog_conformance/plugin.py`: pytest discovery and parametrization.
 - `src/datalog_conformance/runner.py`: bridge from YAML cases to evaluator methods.
+- `src/datalog_conformance/oracles/`: real-engine adapters (Nemo, Souffle, clingo) implementing
+  the evaluator protocol.
+- `src/datalog_conformance/references/core.py`: the shared rule parser the oracle adapters
+  translate through, plus a test-support evaluator (not a verification oracle).
 - `src/datalog_conformance/strategies.py`: Hypothesis generators for generated programs and
   conflict-free defeasible theories.
 - `src/datalog_conformance/depysible_strategies.py`: Hypothesis generators for live

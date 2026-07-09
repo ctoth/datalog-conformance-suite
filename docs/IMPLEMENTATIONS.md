@@ -12,7 +12,12 @@ target with adapters or cross-checks.
 - Stack: Rust workspace with `nemo-cli` and `nemo-python`.
 - Fit: strongest immediate core-Datalog candidate because the source tree includes both a CLI and a
   Python package surface.
-- Local environment: `cargo` is available on this machine.
+- Local environment: `cargo` is available on this machine. A release `nmo` is built at
+  `~/src/nemo/target/x86_64-pc-windows-gnu/release/nmo.exe` (the MSVC target does not link on
+  this machine; use `--target x86_64-pc-windows-gnu`).
+- Adapter status: INTEGRATED. `datalog_conformance.oracles.nemo.NemoOracle` implements the
+  evaluator protocol, so the whole suite runs directly against Nemo:
+  `uv run pytest tests --datalog-evaluator=datalog_conformance.oracles.nemo.NemoOracle`.
 
 ### Souffle
 
@@ -20,8 +25,32 @@ target with adapters or cross-checks.
 - Verified locally: cloned into temporary workspace from that exact Git URL.
 - Stack: C++ project with CMake build and CLI/runtime tooling.
 - Fit: strong oracle for positive Datalog, recursion, and some negation slices. Also the largest
-  immediate source of harvested core tests.
-- Local environment: source is present, but the `souffle` binary is not currently installed.
+  immediate source of harvested core tests, so agreement here checks the harvest against its own
+  upstream engine.
+- Local environment: souffle 2.4 is installed inside WSL Debian (souffle-lang apt repository);
+  no native Windows binary.
+- Adapter status: INTEGRATED. `datalog_conformance.oracles.souffle.SouffleOracle` renders typed
+  `.dl` programs (column types inferred from fact scalars and propagated through rules) and
+  invokes souffle natively or through `wsl`. Zero-arity predicates, booleans, and mixed
+  number/symbol columns are reported as unsupported rather than guessed.
+
+### Clingo
+
+- Repo: `https://github.com/potassco/clingo`
+- Stack: C++ solver with a first-class Python package (`pip install clingo`).
+- Fit: for stratified Datalog the unique stable model coincides with stratified semantics, and
+  the Potassco lineage is fully independent of both Nemo and Souffle — a strong third witness.
+- Local environment: clingo 5.8.0 installed via the `oracles` optional extra.
+- Adapter status: INTEGRATED. `datalog_conformance.oracles.clingo_oracle.ClingoOracle` translates
+  the visible surface to ASP in-process. Floats and booleans are unsupported by ASP's term
+  language and reported as such.
+
+### SWI-Prolog (candidate)
+
+- Local environment: swi-prolog 9.0.4 installed inside WSL Debian.
+- Fit: tabled evaluation (`:- table p/2.`) gives Datalog semantics through a genuinely different
+  evaluation strategy (SLG resolution). No adapter yet; negation needs care (`tnot` /
+  well-founded semantics) before it can join the matrix.
 
 ## Error-Oriented Core Surface
 
