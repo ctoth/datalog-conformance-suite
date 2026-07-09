@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import pytest
 import yaml
 
+from datalog_conformance.schema import SchemaError
 from datalog_conformance.schema import TestCase as SuiteCase
 
 
@@ -54,6 +56,27 @@ def test_core_case_with_reduced_verification_round_trips() -> None:
     decoded = SuiteCase.from_dict(yaml.safe_load(encoded))
 
     assert decoded == case
+
+
+def test_verification_rejects_unknown_kind() -> None:
+    raw: dict[str, object] = {
+        "name": "bad_verification_kind",
+        "description": "Unknown verification kind.",
+        "source": "manual/test",
+        "tags": ["basic"],
+        "verification": {
+            "implementation": "nmo",
+            "kind": "notes",
+        },
+        "program": {
+            "facts": {"edge": [["a", "b"]]},
+            "rules": [],
+        },
+        "expect": {"edge": [["a", "b"]]},
+    }
+
+    with pytest.raises(SchemaError, match="Unknown verification kind: notes"):
+        SuiteCase.from_dict(raw)
 
 
 def test_defeasible_case_round_trips_through_yaml() -> None:
