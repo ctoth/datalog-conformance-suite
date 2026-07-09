@@ -83,7 +83,16 @@ target with adapters or cross-checks.
 - Repo state in this project: a thin example adapter now exists at
   `datalog_conformance.examples.depysible_adapter`, and fourteen DePYsible-derived defeasible cases
   were confirmed against it. The repo also now includes generated Hypothesis checks against the
-  live DePYsible implementation for its supported fragment.
+  live DePYsible implementation for its supported fragment, plus a generated
+  `defeasible_gen_` corpus whose expectations were computed by DePYsible itself
+  (`scripts/generate_defeasible_corpus.py`).
+- Known limitation observed here (2026-07-09): DePYsible's answers are not always deterministic
+  across processes — for some theories, literals flip between `defeasibly`, `not_defeasibly`,
+  and `undecided` depending on `PYTHONHASHSEED`, because set iteration order steers its
+  dialectical search. The corpus generator therefore evaluates every candidate theory under
+  twenty hash seeds and only retains theories with identical sections across all runs; the
+  order-sensitive theories (mostly strict-versus-defeasible override layers with downstream
+  chains) are excluded rather than stamped.
 
 ### SPINdle Family
 

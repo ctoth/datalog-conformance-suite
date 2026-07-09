@@ -77,19 +77,23 @@ zero cross-engine mismatches and zero errors: Nemo, clingo, and SWI-Prolog each 
 12,601 cases, and Souffle confirms 12,598 (the remaining 3 mix numbers and symbols in one
 column, which Souffle's typed dialect cannot express; recorded as `unsupported`, never
 guessed). Every case is agreed upon by at least three, and 12,598 of 12,601 by all four,
-independent engines.
+independent engines. The 12-case XSB `wfs_tests` slice added afterwards is verified by all
+four engines (`--case-filter xsb_wfs`, `verified_by_4: 12`).
 
 ## Current Corpus
 
-- Core Datalog YAML cases: 12,601
-  - 108 harvested (Souffle, Nemo, Crepe slices) and hand-authored cases
+- Core Datalog YAML cases: 12,619
+  - 126 harvested (Souffle, Nemo, Crepe, XSB wfs_tests slices) and hand-authored cases
   - 1,000 generated positive oracle cases (graph-shaped programs)
   - 549 closed-form family cases (chains, cycles, cliques, stars, grids, trees, parity,
     alternating paths, cut chains, set differences, guarded arithmetic) whose expectations come
     from combinatorics and BFS, not from any Datalog engine
   - 10,944 feature-matrix cases covering the cross product of recursion shape, negation depth,
     guards, arithmetic, wildcards, constant filters, and self-joins (1,152 unique programs)
-- Defeasible YAML cases: 180
+- Defeasible YAML cases: 881
+  - 180 harvested and hand-authored cases
+  - 701 generated `defeasible_gen_` cases whose expected sections were computed by the live
+    DePYsible implementation and kept only when stable across twenty hash-seed-varied runs
 - KLM property YAML cases: 1
 - Generated property and meta-tests remain under `tests/`
 
@@ -98,7 +102,8 @@ Current notable sources:
 - Souffle portable subset
 - Nemo testcases
 - Crepe UI rejection cases
-- DePYsible examples
+- XSB wfs_tests two-valued slice (each case verified by all four engines)
+- DePYsible examples and the generated DePYsible-verified defeasible corpus
 - spindle-racket test theories
 - spindle-racket inline reasoning tests
 - spindle-racket query theory tests
@@ -126,6 +131,7 @@ uv run scripts/verify_core_with_nemo.py
 uv run --extra oracles scripts/verify_core_multi_oracle.py
 uv run pytest tests/
 uv run --with arpeggio --with colorama pytest tests/test_depysible_generated.py
+uv run --with arpeggio --with colorama pytest tests/test_generated_defeasible_corpus.py
 uv run --extra dev ruff check .
 uv run --extra dev pyright
 ```

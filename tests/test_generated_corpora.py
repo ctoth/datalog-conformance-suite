@@ -82,6 +82,41 @@ def test_feature_corpus_composition() -> None:
         assert case.verification.implementation == "nmo+souffle+clingo+swipl"
 
 
+def test_defeasible_generated_corpus_composition() -> None:
+    cases = _generated_cases("defeasible_gen_")
+    assert len(cases) == 701
+    assert len({case.name for case in cases}) == 701
+
+    shapes = Counter(
+        tag for case in cases for tag in case.tags if tag.startswith("shape-")
+    )
+    assert set(shapes) == {
+        "shape-ambiguity",
+        "shape-chain",
+        "shape-mixed",
+        "shape-strict_override",
+        "shape-team",
+    }
+    assert shapes["shape-ambiguity"] == 27
+    assert shapes["shape-chain"] == 60
+    assert shapes["shape-mixed"] == 558
+    assert shapes["shape-strict_override"] == 9
+    assert shapes["shape-team"] == 47
+
+    for case in cases:
+        assert case.verification is not None
+        assert case.verification.kind is VerificationKind.DIRECT
+        assert case.verification.implementation == "depysible"
+        assert case.theory is not None
+        assert case.expect is not None
+        assert "defeasible" in case.tags
+        assert "generated" in case.tags
+        # The generator only emits the fragment the DePYsible adapter accepts.
+        assert not case.theory.defeaters
+        assert not case.theory.superiority
+        assert not case.theory.conflicts
+
+
 def test_total_corpus_crosses_ten_thousand() -> None:
     total = len(discover_yaml_tests())
     assert total >= 10000, f"corpus has shrunk to {total} cases"

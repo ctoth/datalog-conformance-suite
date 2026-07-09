@@ -5,13 +5,17 @@ This file records where the bundled YAML suites came from, what translation choi
 
 ## Current Corpus Summary
 
-- Core Datalog YAML cases currently in `basic/`, `recursion/`, `negation/`, and `errors/`: 111
+- Core Datalog YAML cases currently in `basic/`, `recursion/`, `negation/`, and `errors/`: 126
+  (114 previous plus the 12-case XSB `wfs_tests` slice)
+- Generated core cases under `generated/`: 12,493 (positive-oracle, family, and feature corpora)
 - Defeasible YAML cases currently in `defeasible/`: 180
+- Generated defeasible cases under `generated/`: 701 (DePYsible-verified `defeasible_gen_` corpus)
 - KLM property YAML cases currently in the bundled corpus: 1
 - Generated property tests and implementation checks remain under `tests/`
 
-The current defeasible corpus is still dominated by strict-only derived lifts from the core corpus,
-plus a smaller set of genuinely defeasible examples.
+The hand-curated defeasible corpus is still dominated by strict-only derived lifts from the core
+corpus, plus a smaller set of genuinely defeasible examples; the generated `defeasible_gen_`
+corpus now adds machine-verified ambiguity, override, team, chain, and mixed shapes.
 
 Some recent defeasible additions are note-adapted paper examples that were only kept when the
 notes were concrete enough to encode a supported fragment and the resulting theories reproduced
