@@ -244,6 +244,9 @@ def _translate_atom(
         text = text[4:].strip()
     match = _ATOM_RE.match(text)
     if match is None:
+        comparison = _try_translate_comparison(text, context)
+        if comparison is not None and not negated:
+            return comparison
         raise ValueError(f"Unsupported atom syntax for Nemo translation: {atom_text}")
     predicate = match.group(1)
     raw_args = match.group(2)
@@ -260,6 +263,71 @@ def _translate_atom(
     translated_args = ", ".join(translated_terms)
     prefix = "~" if negated else ""
     return f"{prefix}{predicate_map.get(predicate, predicate)}({translated_args})"
+
+
+def _try_translate_comparison(text: str, context: "_RuleContext") -> str | None:
+    """Translate comparison guards like ``(X <= 3)`` to Nemo syntax."""
+
+    stripped = text.strip()
+    while (
+        stripped.startswith("(")
+        and stripped.endswith(")")
+        and _balanced_parentheses(stripped[1:-1])
+    ):
+        stripped = stripped[1:-1].strip()
+    for op in ("<=", ">=", "!=", "<", ">", "="):
+        parts = _split_comparison(stripped, op)
+        if parts is None:
+            continue
+        left, right = parts
+        return (
+            f"{_translate_rule_term(left, context)} {op} "
+            f"{_translate_rule_term(right, context)}"
+        )
+    return None
+
+
+def _split_comparison(text: str, op: str) -> tuple[str, str] | None:
+    depth = 0
+    in_quotes = False
+    index = 0
+    while index < len(text):
+        char = text[index]
+        if char == '"':
+            in_quotes = not in_quotes
+        elif not in_quotes:
+            if char == "(":
+                depth += 1
+            elif char == ")":
+                depth = max(depth - 1, 0)
+            elif depth == 0 and text.startswith(op, index):
+                if op in {"<", ">"} and text.startswith(op + "=", index):
+                    index += 1
+                    continue
+                before = text[:index].strip()
+                after = text[index + len(op):].strip()
+                if before and after:
+                    return before, after
+        index += 1
+    return None
+
+
+def _balanced_parentheses(text: str) -> bool:
+    depth = 0
+    in_quotes = False
+    for char in text:
+        if char == '"':
+            in_quotes = not in_quotes
+            continue
+        if in_quotes:
+            continue
+        if char == "(":
+            depth += 1
+        elif char == ")":
+            depth -= 1
+            if depth < 0:
+                return False
+    return depth == 0
 
 
 def _render_fact_term(term: Scalar) -> str:
