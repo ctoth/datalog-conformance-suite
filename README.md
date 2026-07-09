@@ -72,15 +72,23 @@ uv run pytest tests --datalog-evaluator=datalog_conformance.oracles.nemo.NemoOra
 ```
 
 `scripts/verify_core_multi_oracle.py` runs every core case against every available engine and
-writes a per-case agreement matrix. As of 2026-07-09 the full corpus shows zero cross-engine
-mismatches: Nemo, clingo, and SWI-Prolog each confirm all 1108 cases, and Souffle confirms
-1105 (the remaining 3 mix numbers and symbols in one column, which Souffle's typed dialect
-cannot express; recorded as `unsupported`, never guessed). Every case is therefore agreed upon
-by at least three, and 1105 of 1108 by all four, independent engines.
+writes a per-case agreement matrix. As of 2026-07-09 the full 12,601-case core corpus shows
+zero cross-engine mismatches and zero errors: Nemo, clingo, and SWI-Prolog each confirm all
+12,601 cases, and Souffle confirms 12,598 (the remaining 3 mix numbers and symbols in one
+column, which Souffle's typed dialect cannot express; recorded as `unsupported`, never
+guessed). Every case is agreed upon by at least three, and 12,598 of 12,601 by all four,
+independent engines.
 
 ## Current Corpus
 
-- Core Datalog YAML cases: 1108 (including 1000 generated oracle cases)
+- Core Datalog YAML cases: 12,601
+  - 108 harvested (Souffle, Nemo, Crepe slices) and hand-authored cases
+  - 1,000 generated positive oracle cases (graph-shaped programs)
+  - 549 closed-form family cases (chains, cycles, cliques, stars, grids, trees, parity,
+    alternating paths, cut chains, set differences, guarded arithmetic) whose expectations come
+    from combinatorics and BFS, not from any Datalog engine
+  - 10,944 feature-matrix cases covering the cross product of recursion shape, negation depth,
+    guards, arithmetic, wildcards, constant filters, and self-joins (1,152 unique programs)
 - Defeasible YAML cases: 180
 - KLM property YAML cases: 1
 - Generated property and meta-tests remain under `tests/`

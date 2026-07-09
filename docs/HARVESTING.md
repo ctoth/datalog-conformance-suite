@@ -50,11 +50,25 @@ against a live implementation.
 - Report layout: timestamped directories under `reports/verify_core_multi_oracle/` containing
   `matrix.json` (per case × per oracle outcome) and `summary.json` (per-oracle counts plus
   `verified_by_N` agreement buckets)
-- 2026-07-09 full-corpus result (600s per-invocation budget): 1108 cases, zero cross-engine
-  mismatches, zero errors. Nemo, clingo, and SWI-Prolog each confirm all 1108 cases (SWI-Prolog
-  needs `--table-space=4g` for the points-to-analysis harvests); Souffle confirms 1105 with 3
-  recorded as `unsupported` (its typed dialect cannot express their mixed number/symbol
-  columns). Every retained case is agreed upon by at least three independent engines.
+- 2026-07-09 full-corpus result (600s per-invocation budget): 12,601 cases, zero cross-engine
+  mismatches, zero errors. Nemo, clingo, and SWI-Prolog each confirm all 12,601 cases
+  (SWI-Prolog needs `--table-space=4g` for the points-to-analysis harvests); Souffle confirms
+  12,598 with 3 recorded as `unsupported` (its typed dialect cannot express their mixed
+  number/symbol columns). Every retained case is agreed upon by at least three independent
+  engines.
+
+## Generated Family And Feature Corpora
+
+- `scripts/generate_family_corpus.py` (549 cases): closed-form graph families whose expected
+  rows come from combinatorics and breadth-first search, never a Datalog engine, then confirmed
+  by all four external oracles.
+- `scripts/generate_feature_corpus.py` (10,944 cases, 1,152 unique programs): deterministic
+  seeded enumeration of recursion shape x negation depth x guards x arithmetic x wildcards x
+  constant filters x self-joins. Expected rows are computed by the local Nemo build and
+  cross-verified by Souffle, clingo, and SWI-Prolog.
+- Both generators stamp `verification: {implementation: nmo+souffle+clingo+swipl, kind: direct}`
+  and the stamp is honest only while the multi-oracle matrix stays green; regenerate and re-run
+  the matrix together.
 - Dialect note: `negation/nemo_negation.yaml` originally used Nemo-dialect existential variables
   under negation (`not s3(X, 5, P)` with `P` otherwise unbound), which Souffle and clingo reject
   as unsafe. The existentials are now hoisted into visible auxiliary projections
