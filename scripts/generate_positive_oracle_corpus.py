@@ -94,9 +94,13 @@ def main() -> int:
             rows = sorted(model.get(predicate, set()), key=_row_sort_key)
             if not rows:
                 raise RuntimeError(f"{predicate} unexpectedly produced no rows")
+            case_name = (
+                f"generated_positive_{group_index:03d}_{query_index:02d}"
+                f"_{_case_slug(query_index)}"
+            )
             cases.append(
                 {
-                    "name": f"generated_positive_{group_index:03d}_{query_index:02d}_{_case_slug(query_index)}",
+                    "name": case_name,
                     "description": (
                         "Generated positive Datalog oracle case with visible facts, "
                         "visible rules, and expected rows verified against Nemo."
@@ -134,7 +138,10 @@ def _build_program(group_id: str, group_index: int) -> Program:
     if not mark_rows:
         mark_rows = [(nodes[0],)]
     leaf_rows = [(nodes[-1],), (nodes[-2],)]
-    color_rows = [(node, colors[(index + group_index) % len(colors)]) for index, node in enumerate(nodes)]
+    color_rows = [
+        (node, colors[(index + group_index) % len(colors)])
+        for index, node in enumerate(nodes)
+    ]
 
     facts: PredicateFacts = {
         f"seed_{group_id}": [(node,) for node in nodes],
