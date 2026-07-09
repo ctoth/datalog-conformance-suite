@@ -54,13 +54,15 @@ uv run pytest tests --datalog-evaluator=mypackage.MyEvaluator --datalog-tags=def
 ## External Oracles
 
 The suite's verification claims rest on real, independent implementations, not on code in this
-repo. Three engines are integrated as first-class evaluators under
+repo. Four engines are integrated as first-class evaluators under
 `datalog_conformance.oracles`:
 
 - `NemoOracle` — [Nemo](https://github.com/knowsys/nemo) via a local `nmo` build
 - `SouffleOracle` — [Souffle](https://github.com/souffle-lang/souffle) natively or through WSL
 - `ClingoOracle` — [clingo](https://github.com/potassco/clingo) via the `oracles` extra
   (`uv sync --extra oracles`)
+- `SwiPrologOracle` — [SWI-Prolog](https://www.swi-prolog.org/) with tabling (SLG resolution, a
+  top-down strategy independent of the three bottom-up engines), natively or through WSL
 
 Each implements the evaluator protocol, so the entire bundled suite can run against a real
 engine directly:
@@ -71,9 +73,10 @@ uv run pytest tests --datalog-evaluator=datalog_conformance.oracles.nemo.NemoOra
 
 `scripts/verify_core_multi_oracle.py` runs every core case against every available engine and
 writes a per-case agreement matrix. As of 2026-07-09 the full corpus shows zero cross-engine
-mismatches: 1105 of 1108 cases are confirmed by all three engines, and the remaining 3 by two
-(their fact columns mix numbers and symbols, which Souffle's typed dialect cannot express;
-recorded as `unsupported`, never guessed).
+mismatches: Nemo, clingo, and SWI-Prolog each confirm all 1108 cases, and Souffle confirms
+1105 (the remaining 3 mix numbers and symbols in one column, which Souffle's typed dialect
+cannot express; recorded as `unsupported`, never guessed). Every case is therefore agreed upon
+by at least three, and 1105 of 1108 by all four, independent engines.
 
 ## Current Corpus
 

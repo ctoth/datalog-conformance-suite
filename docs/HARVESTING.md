@@ -46,13 +46,15 @@ against a live implementation.
 
 - Command: `uv run --extra oracles scripts/verify_core_multi_oracle.py`
 - Runtimes: `nmo` (local build), `souffle` (native or WSL), `clingo` (Python package from the
-  `oracles` extra)
+  `oracles` extra), `swipl` (SWI-Prolog with tabling, native or WSL)
 - Report layout: timestamped directories under `reports/verify_core_multi_oracle/` containing
   `matrix.json` (per case × per oracle outcome) and `summary.json` (per-oracle counts plus
   `verified_by_N` agreement buckets)
 - 2026-07-09 full-corpus result (600s per-invocation budget): 1108 cases, zero cross-engine
-  mismatches, zero errors; 1105 cases verified by all three engines and 3 by two (Souffle's
-  typed dialect cannot express their mixed number/symbol columns, recorded as `unsupported`)
+  mismatches, zero errors. Nemo, clingo, and SWI-Prolog each confirm all 1108 cases (SWI-Prolog
+  needs `--table-space=4g` for the points-to-analysis harvests); Souffle confirms 1105 with 3
+  recorded as `unsupported` (its typed dialect cannot express their mixed number/symbol
+  columns). Every retained case is agreed upon by at least three independent engines.
 - Dialect note: `negation/nemo_negation.yaml` originally used Nemo-dialect existential variables
   under negation (`not s3(X, 5, P)` with `P` otherwise unbound), which Souffle and clingo reject
   as unsafe. The existentials are now hoisted into visible auxiliary projections

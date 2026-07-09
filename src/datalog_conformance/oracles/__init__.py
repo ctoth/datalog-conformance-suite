@@ -14,6 +14,13 @@ from .souffle import (
     SouffleUnsupportedError,
     find_souffle,
 )
+from .swipl import (
+    SwiPrologError,
+    SwiPrologOracle,
+    SwiPrologUnavailableError,
+    SwiPrologUnsupportedError,
+    find_swipl,
+)
 
 __all__ = [
     "ClingoError",
@@ -27,6 +34,11 @@ __all__ = [
     "SouffleOracle",
     "SouffleUnavailableError",
     "SouffleUnsupportedError",
+    "SwiPrologError",
+    "SwiPrologOracle",
+    "SwiPrologUnavailableError",
+    "SwiPrologUnsupportedError",
     "find_nmo",
     "find_souffle",
+    "find_swipl",
 ]

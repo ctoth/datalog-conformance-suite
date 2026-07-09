@@ -32,6 +32,7 @@ def _register_builders() -> None:
         ClingoOracle,
         NemoOracle,
         SouffleOracle,
+        SwiPrologOracle,
     )
 
     _ORACLE_BUILDERS["nemo"] = lambda timeout: NemoOracle(timeout_seconds=timeout)
@@ -39,6 +40,9 @@ def _register_builders() -> None:
         timeout_seconds=timeout
     )
     _ORACLE_BUILDERS["clingo"] = lambda timeout: ClingoOracle()
+    _ORACLE_BUILDERS["swipl"] = lambda timeout: SwiPrologOracle(
+        timeout_seconds=timeout
+    )
 
 
 @dataclass(slots=True)
@@ -60,7 +64,7 @@ def main() -> int:
     )
     parser.add_argument(
         "--oracles",
-        default="nemo,souffle,clingo",
+        default="nemo,souffle,clingo,swipl",
         help="Comma-separated oracle names to attempt.",
     )
     parser.add_argument("--case-filter", default=None)

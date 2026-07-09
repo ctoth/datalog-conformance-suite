@@ -45,12 +45,19 @@ target with adapters or cross-checks.
   the visible surface to ASP in-process. Floats and booleans are unsupported by ASP's term
   language and reported as such.
 
-### SWI-Prolog (candidate)
+### SWI-Prolog
 
+- Repo: `https://github.com/SWI-Prolog/swipl-devel`
 - Local environment: swi-prolog 9.0.4 installed inside WSL Debian.
-- Fit: tabled evaluation (`:- table p/2.`) gives Datalog semantics through a genuinely different
-  evaluation strategy (SLG resolution). No adapter yet; negation needs care (`tnot` /
-  well-founded semantics) before it can join the matrix.
+- Fit: tabled evaluation gives Datalog semantics through a genuinely different evaluation
+  strategy (top-down SLG resolution vs the three bottom-up engines), so its agreement is
+  especially strong independent evidence.
+- Adapter status: INTEGRATED. `datalog_conformance.oracles.swipl.SwiPrologOracle` tables every
+  derived predicate, maps `not` to `tnot/1` on derived predicates (well-founded semantics,
+  which coincides with stratified semantics on stratified programs) and `\+` on fact-only
+  predicates, flattens head arithmetic into `is/2` goals, and declares clause-less predicates
+  dynamic so empty relations fail rather than raising existence errors. Unlike the other
+  engines it also supports zero-arity predicates.
 
 ## Error-Oriented Core Surface
 

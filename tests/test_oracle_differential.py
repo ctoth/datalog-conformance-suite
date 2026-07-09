@@ -32,12 +32,14 @@ def _available_oracles() -> dict[str, DatalogEvaluator]:
         ClingoOracle,
         NemoOracle,
         SouffleOracle,
+        SwiPrologOracle,
     )
 
     builders: tuple[tuple[str, type], ...] = (
         ("nemo", NemoOracle),
         ("souffle", SouffleOracle),
         ("clingo", ClingoOracle),
+        ("swipl", SwiPrologOracle),
     )
     for name, builder in builders:
         try:
