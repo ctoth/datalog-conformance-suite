@@ -50,9 +50,9 @@ against a live implementation.
 - Report layout: timestamped directories under `reports/verify_core_multi_oracle/` containing
   `matrix.json` (per case × per oracle outcome) and `summary.json` (per-oracle counts plus
   `verified_by_N` agreement buckets)
-- 2026-07-09 full-corpus result: 1108 cases, zero cross-engine mismatches; 1069 cases verified by
-  all three engines, the remainder blocked only by engine timeouts or dialect limits recorded as
-  `error`/`unsupported` in the matrix
+- 2026-07-09 full-corpus result (600s per-invocation budget): 1108 cases, zero cross-engine
+  mismatches, zero errors; 1105 cases verified by all three engines and 3 by two (Souffle's
+  typed dialect cannot express their mixed number/symbol columns, recorded as `unsupported`)
 - Dialect note: `negation/nemo_negation.yaml` originally used Nemo-dialect existential variables
   under negation (`not s3(X, 5, P)` with `P` otherwise unbound), which Souffle and clingo reject
   as unsafe. The existentials are now hoisted into visible auxiliary projections

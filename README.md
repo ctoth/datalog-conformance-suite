@@ -71,8 +71,9 @@ uv run pytest tests --datalog-evaluator=datalog_conformance.oracles.nemo.NemoOra
 
 `scripts/verify_core_multi_oracle.py` runs every core case against every available engine and
 writes a per-case agreement matrix. As of 2026-07-09 the full corpus shows zero cross-engine
-mismatches, with 1069 of 1108 cases confirmed by all three engines (the rest are engine
-timeouts or dialect limits, recorded honestly as `error`/`unsupported`).
+mismatches: 1105 of 1108 cases are confirmed by all three engines, and the remaining 3 by two
+(their fact columns mix numbers and symbols, which Souffle's typed dialect cannot express;
+recorded as `unsupported`, never guessed).
 
 ## Current Corpus
 
