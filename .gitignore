@@ -10,3 +10,8 @@ pyghidra_mcp_projects/
 
 .DS_Store
 Thumbs.db
+
+logs/
+out/
+reports/
+prompts/

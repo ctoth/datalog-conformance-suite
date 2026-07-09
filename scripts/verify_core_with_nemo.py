@@ -16,12 +16,17 @@ from typing import cast
 from datalog_conformance.plugin import discover_yaml_tests
 from datalog_conformance.schema import FactTuple, Scalar, TestCase
 
-_DEFAULT_NMO_ROOT = (
+_SOURCE_NMO_ROOT = Path.home() / "src/nemo/target"
+_HARVEST_NMO_ROOT = (
     Path.home() / "AppData/Local/Temp/datalog-harvest/nemo/target/x86_64-pc-windows-gnu"
 )
 _DEFAULT_NMO_CANDIDATES = [
-    _DEFAULT_NMO_ROOT / "release/nmo.exe",
-    _DEFAULT_NMO_ROOT / "debug/nmo.exe",
+    _SOURCE_NMO_ROOT / "x86_64-pc-windows-gnu/release/nmo.exe",
+    _SOURCE_NMO_ROOT / "x86_64-pc-windows-gnu/debug/nmo.exe",
+    _SOURCE_NMO_ROOT / "release/nmo",
+    _SOURCE_NMO_ROOT / "debug/nmo",
+    _HARVEST_NMO_ROOT / "release/nmo.exe",
+    _HARVEST_NMO_ROOT / "debug/nmo.exe",
 ]
 _ATOM_RE = re.compile(r"^\s*([A-Za-z_][A-Za-z0-9_]*)\s*\((.*)\)\s*$")
 _NUMERIC_RE = re.compile(r"-?\d+(?:\.\d+)?")
