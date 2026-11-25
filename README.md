@@ -92,8 +92,8 @@ four engines (`--case-filter xsb_wfs`, `verified_by_4: 12`).
     guards, arithmetic, wildcards, constant filters, and self-joins (1,152 unique programs)
 - Defeasible YAML cases: 881
   - 180 harvested and hand-authored cases
-  - 701 generated `defeasible_gen_` cases whose expected sections were computed by the live
-    DePYsible implementation and kept only when stable across twenty hash-seed-varied runs
+  - 701 generated `defeasible_gen_` cases with expected sections computed by the finite
+    García–Simari reference. The input theories come from the original DePYsible-screened corpus.
 - KLM property YAML cases: 1
 - Generated property and meta-tests remain under `tests/`
 
@@ -103,7 +103,7 @@ Current notable sources:
 - Nemo testcases
 - Crepe UI rejection cases
 - XSB wfs_tests two-valued slice (each case verified by all four engines)
-- DePYsible examples and the generated DePYsible-verified defeasible corpus
+- DePYsible examples and the generated García–Simari defeasible corpus
 - spindle-racket test theories
 - spindle-racket inline reasoning tests
 - spindle-racket query theory tests
@@ -131,7 +131,7 @@ uv run scripts/verify_core_with_nemo.py
 uv run --extra oracles scripts/verify_core_multi_oracle.py
 uv run pytest tests/
 uv run --with arpeggio --with colorama pytest tests/test_depysible_generated.py
-uv run --with arpeggio --with colorama pytest tests/test_generated_defeasible_corpus.py
+uv run pytest tests/test_generated_defeasible_corpus.py
 uv run --extra dev ruff check .
 uv run --extra dev pyright
 ```

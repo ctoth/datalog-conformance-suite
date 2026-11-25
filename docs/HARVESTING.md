@@ -9,7 +9,7 @@ This file records where the bundled YAML suites came from, what translation choi
   (114 previous plus the 12-case XSB `wfs_tests` slice)
 - Generated core cases under `generated/`: 12,493 (positive-oracle, family, and feature corpora)
 - Defeasible YAML cases currently in `defeasible/`: 180
-- Generated defeasible cases under `generated/`: 701 (DePYsible-verified `defeasible_gen_` corpus)
+- Generated defeasible cases under `generated/`: 701 (García–Simari `defeasible_gen_` corpus)
 - KLM property YAML cases currently in the bundled corpus: 1
 - Generated property tests and implementation checks remain under `tests/`
 
@@ -79,13 +79,15 @@ against a live implementation.
   (`s3AnyX5`, `s3AnyZY`, `s3AnyXZ`, `s3AnyDiagX/Y/Z`) with identical semantics; the expected
   rows are unchanged and all fourteen cases verify against nemo, souffle, and clingo.
 
-## Generated DePYsible Defeasible Corpus
+## Generated García–Simari Defeasible Corpus
 
-- This is generated data verified against an external implementation, not an upstream corpus.
-- Generator: `scripts/generate_defeasible_corpus.py` (deterministic, seeded), with
-  `scripts/eval_depysible_batch.py` as its subprocess evaluator.
-- External implementation: DePYsible (`https://github.com/stefano-bragaglia/DePYsible`,
-  BSD-2-Clause), checked out under `%TEMP%\depysible`.
+- Expected sections come from the finite reference in `references/garcia.py`, following
+  García and Simari (2004), Definitions 2.5, 3.1–3.5, 4.1–4.7 and 5.1–5.3, pp. 100–120.
+  [Paper](https://doi.org/10.1017/S1471068403001674)
+- The reference compares complete rows over facts and ground rule heads. The v2 corpus retains
+  the input theories and IDs of the original DePYsible-screened cohort.
+- Generator: `scripts/generate_defeasible_corpus.py`. Use `--refresh-existing` to recompute the
+  retained cases. New selection still uses DePYsible under `%TEMP%\depysible` (BSD-2-Clause).
 - Fragment: facts, strict rules, and defeasible rules with strong negation — exactly the
   surface the bundled adapter supports; no defeaters, superiority, or explicit conflicts
   (the adapter rejects them), so priority-like effects are exercised through
@@ -100,9 +102,8 @@ against a live implementation.
   explicit `KNOWN_UNSTABLE_THEORY_KEYS` blocklist.
 - Output area:
   - `src/datalog_conformance/_tests/generated/defeasible_gen_*.yaml`
-- Replay verification:
-  `uv run --with arpeggio --with colorama pytest tests/test_generated_defeasible_corpus.py`
-  runs every generated case back through the live DePYsible adapter.
+- `uv run pytest tests/test_generated_defeasible_corpus.py` verifies the complete generated results
+  and the focused paper examples.
 
 ## XSB wfs_tests
 
