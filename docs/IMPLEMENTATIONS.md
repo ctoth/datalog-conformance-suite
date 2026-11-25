@@ -83,9 +83,9 @@ target with adapters or cross-checks.
 - Repo state in this project: a thin example adapter now exists at
   `datalog_conformance.examples.depysible_adapter`, and fourteen DePYsible-derived defeasible cases
   were confirmed against it. The repo also now includes generated Hypothesis checks against the
-  live DePYsible implementation for its supported fragment, plus a generated
-  `defeasible_gen_` corpus whose expectations were computed by DePYsible itself
-  (`scripts/generate_defeasible_corpus.py`).
+  live DePYsible implementation for its supported fragment. It was also used to select the input
+  theories for the generated `defeasible_gen_` corpus. The current expected results come from
+  the finite García–Simari reference (`references/garcia.py`).
 - Known limitation observed here (2026-07-09): DePYsible's answers are not always deterministic
   across processes — for some theories, literals flip between `defeasibly`, `not_defeasibly`,
   and `undecided` depending on `PYTHONHASHSEED`, because set iteration order steers its

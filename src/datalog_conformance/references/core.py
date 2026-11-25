@@ -30,7 +30,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 from itertools import count
-from typing import Iterator, Union
+from typing import Iterable, Iterator, Union
 
 from ..schema import FactTuple, Model, Program, Scalar
 
@@ -147,6 +147,30 @@ def parse_rules(rule_texts: list[str]) -> list[RuleAst]:
     for rule_text in rule_texts:
         rules.extend(_parse_rule(rule_text))
     return rules
+
+
+def ground_positive_instances(
+    rules: list[RuleAst], possible: dict[str, set[FactTuple]]
+) -> Iterator[tuple[tuple[str, FactTuple], tuple[tuple[str, FactTuple], ...]]]:
+    """Ground positive rules against possible rows and retain explicit ground rules."""
+    store = _FactStore(possible)
+    for rule in rules:
+        if rule.negative or rule.comparisons:
+            raise ValueError("Grounding requires positive literal rule bodies")
+        ground = all(
+            isinstance(term, Constant)
+            for atom in (rule.head, *rule.positive)
+            for term in atom.terms
+        )
+        bindings: Iterable[dict[str, Scalar]] = (
+            ({},) if ground else _match_positive(rule.positive, 0, store, {}, None)
+        )
+        for binding in bindings:
+            head = rule.head.predicate, _ground_row(rule.head.terms, binding)
+            body = tuple(
+                (atom.predicate, _ground_row(atom.terms, binding)) for atom in rule.positive
+            )
+            yield head, body
 
 
 def _parse_rule(rule_text: str) -> list[RuleAst]:
